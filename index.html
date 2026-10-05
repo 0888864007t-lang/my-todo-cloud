@@ -149,7 +149,7 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
 // ===== ĐIỀN 2 GIÁ TRỊ NÀY (Supabase → Project Settings → API) =====
 const SUPABASE_URL = "https://abexfeltrkucijecdecu.supabase.co", SUPABASE_KEY = "sb_publishable_UvqBgghoEnOb2j1vbXRF5g_WmfCWwxA";
 let recovery = /type=recovery/.test(location.hash);   // người dùng vừa bấm liên kết đặt lại mật khẩu trong email
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const sb = supabase.createClient(https://abexfeltrkucijecdecu.supabase.co, sb_publishable_UvqBgghoEnOb2j1vbXRF5g_WmfCWwxA);
 const $ = s => document.querySelector(s);
 const st = {
   get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
