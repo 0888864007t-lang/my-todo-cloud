@@ -85,8 +85,6 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
 #aerr{color:var(--warn);min-height:1.2em;font-size:.88rem}
 .alang{position:absolute;right:16px;top:calc(16px + env(safe-area-inset-top,0px));color:var(--mute);padding:6px 10px}
 .hide{display:none!important}
-.linkbtn{background:none;color:var(--accent);padding:2px 0;align-self:flex-start;font-size:.88rem}
-#aerr.ok{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -94,12 +92,11 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
   <button class="alang" id="alang"></button>
   <form class="acard" id="aform">
     <h2>Việc cần làm</h2>
-    <p class="sub" id="asubtxt" style="margin:0">Dữ liệu được đồng bộ giữa các thiết bị của bạn.</p>
-    <div class="tabs" id="tabs"><button type="button" id="tLogin">Đăng nhập</button><button type="button" id="tReg">Đăng ký</button></div>
-    <label id="row0">Email<input id="au" type="email" autocomplete="email" required></label>
-    <label id="row1">Mật khẩu<input id="ap" type="password" autocomplete="current-password" required></label>
+    <p class="sub" style="margin:0">Dữ liệu được đồng bộ giữa các thiết bị của bạn.</p>
+    <div class="tabs"><button type="button" id="tLogin">Đăng nhập</button><button type="button" id="tReg">Đăng ký</button></div>
+    <label>Email<input id="au" type="email" autocomplete="email" required></label>
+    <label>Mật khẩu<input id="ap" type="password" autocomplete="current-password" required></label>
     <label id="row2" class="hide">Nhập lại mật khẩu<input id="ap2" type="password" autocomplete="new-password"></label>
-    <button type="button" class="linkbtn" id="forgot">Quên mật khẩu?</button><button type="button" class="linkbtn hide" id="back">← Quay lại đăng nhập</button>
     <div id="aerr" role="alert"></div>
     <button class="go" id="asub"></button>
   </form>
@@ -148,8 +145,7 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
 <script>
 // ===== ĐIỀN 2 GIÁ TRỊ NÀY (Supabase → Project Settings → API) =====
 const SUPABASE_URL = "https://abexfeltrkucijecdecu.supabase.co", SUPABASE_KEY = "sb_publishable_UvqBgghoEnOb2j1vbXRF5g_WmfCWwxA";
-let recovery = /type=recovery/.test(location.hash);   // người dùng vừa bấm liên kết đặt lại mật khẩu trong email
-const sb = supabase.createClient(https://abexfeltrkucijecdecu.supabase.co, sb_publishable_UvqBgghoEnOb2j1vbXRF5g_WmfCWwxA);
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = s => document.querySelector(s);
 const st = {
   get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
@@ -167,11 +163,7 @@ const EN = {"Việc cần làm":"To-do","Tìm kiếm":"Search","Giao diện sán
 "Tên đăng nhập tối thiểu 3 ký tự.":"Username must be at least 3 characters.","Mật khẩu tối thiểu 6 ký tự.":"Password must be at least 6 characters.",
 "Mật khẩu nhập lại không khớp.":"Passwords do not match.","Tên đăng nhập đã tồn tại.":"That username is already taken.","Sai tên đăng nhập hoặc mật khẩu.":"Wrong username or password.",
 "Trình duyệt này không hỗ trợ đăng nhập an toàn. Hãy mở bằng localhost hoặc https.":"This browser can't do secure login. Open the app via localhost or https.",
-"Công việc":"Tasks","Đồng bộ":"Sync","Quên mật khẩu?":"Forgot password?","← Quay lại đăng nhập":"← Back to log in","Gửi liên kết đặt lại":"Send reset link","Đổi mật khẩu":"Change password",
-"Nhập email đã đăng ký, chúng tôi sẽ gửi liên kết đặt lại mật khẩu.":"Enter your email and we'll send you a reset link.","Nhập mật khẩu mới cho tài khoản của bạn.":"Enter a new password for your account.",
-"Đã gửi quá nhiều email. Vui lòng thử lại sau ít phút.":"Too many emails sent. Please try again in a few minutes.",
-"Nếu email tồn tại, liên kết đặt lại mật khẩu đã được gửi. Hãy kiểm tra hộp thư (cả mục Spam).":"If the email exists, a reset link has been sent. Check your inbox (and Spam).",
-"Liên kết đã hết hạn hoặc không hợp lệ. Hãy chọn Quên mật khẩu để nhận liên kết mới.":"The link is invalid or has expired. Use Forgot password to get a new one.","Đổi mật khẩu thành công.":"Password changed.","Sai email hoặc mật khẩu.":"Wrong email or password.","Đã gửi email xác nhận. Hãy mở email để xác nhận rồi đăng nhập.":"Confirmation email sent. Open it to confirm, then log in.","Chưa cấu hình Supabase: điền SUPABASE_URL và SUPABASE_KEY ở đầu mã nguồn.":"Supabase is not configured: set SUPABASE_URL and SUPABASE_KEY at the top of the source.","Ngày của tôi":"My Day","Quan trọng":"Important","Đã lên kế hoạch":"Planned","Không có hạn":"No due date","Quá hạn":"Overdue","Hôm nay":"Today","Sắp tới":"Upcoming",
+"Công việc":"Tasks","Đồng bộ":"Sync","Sai email hoặc mật khẩu.":"Wrong email or password.","Đã gửi email xác nhận. Hãy mở email để xác nhận rồi đăng nhập.":"Confirmation email sent. Open it to confirm, then log in.","Chưa cấu hình Supabase: điền SUPABASE_URL và SUPABASE_KEY ở đầu mã nguồn.":"Supabase is not configured: set SUPABASE_URL and SUPABASE_KEY at the top of the source.","Ngày của tôi":"My Day","Quan trọng":"Important","Đã lên kế hoạch":"Planned","Không có hạn":"No due date","Quá hạn":"Overdue","Hôm nay":"Today","Sắp tới":"Upcoming",
 "(quá hạn)":"(overdue)","Nhấp đúp để sửa":"Double-click to edit","Thêm vào Ngày của tôi":"Add to My Day","Xóa":"Delete","Sửa tác vụ":"Edit task",
 "＋ Danh sách mới":"＋ New list","Tên danh sách mới":"New list name","Xóa danh sách":"Delete list","Xóa danh sách này và các tác vụ trong đó?":"Delete this list and its tasks?",
 " tác vụ đang làm":" tasks open","Không tìm thấy tác vụ nào.":"No tasks found.","Chưa có tác vụ nào. Hãy thêm tác vụ đầu tiên ở ô phía trên.":"No tasks yet. Add your first task above.",
@@ -318,18 +310,11 @@ function setLang(l){
 // ---- Đăng nhập (tài khoản lưu cục bộ trên trình duyệt, mật khẩu băm PBKDF2) ----
 let authMode = "login";
 function renderAuth(){
-  const m = authMode, reg = m === "register", pick = m === "forgot" || m === "reset";
-  $("#tabs").classList.toggle("hide", pick);
-  $("#row0").classList.toggle("hide", m === "reset");
-  $("#row1").classList.toggle("hide", m === "forgot");
-  $("#row2").classList.toggle("hide", !(reg || m === "reset"));
-  $("#forgot").classList.toggle("hide", m !== "login");
-  $("#back").classList.toggle("hide", !pick);
-  $("#tLogin").classList.toggle("on", m === "login"); $("#tReg").classList.toggle("on", reg);
-  $("#asub").textContent = T({login:"Đăng nhập", register:"Tạo tài khoản", forgot:"Gửi liên kết đặt lại", reset:"Đổi mật khẩu"}[m]);
-  $("#asubtxt").textContent = T({forgot:"Nhập email đã đăng ký, chúng tôi sẽ gửi liên kết đặt lại mật khẩu.", reset:"Nhập mật khẩu mới cho tài khoản của bạn."}[m] || "Dữ liệu được đồng bộ giữa các thiết bị của bạn.");
-  $("#ap").autocomplete = m === "login" ? "current-password" : "new-password";
-  $("#au").required = m !== "reset"; $("#ap").required = m !== "forgot"; $("#ap2").required = reg || m === "reset";
+  const reg = authMode === "register";
+  $("#row2").classList.toggle("hide", !reg);
+  $("#tLogin").classList.toggle("on", !reg); $("#tReg").classList.toggle("on", reg);
+  $("#asub").textContent = T(reg ? "Tạo tài khoản" : "Đăng nhập");
+  $("#ap").autocomplete = reg ? "new-password" : "current-password"; $("#ap2").required = reg;
 }
 async function gate(){
   document.body.classList.toggle("out", !user);
@@ -340,31 +325,10 @@ async function gate(){
   } else { $("#au").value = $("#ap").value = $("#ap2").value = ""; $("#aerr").textContent = ""; renderAuth(); }
 }
 $("#tLogin").onclick = () => { authMode = "login"; $("#aerr").textContent = ""; renderAuth(); };
-$("#forgot").onclick = () => { authMode = "forgot"; $("#aerr").textContent = ""; renderAuth(); };
-$("#back").onclick = () => { authMode = "login"; $("#aerr").textContent = ""; renderAuth(); };
 $("#tReg").onclick = () => { authMode = "register"; $("#aerr").textContent = ""; renderAuth(); };
 $("#aform").onsubmit = async e => {
   e.preventDefault();
   const email = $("#au").value.trim(), password = $("#ap").value, reg = authMode === "register", out = $("#aerr");
-  out.className = "";
-  if (authMode === "forgot"){      // gửi email đặt lại mật khẩu
-    $("#asub").disabled = true;
-    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
-    $("#asub").disabled = false;
-    if (error) return out.textContent = /rate limit/i.test(error.message) ? T("Đã gửi quá nhiều email. Vui lòng thử lại sau ít phút.") : error.message;
-    out.className = "ok"; return out.textContent = T("Nếu email tồn tại, liên kết đặt lại mật khẩu đã được gửi. Hãy kiểm tra hộp thư (cả mục Spam).");
-  }
-  if (authMode === "reset"){       // đặt mật khẩu mới sau khi bấm liên kết trong email
-    if (password.length < 6) return out.textContent = T("Mật khẩu tối thiểu 6 ký tự.");
-    if (password !== $("#ap2").value) return out.textContent = T("Mật khẩu nhập lại không khớp.");
-    $("#asub").disabled = true;
-    const { error } = await sb.auth.updateUser({ password });
-    $("#asub").disabled = false;
-    if (error) return out.textContent = error.message;
-    recovery = false; history.replaceState(null, "", location.pathname + location.search);
-    const { data } = await sb.auth.getSession();
-    user = data.session ? data.session.user.email : null; authMode = "login"; gate(); return;
-  }
   if (reg && password.length < 6) return out.textContent = T("Mật khẩu tối thiểu 6 ký tự.");
   if (reg && password !== $("#ap2").value) return out.textContent = T("Mật khẩu nhập lại không khớp.");
   $("#asub").disabled = true;
@@ -383,15 +347,9 @@ document.addEventListener("click", e => {
   if (!e.target.closest("#pop,#sug")) $("#pop").hidden = true;
 });
 (async () => {
-  if (recovery) authMode = "reset";
   setLang(lang);
-  try { const { data } = await sb.auth.getSession(); user = (!recovery && data.session) ? data.session.user.email : null; } catch {}
-  sb.auth.onAuthStateChange(ev => { if (ev === "PASSWORD_RECOVERY"){ recovery = true; authMode = "reset"; user = null; gate(); } });
+  try { const { data } = await sb.auth.getSession(); user = data.session ? data.session.user.email : null; } catch {}
   gate();
-  if (/error_code|error_description/.test(location.hash)){   // liên kết hết hạn / đã dùng
-    $("#aerr").textContent = T("Liên kết đã hết hạn hoặc không hợp lệ. Hãy chọn Quên mật khẩu để nhận liên kết mới.");
-    history.replaceState(null, "", location.pathname + location.search);
-  }
   if (SUPABASE_URL.includes("YOUR-PROJECT")) $("#aerr").textContent = T("Chưa cấu hình Supabase: điền SUPABASE_URL và SUPABASE_KEY ở đầu mã nguồn.");
 })();
 </script>
