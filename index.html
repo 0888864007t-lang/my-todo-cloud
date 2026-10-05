@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Việc cần làm</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#eceff6;--side:#fff;--card:#fff;--ink:#17203b;--mute:#6a7391;--line:#e2e6f0;--top:#12343b;--topink:#f4faf8;--accent:#0f9d8a;--sel:#e2f4f1;--warn:#d97706;--shadow:0 2px 10px rgba(23,32,59,.08);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1218;--side:#121921;--card:#161d27;--ink:#e9eef7;--mute:#8d99b3;--line:#263042;--top:#0f2b30;--accent:#2dd4bf;--sel:#16332f;--warn:#fbbf24;--shadow:none}}
+:root[data-theme="dark"]{--bg:#0d1218;--side:#121921;--card:#161d27;--ink:#e9eef7;--mute:#8d99b3;--line:#263042;--top:#0f2b30;--accent:#2dd4bf;--sel:#16332f;--warn:#fbbf24;--shadow:none}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:border-box}
+body{margin:0;height:100%;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font:15px/1.5 "Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;border-radius:8px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.top{background:var(--top);color:var(--topink);display:flex;align-items:center;gap:12px;padding:8px 14px;flex:none}
+.top b{font-size:1.05rem}
+.top button{color:var(--topink);padding:6px 10px}
+.top button:hover{background:rgba(255,255,255,.14)}
+.top input{flex:0 1 460px;margin:0 auto;background:#fff;color:#17203b;border:0;border-radius:8px;padding:7px 12px;min-width:0;width:100%}
+.av{width:34px;height:34px;border-radius:50%;border:1.5px solid #fff;display:grid;place-items:center;font-size:.8rem;flex:none}
+.app{flex:1;display:flex;min-height:0;position:relative}
+nav{width:270px;background:var(--side);border-right:1px solid var(--line);padding:10px 8px;overflow:auto;flex:none}
+nav button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 12px;border-radius:8px}
+nav button:hover{background:var(--bg)}
+nav button.on{background:var(--sel);font-weight:600}
+nav .n{margin-left:auto;color:var(--mute);font-size:.82rem}
+nav hr{border:0;border-top:1px solid var(--line);margin:10px 6px}
+nav .new{color:var(--accent)}
+main{flex:1;overflow:auto;padding:18px 24px 40px;min-width:0}
+.head{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:1.6rem;line-height:1.2}
+.sub{color:var(--mute);font-size:.88rem}
+.sp{flex:1}
+.tabs button{padding:6px 12px;color:var(--mute);border-bottom:3px solid transparent;border-radius:0}
+.tabs button.on{color:var(--ink);border-color:var(--accent);font-weight:600}
+.opts{display:flex;gap:6px;align-items:center;position:relative}
+.opts select,.opts>button{background:none;border:0;color:var(--mute);padding:6px 8px;border-radius:8px;cursor:pointer}
+.opts select:hover,.opts>button:hover{background:var(--card)}
+.pop{position:absolute;right:0;top:36px;z-index:5;width:300px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.18);padding:10px}
+.pop button{display:block;width:100%;text-align:left;padding:8px;border-radius:8px}
+.pop button:hover{background:var(--sel)}
+.tip{background:var(--accent);color:#04201c;border-radius:6px;padding:14px 16px;width:300px;margin:10px 0;box-shadow:var(--shadow)}
+.tip button{border:1px solid #04201c;padding:5px 18px;margin-top:10px;color:#04201c}
+form.add{display:flex;gap:8px;background:var(--card);border-radius:8px;padding:8px 10px;margin:14px 0;box-shadow:var(--shadow);align-items:center}
+form.add input[type=text]{flex:1;border:0;background:none;padding:8px;min-width:0;font-size:1rem}
+form.add input:focus{outline:none}
+form.add input[type=date]{background:var(--bg);border:0;border-radius:8px;padding:6px}
+form.add .go{background:var(--accent);color:#04201c;font-weight:700;padding:7px 18px}
+.gt{color:var(--mute);font-weight:600;margin:16px 0 6px;font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.list{display:flex;flex-direction:column;gap:6px}
+.task{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:8px;padding:10px 12px;box-shadow:var(--shadow);border-left:4px solid var(--accent)}
+.task.done{opacity:.55;border-color:var(--line)}
+.task.done .tt{text-decoration:line-through}
+.tb{flex:1;min-width:0}
+.tt{overflow-wrap:anywhere;font-weight:600;cursor:text}
+.meta{font-size:.78rem;color:var(--mute)}
+.late{color:var(--warn);font-weight:600}
+.task button{color:var(--mute);padding:3px 6px;font-size:1rem;line-height:1}
+.task button:hover{background:var(--bg)}
+.task .on{color:var(--accent)}
+.task .s.on{color:#e0a100}
+input[type=checkbox]{appearance:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--mute);flex:none;display:grid;place-items:center;cursor:pointer;background:none}
+input[type=checkbox]:checked{background:var(--accent);border-color:var(--accent)}
+input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.empty{color:var(--mute);text-align:center;padding:40px 12px;border:2px dashed var(--line);border-radius:12px;margin-top:10px}
+.burger{display:none}
+@media (max-width:760px){.burger{display:block}nav{position:absolute;inset:0 auto 0 0;z-index:6;transform:translateX(-100%);transition:transform .2s}nav.open{transform:none;box-shadow:0 0 30px rgba(0,0,0,.3)}main{padding:14px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.top{position:relative;z-index:7}
+#set{right:14px;top:56px;width:240px}
+#auth{display:none;position:fixed;inset:0;place-items:center;background:var(--bg);padding:16px;z-index:20}
+.out #auth{display:grid}
+.out .top,.out .app{display:none}
+.acard{width:min(380px,100%);background:var(--card);border-radius:16px;padding:24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
+.acard h2{margin:0;font-size:1.5rem}
+.acard label{display:flex;flex-direction:column;gap:4px;font-size:.88rem;color:var(--mute)}
+.acard input{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:1rem;color:var(--ink)}
+.acard .go{background:var(--accent);color:#04201c;font-weight:700;padding:10px}
+.acard .tabs{display:flex}.acard .tabs button{flex:1}
+#aerr{color:var(--warn);min-height:1.2em;font-size:.88rem}
+.alang{position:absolute;right:16px;top:calc(16px + env(safe-area-inset-top,0px));color:var(--mute);padding:6px 10px}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div id="auth">
+  <button class="alang" id="alang"></button>
+  <form class="acard" id="aform">
+    <h2>Việc cần làm</h2>
+    <p class="sub" style="margin:0">Dữ liệu được đồng bộ giữa các thiết bị của bạn.</p>
+    <div class="tabs"><button type="button" id="tLogin">Đăng nhập</button><button type="button" id="tReg">Đăng ký</button></div>
+    <label>Email<input id="au" type="email" autocomplete="email" required></label>
+    <label>Mật khẩu<input id="ap" type="password" autocomplete="current-password" required></label>
+    <label id="row2" class="hide">Nhập lại mật khẩu<input id="ap2" type="password" autocomplete="new-password"></label>
+    <div id="aerr" role="alert"></div>
+    <button class="go" id="asub"></button>
+  </form>
+</div>
+<div class="top">
+  <button class="burger" id="burger" aria-label="Menu">☰</button>
+  <b>Việc cần làm</b>
+  <input id="q" type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm">
+  <span id="sync" title="Đồng bộ" style="cursor:default">☁️</span>
+  <button id="theme" aria-label="Giao diện sáng/tối">◐</button>
+  <button class="av" id="av" aria-label="Cài đặt" title="Cài đặt">TN</button>
+  <div class="pop" id="set" hidden>
+    <div class="sub">Tài khoản</div><div id="who" style="font-weight:600;padding:2px 8px 8px"></div>
+    <label class="sub" for="lang">Ngôn ngữ</label>
+    <select id="lang" style="width:100%;padding:8px;margin:4px 0 8px;background:var(--bg);border:1px solid var(--line);border-radius:8px"><option value="vi">Tiếng Việt</option><option value="en">English</option></select>
+    <button id="logout">Đăng xuất</button>
+  </div>
+</div>
+<div class="app">
+  <nav id="nav"></nav>
+  <main>
+    <div class="head">
+      <div><h1 id="title"></h1><div class="sub" id="sub"></div></div>
+      <div class="tabs"><button id="mGrid">Lưới</button><button id="mList">Danh sách</button></div>
+      <div class="sp"></div>
+      <div class="opts">
+        <select id="sort" aria-label="Sắp xếp">
+          <option value="created">Sắp xếp: Ngày tạo</option><option value="az">Sắp xếp: A → Z</option>
+          <option value="due">Sắp xếp: Hạn chót</option><option value="star">Sắp xếp: Quan trọng</option></select>
+        <select id="group" aria-label="Nhóm">
+          <option value="none">Nhóm: Không</option><option value="list">Nhóm: Danh sách</option><option value="due">Nhóm: Hạn chót</option></select>
+        <button id="sug">💡 Gợi ý</button>
+        <div class="pop" id="pop" hidden></div>
+      </div>
+    </div>
+    <div class="tip" id="tip" hidden>Thêm tác vụ mới hoặc chọn từ Gợi ý để lên kế hoạch cho ngày của bạn.<br><button id="tipOk">Tiếp theo</button></div>
+    <form class="add" id="form">
+      <input type="text" id="text" placeholder="Thêm một tác vụ" autocomplete="off" aria-label="Thêm một tác vụ">
+      <input type="date" id="due" aria-label="Hạn chót">
+      <button class="go">Thêm</button>
+    </form>
+    <div id="out"></div>
+  </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ===== ĐIỀN 2 GIÁ TRỊ NÀY (Supabase → Project Settings → API) =====
+const SUPABASE_URL = "https://abexfeltrkucijecdecu.supabase.co", SUPABASE_KEY = "sb_publishable_UvqBgghoEnOb2j1vbXRF5g_WmfCWwxA";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = s => document.querySelector(s);
+const st = {
+  get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+// ---- Ngôn ngữ: khóa là chuỗi tiếng Việt, giá trị là tiếng Anh ----
+let lang = st.get("lang", "vi");
+const EN = {"Việc cần làm":"To-do","Tìm kiếm":"Search","Giao diện sáng/tối":"Light/dark theme","Cài đặt":"Settings","Lưới":"Grid","Danh sách":"List",
+"Sắp xếp":"Sort","Nhóm":"Group","Sắp xếp: Ngày tạo":"Sort: Date created","Sắp xếp: A → Z":"Sort: A → Z","Sắp xếp: Hạn chót":"Sort: Due date","Sắp xếp: Quan trọng":"Sort: Important",
+"Nhóm: Không":"Group: None","Nhóm: Danh sách":"Group: List","Nhóm: Hạn chót":"Group: Due date","💡 Gợi ý":"💡 Suggestions",
+"Thêm tác vụ mới hoặc chọn từ Gợi ý để lên kế hoạch cho ngày của bạn.":"Add new tasks or choose from Suggestions to plan your day.","Tiếp theo":"Next",
+"Thêm một tác vụ":"Add a task","Hạn chót":"Due date","Thêm":"Add","Tài khoản":"Account","Ngôn ngữ":"Language","Đăng xuất":"Log out",
+"Đăng nhập":"Log in","Đăng ký":"Sign up","Tạo tài khoản":"Create account","Tên đăng nhập":"Username","Mật khẩu":"Password","Nhập lại mật khẩu":"Confirm password",
+"Dữ liệu được đồng bộ giữa các thiết bị của bạn.":"Your data syncs across your devices.",
+"Tên đăng nhập tối thiểu 3 ký tự.":"Username must be at least 3 characters.","Mật khẩu tối thiểu 6 ký tự.":"Password must be at least 6 characters.",
+"Mật khẩu nhập lại không khớp.":"Passwords do not match.","Tên đăng nhập đã tồn tại.":"That username is already taken.","Sai tên đăng nhập hoặc mật khẩu.":"Wrong username or password.",
+"Trình duyệt này không hỗ trợ đăng nhập an toàn. Hãy mở bằng localhost hoặc https.":"This browser can't do secure login. Open the app via localhost or https.",
+"Công việc":"Tasks","Đồng bộ":"Sync","Sai email hoặc mật khẩu.":"Wrong email or password.","Đã gửi email xác nhận. Hãy mở email để xác nhận rồi đăng nhập.":"Confirmation email sent. Open it to confirm, then log in.","Chưa cấu hình Supabase: điền SUPABASE_URL và SUPABASE_KEY ở đầu mã nguồn.":"Supabase is not configured: set SUPABASE_URL and SUPABASE_KEY at the top of the source.","Ngày của tôi":"My Day","Quan trọng":"Important","Đã lên kế hoạch":"Planned","Không có hạn":"No due date","Quá hạn":"Overdue","Hôm nay":"Today","Sắp tới":"Upcoming",
+"(quá hạn)":"(overdue)","Nhấp đúp để sửa":"Double-click to edit","Thêm vào Ngày của tôi":"Add to My Day","Xóa":"Delete","Sửa tác vụ":"Edit task",
+"＋ Danh sách mới":"＋ New list","Tên danh sách mới":"New list name","Xóa danh sách":"Delete list","Xóa danh sách này và các tác vụ trong đó?":"Delete this list and its tasks?",
+" tác vụ đang làm":" tasks open","Không tìm thấy tác vụ nào.":"No tasks found.","Chưa có tác vụ nào. Hãy thêm tác vụ đầu tiên ở ô phía trên.":"No tasks yet. Add your first task above.",
+"Đã hoàn thành (":"Completed (","Gợi ý cho Ngày của tôi":"Suggestions for My Day","Chưa có gợi ý. Tác vụ quan trọng hoặc quá hạn sẽ xuất hiện ở đây.":"No suggestions yet. Important or overdue tasks will appear here."};
+const T = s => lang === "en" ? (EN[s] ?? s) : s;
+
+// ---- Dữ liệu ----
+let user = null, tasks = [], lists = [], remote = new Map(), pending = false, ch = null;
+const rowT = t => ({ id:t.id, text:t.text, done:t.done, star:t.star, myday:t.myday || null, due:t.due || null, list:t.list, created:t.created });
+const snap = () => new Map([...tasks.map(t => ["t:" + t.id, JSON.stringify(rowT(t))]), ...lists.map(l => ["l:" + l.id, JSON.stringify({id:l.id, name:l.name})])]);
+const setSync = s => { $("#sync").textContent = s; };
+async function load(){   // tải toàn bộ dữ liệu của tài khoản từ Supabase
+  const [a, b] = await Promise.all([sb.from("tasks").select("*"), sb.from("lists").select("id,name")]);
+  if (a.error || b.error){ console.error(a.error || b.error); return setSync("⚠️"); }
+  tasks = a.data.map(r => ({ id:r.id, text:r.text, done:r.done, star:r.star, myday:r.myday, due:r.due || "", list:r.list, created:Number(r.created) }));
+  lists = b.data; remote = snap(); setSync("☁️");
+}
+async function push(){   // chỉ gửi những dòng đã thay đổi hoặc bị xóa
+  const cur = snap(), up = {tasks:[], lists:[]}, del = {tasks:[], lists:[]};
+  tasks.forEach(t => { if (remote.get("t:" + t.id) !== cur.get("t:" + t.id)) up.tasks.push(rowT(t)); });
+  lists.forEach(l => { if (remote.get("l:" + l.id) !== cur.get("l:" + l.id)) up.lists.push({id:l.id, name:l.name}); });
+  for (const k of remote.keys()) if (!cur.has(k)) del[k[0] === "t" ? "tasks" : "lists"].push(k.slice(2));
+  setSync("⏳");
+  try {
+    for (const tb of ["lists","tasks"]) if (up[tb].length){ const { error } = await sb.from(tb).upsert(up[tb]); if (error) throw error; }
+    for (const tb of ["tasks","lists"]) if (del[tb].length){ const { error } = await sb.from(tb).delete().in("id", del[tb]); if (error) throw error; }
+    remote = cur; setSync("☁️");
+  } catch (e){ console.error(e); setSync("⚠️"); }
+  pending = false;
+}
+function listen(){       // nhận thay đổi từ thiết bị khác theo thời gian thực
+  if (ch) sb.removeChannel(ch);
+  const refresh = () => { clearTimeout(refresh.t); refresh.t = setTimeout(async () => { if (pending) return; await load(); render(); }, 300); };
+  ch = sb.channel("sync").on("postgres_changes", {event:"*", schema:"public", table:"tasks"}, refresh)
+         .on("postgres_changes", {event:"*", schema:"public", table:"lists"}, refresh).subscribe();
+}
+const ui = { view: "myday", mode: st.get("mode", "grid"), sort: "created", group: "none", q: "" };
+const SYS = [["myday","☀️","Ngày của tôi"],["star","⭐","Quan trọng"],["plan","📅","Đã lên kế hoạch"],["tasks","🏠","Công việc"]]; // sửa mục bên trái tại đây
+const today = () => new Date(Date.now() - new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const save = () => { pending = true; clearTimeout(save.t); save.t = setTimeout(push, 300); };
+const listName = id => id === "tasks" ? T("Công việc") : (lists.find(l => l.id === id) || {name:"?"}).name;
+const inView = t => ({myday: t.myday === today(), star: t.star, plan: !!t.due, tasks: t.list === "tasks"})[ui.view] ?? (t.list === ui.view);
+const count = v => { const o = ui.view; ui.view = v; const n = tasks.filter(t => !t.done && inView(t)).length; ui.view = o; return n; };
+const h = (tag, p = {}, ...c) => {
+  const e = document.createElement(tag);
+  for (const k in p){ if (k === "class") e.className = p[k]; else if (k.startsWith("on") || k in e) e[k] = p[k]; else e.setAttribute(k, p[k]); }
+  e.append(...c.flat().filter(x => x != null && x !== false)); return e;
+};
+const sorters = { created:(a,b)=>a.created-b.created, az:(a,b)=>a.text.localeCompare(b.text,lang), due:(a,b)=>(a.due||"9").localeCompare(b.due||"9"), star:(a,b)=>b.star-a.star };
+const gkey = t => ui.group === "list" ? listName(t.list) : !t.due ? T("Không có hạn") : t.due < today() ? T("Quá hạn") : t.due === today() ? T("Hôm nay") : T("Sắp tới");
+
+function add(text, due){
+  text = text.trim(); if (!text) return;
+  const v = ui.view, sys = SYS.some(s => s[0] === v);
+  tasks.push({ id: crypto.randomUUID(), text, done:false, star: v === "star", myday: v === "myday" ? today() : null,
+               due: due || (v === "plan" ? today() : ""), list: sys ? "tasks" : v, created: Date.now() });
+  save(); render();
+}
+
+function taskEl(t){
+  const late = !t.done && t.due && t.due < today();
+  const meta = h("div", {class:"meta"}, ui.view !== t.list && listName(t.list), t.myday === today() && ui.view !== "myday" && " · ☀️",
+    t.due && [" · ", h("span", {class: late ? "late" : ""}, "📅 " + t.due + (late ? " " + T("(quá hạn)") : ""))]);
+  return h("div", {class: "task" + (t.done ? " done" : "")},
+    h("input", {type:"checkbox", checked:t.done, onchange(e){ t.done = e.target.checked; save(); render(); }}),
+    h("div", {class:"tb"}, h("div", {class:"tt", title:T("Nhấp đúp để sửa"), ondblclick(){ const n = prompt(T("Sửa tác vụ"), t.text); if (n && n.trim()){ t.text = n.trim(); save(); render(); } }}, t.text), meta),
+    h("button", {class: t.myday === today() ? "on" : "", title:T("Thêm vào Ngày của tôi"), onclick(){ t.myday = t.myday === today() ? null : today(); save(); render(); }}, "☀️"),
+    h("button", {class: "s " + (t.star ? "on" : ""), title:T("Quan trọng"), onclick(){ t.star = !t.star; save(); render(); }}, t.star ? "★" : "☆"),
+    h("button", {title:T("Xóa"), onclick(){ tasks = tasks.filter(x => x.id !== t.id); save(); render(); }}, "✕"));
+}
+
+function render(){
+  // Thanh bên
+  const nav = $("#nav"); nav.replaceChildren();
+  const item = (id, ic, name) => h("button", {class: ui.view === id ? "on" : "", onclick(){ ui.view = id; nav.classList.remove("open"); render(); }}, ic, name, h("span", {class:"n"}, count(id) || ""));
+  SYS.forEach(s => nav.append(item(s[0], s[1], T(s[2]))));
+  nav.append(h("hr"));
+  lists.forEach(l => nav.append(item(l.id, "☰", l.name)));
+  nav.append(h("button", {class:"new", onclick(){ const n = prompt(T("Tên danh sách mới")); if (n && n.trim()){ const l = {id: crypto.randomUUID(), name: n.trim()}; lists.push(l); ui.view = l.id; save(); render(); } }}, T("＋ Danh sách mới")));
+
+  // Tiêu đề
+  const sys = SYS.find(s => s[0] === ui.view);
+  $("#title").textContent = sys ? sys[1] + " " + T(sys[2]) : "☰ " + listName(ui.view);
+  if (!sys) $("#title").append(" ", h("button", {title:T("Xóa danh sách"), onclick(){ if (confirm(T("Xóa danh sách này và các tác vụ trong đó?"))){ tasks = tasks.filter(t => t.list !== ui.view); lists = lists.filter(l => l.id !== ui.view); ui.view = "myday"; save(); render(); } }}, "🗑"));
+  $("#sub").textContent = ui.view === "myday" ? new Date().toLocaleDateString(lang === "en" ? "en-US" : "vi-VN", {weekday:"long", day:"numeric", month:"long"}) : count(ui.view) + T(" tác vụ đang làm");
+  $("#mGrid").className = ui.mode === "grid" ? "on" : ""; $("#mList").className = ui.mode === "list" ? "on" : "";
+
+  // Danh sách tác vụ
+  const q = ui.q.toLowerCase();
+  const all = tasks.filter(t => inView(t) && t.text.toLowerCase().includes(q)).sort(sorters[ui.sort]);
+  const out = $("#out"); out.replaceChildren();
+  const block = arr => h("div", {class: ui.mode}, arr.map(taskEl));
+  const open = all.filter(t => !t.done), done = all.filter(t => t.done);
+  if (!all.length) out.append(h("div", {class:"empty"}, T(q ? "Không tìm thấy tác vụ nào." : "Chưa có tác vụ nào. Hãy thêm tác vụ đầu tiên ở ô phía trên.")));
+  if (ui.group === "none") out.append(block(open));
+  else [...new Set(open.map(gkey))].forEach(g => out.append(h("div", {class:"gt"}, g), block(open.filter(t => gkey(t) === g))));
+  if (done.length) out.append(h("div", {class:"gt"}, T("Đã hoàn thành (") + done.length + ")"), block(done));
+}
+
+// ---- Sự kiện ----
+$("#form").onsubmit = e => { e.preventDefault(); add($("#text").value, $("#due").value); $("#text").value = ""; $("#due").value = ""; $("#text").focus(); };
+$("#q").oninput = e => { ui.q = e.target.value; render(); };
+$("#sort").onchange = e => { ui.sort = e.target.value; render(); };
+$("#group").onchange = e => { ui.group = e.target.value; render(); };
+$("#mGrid").onclick = () => { ui.mode = "grid"; st.set("mode", "grid"); render(); };
+$("#mList").onclick = () => { ui.mode = "list"; st.set("mode", "list"); render(); };
+$("#burger").onclick = () => $("#nav").classList.toggle("open");
+$("#sug").onclick = () => {
+  const pop = $("#pop"); if (!pop.hidden){ pop.hidden = true; return; }
+  const s = tasks.filter(t => !t.done && t.myday !== today() && (t.star || (t.due && t.due < today())));
+  pop.replaceChildren(h("div", {class:"sub"}, T("Gợi ý cho Ngày của tôi")),
+    ...(s.length ? s.map(t => h("button", {onclick(){ t.myday = today(); save(); pop.hidden = true; render(); }}, "＋ " + t.text)) : [h("div", {class:"meta", style:"padding:8px"}, T("Chưa có gợi ý. Tác vụ quan trọng hoặc quá hạn sẽ xuất hiện ở đây."))]));
+  pop.hidden = false;
+};
+$("#theme").onclick = () => {
+  const r = document.documentElement;
+  const dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme:dark)").matches;
+  r.dataset.theme = dark ? "light" : "dark"; st.set("theme", r.dataset.theme);
+};
+const th = st.get("theme", null); if (th) document.documentElement.dataset.theme = th;
+if (!st.get("tip", false)){ $("#tip").hidden = false; $("#tipOk").onclick = () => { $("#tip").hidden = true; st.set("tip", true); }; }
+// ---- Áp dụng ngôn ngữ cho phần HTML tĩnh ----
+const orig = new WeakMap();
+function applyStatic(){
+  const tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  for (let n; n = tw.nextNode();){
+    if (n.parentNode.tagName === "SCRIPT") continue;
+    const vi = orig.get(n) ?? (orig.set(n, n.nodeValue), n.nodeValue), k = vi.trim();
+    if (EN[k]) n.nodeValue = vi.replace(k, lang === "en" ? EN[k] : k);
+  }
+  document.querySelectorAll("[placeholder],[aria-label],[title]").forEach(el => ["placeholder","aria-label","title"].forEach(a => {
+    if (!el.hasAttribute(a)) return;
+    const key = "_" + a, vi = el[key] ?? (el[key] = el.getAttribute(a));
+    if (EN[vi]) el.setAttribute(a, lang === "en" ? EN[vi] : vi);
+  }));
+}
+function setLang(l){
+  lang = l; st.set("lang", l);
+  document.documentElement.lang = l; document.title = T("Việc cần làm");
+  $("#lang").value = l; $("#alang").textContent = l === "vi" ? "English" : "Tiếng Việt";
+  applyStatic(); renderAuth(); if (user) render();
+}
+
+// ---- Đăng nhập (tài khoản lưu cục bộ trên trình duyệt, mật khẩu băm PBKDF2) ----
+let authMode = "login";
+function renderAuth(){
+  const reg = authMode === "register";
+  $("#row2").classList.toggle("hide", !reg);
+  $("#tLogin").classList.toggle("on", !reg); $("#tReg").classList.toggle("on", reg);
+  $("#asub").textContent = T(reg ? "Tạo tài khoản" : "Đăng nhập");
+  $("#ap").autocomplete = reg ? "new-password" : "current-password"; $("#ap2").required = reg;
+}
+async function gate(){
+  document.body.classList.toggle("out", !user);
+  if (user){
+    $("#av").textContent = user.slice(0,2).toUpperCase(); $("#who").textContent = user;
+    ui.view = "myday"; ui.q = ""; $("#q").value = "";
+    tasks = []; lists = []; render(); await load(); render(); listen();
+  } else { $("#au").value = $("#ap").value = $("#ap2").value = ""; $("#aerr").textContent = ""; renderAuth(); }
+}
+$("#tLogin").onclick = () => { authMode = "login"; $("#aerr").textContent = ""; renderAuth(); };
+$("#tReg").onclick = () => { authMode = "register"; $("#aerr").textContent = ""; renderAuth(); };
+$("#aform").onsubmit = async e => {
+  e.preventDefault();
+  const email = $("#au").value.trim(), password = $("#ap").value, reg = authMode === "register", out = $("#aerr");
+  if (reg && password.length < 6) return out.textContent = T("Mật khẩu tối thiểu 6 ký tự.");
+  if (reg && password !== $("#ap2").value) return out.textContent = T("Mật khẩu nhập lại không khớp.");
+  $("#asub").disabled = true;
+  const { data, error } = await (reg ? sb.auth.signUp({ email, password }) : sb.auth.signInWithPassword({ email, password }));
+  $("#asub").disabled = false;
+  if (error) return out.textContent = /invalid login/i.test(error.message) ? T("Sai email hoặc mật khẩu.") : error.message;
+  if (!data.session) return out.textContent = T("Đã gửi email xác nhận. Hãy mở email để xác nhận rồi đăng nhập.");
+  user = data.session.user.email; gate();
+};
+$("#av").onclick = () => { $("#set").hidden = !$("#set").hidden; };
+$("#logout").onclick = async () => { await sb.auth.signOut(); user = null; if (ch){ sb.removeChannel(ch); ch = null; } $("#set").hidden = true; gate(); };
+$("#lang").onchange = e => setLang(e.target.value);
+$("#alang").onclick = () => setLang(lang === "vi" ? "en" : "vi");
+document.addEventListener("click", e => {
+  if (!e.target.closest("#set,#av")) $("#set").hidden = true;
+  if (!e.target.closest("#pop,#sug")) $("#pop").hidden = true;
+});
+(async () => {
+  setLang(lang);
+  try { const { data } = await sb.auth.getSession(); user = data.session ? data.session.user.email : null; } catch {}
+  gate();
+  if (SUPABASE_URL.includes("YOUR-PROJECT")) $("#aerr").textContent = T("Chưa cấu hình Supabase: điền SUPABASE_URL và SUPABASE_KEY ở đầu mã nguồn.");
+})();
+</script>
+</body>
+</html>
