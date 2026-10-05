@@ -332,7 +332,7 @@ $("#aform").onsubmit = async e => {
   if (reg && password.length < 6) return out.textContent = T("Mật khẩu tối thiểu 6 ký tự.");
   if (reg && password !== $("#ap2").value) return out.textContent = T("Mật khẩu nhập lại không khớp.");
   $("#asub").disabled = true;
-  const { data, error } = await (reg ? sb.auth.signUp({ email, password }) : sb.auth.signInWithPassword({ email, password }));
+  const { data, error } = await (reg ? sb.auth.signUp({ email, password, options: { emailRedirectTo: location.origin + location.pathname } }) : sb.auth.signInWithPassword({ email, password }));
   $("#asub").disabled = false;
   if (error) return out.textContent = /invalid login/i.test(error.message) ? T("Sai email hoặc mật khẩu.") : error.message;
   if (!data.session) return out.textContent = T("Đã gửi email xác nhận. Hãy mở email để xác nhận rồi đăng nhập.");
