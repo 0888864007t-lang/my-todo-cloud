@@ -218,21 +218,7 @@ async function push(){   // chỉ gửi những dòng đã thay đổi hoặc b�
 }
 function listen(){       // nhận thay đổi từ thiết bị khác theo thời gian thực
   if (ch) sb.removeChannel(ch);
-  const refresh = () => { clearTimeout(refresh.t); refresh.t = setTimeout// ---- Sửa tác vụ: tiêu đề, ghi chú, hạn chót ----
-let editId = null;
-function openEdit(t){ editId = t.id; $("#et").value = t.text; $("#en").value = t.note || ""; $("#ed").value = t.due || ""; $("#edit").classList.remove("hide"); $("#et").focus(); }
-const closeEdit = () => { editId = null; $("#edit").classList.add("hide"); };
-$("#eform").onsubmit = e => {
-  e.preventDefault();
-  const t = tasks.find(x => x.id === editId), text = $("#et").value.trim();
-  if (t && text){ t.text = text; t.note = $("#en").value.trim(); t.due = $("#ed").value; save(); render(); }
-  closeEdit();
-};
-$("#ecancel").onclick = closeEdit;
-$("#edit").onclick = e => { if (e.target.id === "edit") closeEdit(); };
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeEdit(); });
-
-(async () => { if (pending) return; await load(); render(); }, 300); };
+  const refresh = () => { clearTimeout(refresh.t); refresh.t = setTimeout(async () => { if (pending) return; await load(); render(); }, 300); };
   ch = sb.channel("sync").on("postgres_changes", {event:"*", schema:"public", table:"tasks"}, refresh)
          .on("postgres_changes", {event:"*", schema:"public", table:"lists"}, refresh).subscribe();
 }
@@ -411,6 +397,20 @@ document.addEventListener("click", e => {
   if (!e.target.closest("#set,#av")) $("#set").hidden = true;
   if (!e.target.closest("#pop,#sug")) $("#pop").hidden = true;
 });
+// ---- Sửa tác vụ: tiêu đề, ghi chú, hạn chót ----
+let editId = null;
+function openEdit(t){ editId = t.id; $("#et").value = t.text; $("#en").value = t.note || ""; $("#ed").value = t.due || ""; $("#edit").classList.remove("hide"); $("#et").focus(); }
+const closeEdit = () => { editId = null; $("#edit").classList.add("hide"); };
+$("#eform").onsubmit = e => {
+  e.preventDefault();
+  const t = tasks.find(x => x.id === editId), text = $("#et").value.trim();
+  if (t && text){ t.text = text; t.note = $("#en").value.trim(); t.due = $("#ed").value; save(); render(); }
+  closeEdit();
+};
+$("#ecancel").onclick = closeEdit;
+$("#edit").onclick = e => { if (e.target.id === "edit") closeEdit(); };
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeEdit(); });
+
 (async () => {
   if (recovery) authMode = "reset";
   setLang(lang);
