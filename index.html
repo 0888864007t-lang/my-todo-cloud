@@ -87,6 +87,11 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
 .hide{display:none!important}
 .linkbtn{background:none;color:var(--accent);padding:2px 0;align-self:flex-start;font-size:.88rem}
 #aerr.ok{color:var(--accent)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:grid;place-items:center;z-index:30;padding:16px}
+.acard textarea{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit;color:var(--ink);min-height:110px;resize:vertical}
+.row{display:flex;gap:8px}.row button{flex:1;padding:10px;border-radius:8px}
+.ghost{border:1px solid var(--line)}
+.note{font-size:.82rem;color:var(--mute);white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 </style>
 </head>
 <body>
@@ -144,6 +149,15 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
     <div id="out"></div>
   </main>
 </div>
+<div class="modal hide" id="edit">
+  <form class="acard" id="eform">
+    <h2>Sửa tác vụ</h2>
+    <label>Tiêu đề<input id="et" required maxlength="200" autocomplete="off"></label>
+    <label>Ghi chú<textarea id="en" placeholder="Thêm ghi chú..."></textarea></label>
+    <label>Hạn chót<input id="ed" type="date"></label>
+    <div class="row"><button type="button" class="ghost" id="ecancel">Hủy</button><button class="go">Lưu thay đổi</button></div>
+  </form>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ===== ĐIỀN 2 GIÁ TRỊ NÀY (Supabase → Project Settings → API) =====
@@ -167,7 +181,7 @@ const EN = {"Việc cần làm":"To-do","Tìm kiếm":"Search","Giao diện sán
 "Tên đăng nhập tối thiểu 3 ký tự.":"Username must be at least 3 characters.","Mật khẩu tối thiểu 6 ký tự.":"Password must be at least 6 characters.",
 "Mật khẩu nhập lại không khớp.":"Passwords do not match.","Tên đăng nhập đã tồn tại.":"That username is already taken.","Sai tên đăng nhập hoặc mật khẩu.":"Wrong username or password.",
 "Trình duyệt này không hỗ trợ đăng nhập an toàn. Hãy mở bằng localhost hoặc https.":"This browser can't do secure login. Open the app via localhost or https.",
-"Công việc":"Tasks","Đồng bộ":"Sync","Quên mật khẩu?":"Forgot password?","← Quay lại đăng nhập":"← Back to log in","Gửi liên kết đặt lại":"Send reset link","Đổi mật khẩu":"Change password",
+"Công việc":"Tasks","Đồng bộ":"Sync","Sửa":"Edit","Tiêu đề":"Title","Ghi chú":"Notes","Thêm ghi chú...":"Add a note...","Hủy":"Cancel","Lưu thay đổi":"Save changes","Quên mật khẩu?":"Forgot password?","← Quay lại đăng nhập":"← Back to log in","Gửi liên kết đặt lại":"Send reset link","Đổi mật khẩu":"Change password",
 "Nhập email đã đăng ký, chúng tôi sẽ gửi liên kết đặt lại mật khẩu.":"Enter your email and we'll send you a reset link.","Nhập mật khẩu mới cho tài khoản của bạn.":"Enter a new password for your account.",
 "Đã gửi quá nhiều email. Vui lòng thử lại sau ít phút.":"Too many emails sent. Please try again in a few minutes.",
 "Nếu email tồn tại, liên kết đặt lại mật khẩu đã được gửi. Hãy kiểm tra hộp thư (cả mục Spam).":"If the email exists, a reset link has been sent. Check your inbox (and Spam).",
@@ -180,13 +194,13 @@ const T = s => lang === "en" ? (EN[s] ?? s) : s;
 
 // ---- Dữ liệu ----
 let user = null, tasks = [], lists = [], remote = new Map(), pending = false, ch = null;
-const rowT = t => ({ id:t.id, text:t.text, done:t.done, star:t.star, myday:t.myday || null, due:t.due || null, list:t.list, created:t.created });
+const rowT = t => ({ id:t.id, text:t.text, note:t.note || "", done:t.done, star:t.star, myday:t.myday || null, due:t.due || null, list:t.list, created:t.created });
 const snap = () => new Map([...tasks.map(t => ["t:" + t.id, JSON.stringify(rowT(t))]), ...lists.map(l => ["l:" + l.id, JSON.stringify({id:l.id, name:l.name})])]);
 const setSync = s => { $("#sync").textContent = s; };
 async function load(){   // tải toàn bộ dữ liệu của tài khoản từ Supabase
   const [a, b] = await Promise.all([sb.from("tasks").select("*"), sb.from("lists").select("id,name")]);
   if (a.error || b.error){ console.error(a.error || b.error); return setSync("⚠️"); }
-  tasks = a.data.map(r => ({ id:r.id, text:r.text, done:r.done, star:r.star, myday:r.myday, due:r.due || "", list:r.list, created:Number(r.created) }));
+  tasks = a.data.map(r => ({ id:r.id, text:r.text, note:r.note || "", done:r.done, star:r.star, myday:r.myday, due:r.due || "", list:r.list, created:Number(r.created) }));
   lists = b.data; remote = snap(); setSync("☁️");
 }
 async function push(){   // chỉ gửi những dòng đã thay đổi hoặc bị xóa
@@ -204,7 +218,21 @@ async function push(){   // chỉ gửi những dòng đã thay đổi hoặc b�
 }
 function listen(){       // nhận thay đổi từ thiết bị khác theo thời gian thực
   if (ch) sb.removeChannel(ch);
-  const refresh = () => { clearTimeout(refresh.t); refresh.t = setTimeout(async () => { if (pending) return; await load(); render(); }, 300); };
+  const refresh = () => { clearTimeout(refresh.t); refresh.t = setTimeout// ---- Sửa tác vụ: tiêu đề, ghi chú, hạn chót ----
+let editId = null;
+function openEdit(t){ editId = t.id; $("#et").value = t.text; $("#en").value = t.note || ""; $("#ed").value = t.due || ""; $("#edit").classList.remove("hide"); $("#et").focus(); }
+const closeEdit = () => { editId = null; $("#edit").classList.add("hide"); };
+$("#eform").onsubmit = e => {
+  e.preventDefault();
+  const t = tasks.find(x => x.id === editId), text = $("#et").value.trim();
+  if (t && text){ t.text = text; t.note = $("#en").value.trim(); t.due = $("#ed").value; save(); render(); }
+  closeEdit();
+};
+$("#ecancel").onclick = closeEdit;
+$("#edit").onclick = e => { if (e.target.id === "edit") closeEdit(); };
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeEdit(); });
+
+(async () => { if (pending) return; await load(); render(); }, 300); };
   ch = sb.channel("sync").on("postgres_changes", {event:"*", schema:"public", table:"tasks"}, refresh)
          .on("postgres_changes", {event:"*", schema:"public", table:"lists"}, refresh).subscribe();
 }
@@ -237,7 +265,8 @@ function taskEl(t){
     t.due && [" · ", h("span", {class: late ? "late" : ""}, "📅 " + t.due + (late ? " " + T("(quá hạn)") : ""))]);
   return h("div", {class: "task" + (t.done ? " done" : "")},
     h("input", {type:"checkbox", checked:t.done, onchange(e){ t.done = e.target.checked; save(); render(); }}),
-    h("div", {class:"tb"}, h("div", {class:"tt", title:T("Nhấp đúp để sửa"), ondblclick(){ const n = prompt(T("Sửa tác vụ"), t.text); if (n && n.trim()){ t.text = n.trim(); save(); render(); } }}, t.text), meta),
+    h("div", {class:"tb"}, h("div", {class:"tt", title:T("Nhấp đúp để sửa"), ondblclick(){ openEdit(t); }}, t.text), t.note && h("div", {class:"note"}, t.note), meta),
+    h("button", {title:T("Sửa"), onclick(){ openEdit(t); }}, "✏️"),
     h("button", {class: t.myday === today() ? "on" : "", title:T("Thêm vào Ngày của tôi"), onclick(){ t.myday = t.myday === today() ? null : today(); save(); render(); }}, "☀️"),
     h("button", {class: "s " + (t.star ? "on" : ""), title:T("Quan trọng"), onclick(){ t.star = !t.star; save(); render(); }}, t.star ? "★" : "☆"),
     h("button", {title:T("Xóa"), onclick(){ tasks = tasks.filter(x => x.id !== t.id); save(); render(); }}, "✕"));
