@@ -4,35 +4,37 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Việc cần làm</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
 <style>
-:root{--bg:#eceff6;--side:#fff;--card:#fff;--ink:#17203b;--mute:#6a7391;--line:#e2e6f0;--top:#12343b;--topink:#f4faf8;--accent:#0f9d8a;--sel:#e2f4f1;--warn:#d97706;--shadow:0 2px 10px rgba(23,32,59,.08);
+:root{--bg:#f5f7fc;--side:#ffffff;--card:#ffffff;--ink:#1c2538;--mute:#6b7691;--line:#e4e9f4;--top:#ffffff;--topink:#1c2538;--accent:#2f6be8;--on:#ffffff;--sel:#dbe6fd;--warn:#d93a4a;--shadow:0 1px 3px rgba(28,37,56,.07);
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1218;--side:#121921;--card:#161d27;--ink:#e9eef7;--mute:#8d99b3;--line:#263042;--top:#0f2b30;--accent:#2dd4bf;--sel:#16332f;--warn:#fbbf24;--shadow:none}}
-:root[data-theme="dark"]{--bg:#0d1218;--side:#121921;--card:#161d27;--ink:#e9eef7;--mute:#8d99b3;--line:#263042;--top:#0f2b30;--accent:#2dd4bf;--sel:#16332f;--warn:#fbbf24;--shadow:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1424;--side:#131b2f;--card:#172039;--ink:#e8edf9;--mute:#94a1bf;--line:#26324f;--top:#131b2f;--topink:#e8edf9;--accent:#4f86f7;--on:#ffffff;--sel:#1f2e55;--warn:#f26d78;--shadow:none}}
+:root[data-theme="dark"]{--bg:#0e1424;--side:#131b2f;--card:#172039;--ink:#e8edf9;--mute:#94a1bf;--line:#26324f;--top:#131b2f;--topink:#e8edf9;--accent:#4f86f7;--on:#ffffff;--sel:#1f2e55;--warn:#f26d78;--shadow:none}
 html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
 *{box-sizing:border-box}
-body{margin:0;height:100%;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font:15px/1.5 "Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif}
+body{margin:0;height:100%;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:"Be Vietnam Pro","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;letter-spacing:0}
 button,input,select{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:0;border-radius:8px}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .top{background:var(--top);color:var(--topink);display:flex;align-items:center;gap:12px;padding:8px 14px;flex:none}
 .top b{font-size:1.05rem}
 .top button{color:var(--topink);padding:6px 10px}
-.top button:hover{background:rgba(255,255,255,.14)}
-.top input{flex:0 1 460px;margin:0 auto;background:#fff;color:#17203b;border:0;border-radius:8px;padding:7px 12px;min-width:0;width:100%}
-.av{width:34px;height:34px;border-radius:50%;border:1.5px solid #fff;display:grid;place-items:center;font-size:.8rem;flex:none}
+.top button:hover{background:var(--sel)}
+.top input{flex:0 1 460px;margin:0 auto;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:7px 12px;min-width:0;width:100%}
+.top .av{width:36px;height:36px;padding:0;margin:0 0 0 4px;border:0;border-radius:50%;background:var(--accent);color:var(--on);display:grid;place-items:center;line-height:1;font-size:.78rem;font-weight:600;letter-spacing:.02em;flex:none}
 .app{flex:1;display:flex;min-height:0;position:relative}
 nav{width:270px;background:var(--side);border-right:1px solid var(--line);padding:10px 8px;overflow:auto;flex:none}
 nav button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 12px;border-radius:8px}
 nav button:hover{background:var(--bg)}
-nav button.on{background:var(--sel);font-weight:600}
+nav button.on{background:var(--accent);color:var(--on);font-weight:600}
+nav button.on .n{color:var(--on)}
 nav .n{margin-left:auto;color:var(--mute);font-size:.82rem}
 nav hr{border:0;border-top:1px solid var(--line);margin:10px 6px}
 nav .new{color:var(--accent)}
 main{flex:1;overflow:auto;padding:18px 24px 40px;min-width:0}
 .head{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
-h1{margin:0;font-size:1.6rem;line-height:1.2}
+h1,h2{font-weight:700;line-height:1.45}
+h1{margin:0;font-size:1.6rem}
 .sub{color:var(--mute);font-size:.88rem}
 .sp{flex:1}
 .tabs button{padding:6px 12px;color:var(--mute);border-bottom:3px solid transparent;border-radius:0}
@@ -43,13 +45,13 @@ h1{margin:0;font-size:1.6rem;line-height:1.2}
 .pop{position:absolute;right:0;top:36px;z-index:5;width:300px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.18);padding:10px}
 .pop button{display:block;width:100%;text-align:left;padding:8px;border-radius:8px}
 .pop button:hover{background:var(--sel)}
-.tip{background:var(--accent);color:#04201c;border-radius:6px;padding:14px 16px;width:300px;margin:10px 0;box-shadow:var(--shadow)}
-.tip button{border:1px solid #04201c;padding:5px 18px;margin-top:10px;color:#04201c}
+.tip{background:var(--accent);color:var(--on);border-radius:6px;padding:14px 16px;width:300px;margin:10px 0;box-shadow:var(--shadow)}
+.tip button{border:1px solid var(--on);padding:5px 18px;margin-top:10px;color:var(--on)}
 form.add{display:flex;gap:8px;background:var(--card);border-radius:8px;padding:8px 10px;margin:14px 0;box-shadow:var(--shadow);align-items:center}
 form.add input[type=text]{flex:1;border:0;background:none;padding:8px;min-width:0;font-size:1rem}
 form.add input:focus{outline:none}
 form.add input[type=date]{background:var(--bg);border:0;border-radius:8px;padding:6px}
-form.add .go{background:var(--accent);color:#04201c;font-weight:700;padding:7px 18px}
+form.add .go{background:var(--accent);color:var(--on);font-weight:700;padding:7px 18px}
 .gt{color:var(--mute);font-weight:600;margin:16px 0 6px;font-size:.9rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
 .list{display:flex;flex-direction:column;gap:6px}
@@ -63,10 +65,10 @@ form.add .go{background:var(--accent);color:#04201c;font-weight:700;padding:7px 
 .task button{color:var(--mute);padding:3px 6px;font-size:1rem;line-height:1}
 .task button:hover{background:var(--bg)}
 .task .on{color:var(--accent)}
-.task .s.on{color:#e0a100}
+.task .s.on{color:#f0a500}
 input[type=checkbox]{appearance:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--mute);flex:none;display:grid;place-items:center;cursor:pointer;background:none}
 input[type=checkbox]:checked{background:var(--accent);border-color:var(--accent)}
-input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:solid var(--on);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
 .empty{color:var(--mute);text-align:center;padding:40px 12px;border:2px dashed var(--line);border-radius:12px;margin-top:10px}
 .burger{display:none}
 @media (max-width:760px){.burger{display:block}nav{position:absolute;inset:0 auto 0 0;z-index:6;transform:translateX(-100%);transition:transform .2s}nav.open{transform:none;box-shadow:0 0 30px rgba(0,0,0,.3)}main{padding:14px}}
@@ -80,9 +82,9 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
 .acard h2{margin:0;font-size:1.5rem}
 .acard label{display:flex;flex-direction:column;gap:4px;font-size:.88rem;color:var(--mute)}
 .acard input{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:1rem;color:var(--ink)}
-.acard .go{background:var(--accent);color:#04201c;font-weight:700;padding:10px}
+.acard .go{background:var(--accent);color:var(--on);font-weight:700;padding:10px}
 .acard .tabs{display:flex}.acard .tabs button{flex:1}
-#aerr{color:var(--warn);min-height:1.2em;font-size:.88rem}
+#aerr{color:var(--warn);font-weight:600;min-height:1.2em;font-size:.88rem}
 .alang{position:absolute;right:16px;top:calc(16px + env(safe-area-inset-top,0px));color:var(--mute);padding:6px 10px}
 .hide{display:none!important}
 .linkbtn{background:none;color:var(--accent);padding:2px 0;align-self:flex-start;font-size:.88rem}
@@ -92,6 +94,35 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
 .row{display:flex;gap:8px}.row button{flex:1;padding:10px;border-radius:8px}
 .ghost{border:1px solid var(--line)}
 .note{font-size:.82rem;color:var(--mute);white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#set{width:280px}
+.pop input,.pop select{width:100%;padding:8px;margin:4px 0;background:var(--bg);border:1px solid var(--line);border-radius:8px}
+#aout{display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow:auto}
+.acard .aitem{flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-size:.95rem}
+.aitem input[type=checkbox]{padding:0;width:22px;height:22px;flex:none}
+.aitem .at{flex:1;min-width:0;overflow-wrap:anywhere}
+.aitem .adate{width:auto;padding:4px 6px;font-size:.8rem;flex:none}
+.acard.wide{width:min(560px,100%);max-height:92vh;overflow:auto}
+.calhead{display:flex;align-items:center;gap:8px;margin:6px 0 10px}
+.calhead b{flex:1;text-transform:capitalize;font-size:1.05rem}
+.calhead button{border:1px solid var(--line);background:var(--card);padding:4px 12px}
+.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.dow{text-align:center;color:var(--mute);font-size:.78rem;font-weight:600;padding:4px 0}
+.day{min-height:84px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px;text-align:left;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.day.blank{background:none;border:0;cursor:default}
+.day.today .dn{background:var(--accent);color:var(--on);border-radius:99px;padding:0 7px}
+.day.sel{outline:2px solid var(--accent);outline-offset:-1px}
+.dn{font-size:.82rem;font-weight:600;align-self:flex-start}
+.chip{font-size:.7rem;background:var(--sel);border-radius:4px;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.chip.done{text-decoration:line-through;color:var(--mute)}
+.more,.dot{font-size:.7rem;color:var(--mute)}.dot{display:none}
+@media (max-width:760px){.day{min-height:54px}.chip,.more{display:none}.dot{display:block}}
+.top{border-bottom:1px solid var(--line)}
+.task button,.opts>button,#sync,h1,.meta,.ico{filter:grayscale(1)}
+nav button.on .ico{filter:grayscale(1) brightness(2.2)}
+.top b{color:var(--accent)}
+.task{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px}
+form.add,.day{border-radius:12px}
+.chip{color:var(--accent);font-weight:500}
 </style>
 </head>
 <body>
@@ -111,7 +142,7 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
 </div>
 <div class="top">
   <button class="burger" id="burger" aria-label="Menu">☰</button>
-  <b>Việc cần làm</b>
+  <b>To do list</b>
   <input id="q" type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm">
   <span id="sync" title="Đồng bộ" style="cursor:default">☁️</span>
   <button id="theme" aria-label="Giao diện sáng/tối">◐</button>
@@ -120,6 +151,10 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
     <div class="sub">Tài khoản</div><div id="who" style="font-weight:600;padding:2px 8px 8px"></div>
     <label class="sub" for="lang">Ngôn ngữ</label>
     <select id="lang" style="width:100%;padding:8px;margin:4px 0 8px;background:var(--bg);border:1px solid var(--line);border-radius:8px"><option value="vi">Tiếng Việt</option><option value="en">English</option></select>
+    <div class="sub" style="margin-top:6px">AI (Ollama / ServBay)</div>
+    <input id="aiurl" placeholder="http://localhost:11434" aria-label="Ollama URL">
+    <select id="aimodel" aria-label="Model"></select>
+    <button id="aitest">Kiểm tra kết nối</button><div class="meta" id="aistat" style="padding:0 8px 6px"></div>
     <button id="logout">Đăng xuất</button>
   </div>
 </div>
@@ -136,6 +171,7 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
           <option value="due">Sắp xếp: Hạn chót</option><option value="star">Sắp xếp: Quan trọng</option></select>
         <select id="group" aria-label="Nhóm">
           <option value="none">Nhóm: Không</option><option value="list">Nhóm: Danh sách</option><option value="due">Nhóm: Hạn chót</option></select>
+        <button id="aibtn">✨ AI</button>
         <button id="sug">💡 Gợi ý</button>
         <div class="pop" id="pop" hidden></div>
       </div>
@@ -154,8 +190,19 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
     <h2>Sửa tác vụ</h2>
     <label>Tiêu đề<input id="et" required maxlength="200" autocomplete="off"></label>
     <label>Ghi chú<textarea id="en" placeholder="Thêm ghi chú..."></textarea></label>
+    <button type="button" class="linkbtn" id="ainote">✨ Gợi ý ghi chú bằng AI</button><button type="button" class="linkbtn" id="asplit">✂ Chia nhỏ việc này bằng AI</button>
     <label>Hạn chót<input id="ed" type="date"></label>
     <div class="row"><button type="button" class="ghost" id="ecancel">Hủy</button><button class="go">Lưu thay đổi</button></div>
+  </form>
+</div>
+<div class="modal hide" id="ai">
+  <form class="acard wide" id="aform2">
+    <h2>✨ AI</h2>
+    <div class="tabs"><button type="button" id="mPlan" class="on">Lập kế hoạch</button><button type="button" id="mSplit">Chia nhỏ việc</button></div>
+    <label><span id="alabel">Bạn cần làm gì?</span><textarea id="ag"></textarea></label>
+    <div id="aout"></div>
+    <div class="row"><button type="button" class="ghost" id="aclose">Đóng</button><button class="go" id="agen">Tạo kế hoạch</button></div>
+    <button type="button" class="go hide" id="aadd">Thêm vào lịch</button>
   </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -181,7 +228,15 @@ const EN = {"Việc cần làm":"To-do","Tìm kiếm":"Search","Giao diện sán
 "Tên đăng nhập tối thiểu 3 ký tự.":"Username must be at least 3 characters.","Mật khẩu tối thiểu 6 ký tự.":"Password must be at least 6 characters.",
 "Mật khẩu nhập lại không khớp.":"Passwords do not match.","Tên đăng nhập đã tồn tại.":"That username is already taken.","Sai tên đăng nhập hoặc mật khẩu.":"Wrong username or password.",
 "Trình duyệt này không hỗ trợ đăng nhập an toàn. Hãy mở bằng localhost hoặc https.":"This browser can't do secure login. Open the app via localhost or https.",
-"Công việc":"Tasks","Đồng bộ":"Sync","Sửa":"Edit","Tiêu đề":"Title","Ghi chú":"Notes","Thêm ghi chú...":"Add a note...","Hủy":"Cancel","Lưu thay đổi":"Save changes","Quên mật khẩu?":"Forgot password?","← Quay lại đăng nhập":"← Back to log in","Gửi liên kết đặt lại":"Send reset link","Đổi mật khẩu":"Change password",
+"Công việc":"Tasks","Đồng bộ":"Sync","Lịch":"Calendar","Lập kế hoạch":"Plan","Chia nhỏ việc":"Split a task","Bạn cần làm gì?":"What do you need to do?","Công việc cần chia nhỏ":"Task to split",
+"Thêm vào lịch":"Add to calendar","✂ Chia nhỏ việc này bằng AI":"✂ Split this task with AI","Chưa có tác vụ nào trong ngày này.":"No tasks on this day.",
+"Ví dụ: Tuần này tôi cần ôn SQL, làm bài C++ và hoàn thành báo cáo.":"Example: This week I need to review SQL, finish my C++ assignment and complete the report.",
+"Ví dụ: Làm báo cáo cơ sở dữ liệu phân tán":"Example: Write the distributed database report",
+"Ô thêm tác vụ phía trên sẽ dùng ngày đang chọn làm hạn chót.":"The add box above uses the selected day as the due date.","✨ AI":"✨ AI","✨ AI lập kế hoạch":"✨ AI planner","Mục tiêu của bạn":"Your goal","Ví dụ: Chuẩn bị báo cáo đồ án Todo List":"Example: Prepare my Todo List project report",
+"Tạo kế hoạch":"Create plan","Thêm đã chọn":"Add selected","Đóng":"Close","✨ Gợi ý ghi chú bằng AI":"✨ Suggest a note with AI","Kiểm tra kết nối":"Test connection",
+"AI (Ollama / ServBay)":"AI (Ollama / ServBay)","AI đang suy nghĩ...":"AI is thinking...","AI trả về dữ liệu không hợp lệ, hãy thử lại.":"The AI returned invalid data, please try again.",
+"Chưa chọn model AI. Mở Cài đặt → Kiểm tra kết nối.":"No AI model selected. Open Settings → Test connection.","Chưa có model nào. Hãy tải một model trong Ollama.":"No models yet. Pull a model in Ollama first.",
+"Không kết nối được AI. Hãy bật Ollama (ServBay), kiểm tra địa chỉ trong Cài đặt và cho phép origin của trang này (OLLAMA_ORIGINS).":"Can't reach the AI. Start Ollama (ServBay), check the address in Settings and allow this site's origin (OLLAMA_ORIGINS).","Sửa":"Edit","Tiêu đề":"Title","Ghi chú":"Notes","Thêm ghi chú...":"Add a note...","Hủy":"Cancel","Lưu thay đổi":"Save changes","Quên mật khẩu?":"Forgot password?","← Quay lại đăng nhập":"← Back to log in","Gửi liên kết đặt lại":"Send reset link","Đổi mật khẩu":"Change password",
 "Nhập email đã đăng ký, chúng tôi sẽ gửi liên kết đặt lại mật khẩu.":"Enter your email and we'll send you a reset link.","Nhập mật khẩu mới cho tài khoản của bạn.":"Enter a new password for your account.",
 "Đã gửi quá nhiều email. Vui lòng thử lại sau ít phút.":"Too many emails sent. Please try again in a few minutes.",
 "Nếu email tồn tại, liên kết đặt lại mật khẩu đã được gửi. Hãy kiểm tra hộp thư (cả mục Spam).":"If the email exists, a reset link has been sent. Check your inbox (and Spam).",
@@ -223,11 +278,11 @@ function listen(){       // nhận thay đổi từ thiết bị khác theo th�
          .on("postgres_changes", {event:"*", schema:"public", table:"lists"}, refresh).subscribe();
 }
 const ui = { view: "myday", mode: st.get("mode", "grid"), sort: "created", group: "none", q: "" };
-const SYS = [["myday","☀️","Ngày của tôi"],["star","⭐","Quan trọng"],["plan","📅","Đã lên kế hoạch"],["tasks","🏠","Công việc"]]; // sửa mục bên trái tại đây
+const SYS = [["myday","☀️","Ngày của tôi"],["star","⭐","Quan trọng"],["plan","📅","Đã lên kế hoạch"],["cal","📆","Lịch"],["tasks","🏠","Công việc"]]; // sửa mục bên trái tại đây
 const today = () => new Date(Date.now() - new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const save = () => { pending = true; clearTimeout(save.t); save.t = setTimeout(push, 300); };
 const listName = id => id === "tasks" ? T("Công việc") : (lists.find(l => l.id === id) || {name:"?"}).name;
-const inView = t => ({myday: t.myday === today(), star: t.star, plan: !!t.due, tasks: t.list === "tasks"})[ui.view] ?? (t.list === ui.view);
+const inView = t => ({myday: t.myday === today(), star: t.star, plan: !!t.due, cal: !!t.due, tasks: t.list === "tasks"})[ui.view] ?? (t.list === ui.view);
 const count = v => { const o = ui.view; ui.view = v; const n = tasks.filter(t => !t.done && inView(t)).length; ui.view = o; return n; };
 const h = (tag, p = {}, ...c) => {
   const e = document.createElement(tag);
@@ -237,11 +292,11 @@ const h = (tag, p = {}, ...c) => {
 const sorters = { created:(a,b)=>a.created-b.created, az:(a,b)=>a.text.localeCompare(b.text,lang), due:(a,b)=>(a.due||"9").localeCompare(b.due||"9"), star:(a,b)=>b.star-a.star };
 const gkey = t => ui.group === "list" ? listName(t.list) : !t.due ? T("Không có hạn") : t.due < today() ? T("Quá hạn") : t.due === today() ? T("Hôm nay") : T("Sắp tới");
 
-function add(text, due){
+function add(text, due, note = ""){
   text = text.trim(); if (!text) return;
   const v = ui.view, sys = SYS.some(s => s[0] === v);
-  tasks.push({ id: crypto.randomUUID(), text, done:false, star: v === "star", myday: v === "myday" ? today() : null,
-               due: due || (v === "plan" ? today() : ""), list: sys ? "tasks" : v, created: Date.now() });
+  tasks.push({ id: crypto.randomUUID(), text, note, done:false, star: v === "star", myday: v === "myday" && (!due || due <= today()) ? today() : null,
+               due: due || (v === "plan" ? today() : v === "cal" ? ui.cal.sel : ""), list: sys ? "tasks" : v, created: Date.now() });
   save(); render();
 }
 
@@ -261,7 +316,7 @@ function taskEl(t){
 function render(){
   // Thanh bên
   const nav = $("#nav"); nav.replaceChildren();
-  const item = (id, ic, name) => h("button", {class: ui.view === id ? "on" : "", onclick(){ ui.view = id; nav.classList.remove("open"); render(); }}, ic, name, h("span", {class:"n"}, count(id) || ""));
+  const item = (id, ic, name) => h("button", {class: ui.view === id ? "on" : "", onclick(){ ui.view = id; nav.classList.remove("open"); render(); }}, h("span", {class:"ico"}, ic), name, h("span", {class:"n"}, count(id) || ""));
   SYS.forEach(s => nav.append(item(s[0], s[1], T(s[2]))));
   nav.append(h("hr"));
   lists.forEach(l => nav.append(item(l.id, "☰", l.name)));
@@ -274,6 +329,7 @@ function render(){
   $("#sub").textContent = ui.view === "myday" ? new Date().toLocaleDateString(lang === "en" ? "en-US" : "vi-VN", {weekday:"long", day:"numeric", month:"long"}) : count(ui.view) + T(" tác vụ đang làm");
   $("#mGrid").className = ui.mode === "grid" ? "on" : ""; $("#mList").className = ui.mode === "list" ? "on" : "";
 
+  if (ui.view === "cal") return renderCal();
   // Danh sách tác vụ
   const q = ui.q.toLowerCase();
   const all = tasks.filter(t => inView(t) && t.text.toLowerCase().includes(q)).sort(sorters[ui.sort]);
@@ -410,6 +466,125 @@ $("#eform").onsubmit = e => {
 $("#ecancel").onclick = closeEdit;
 $("#edit").onclick = e => { if (e.target.id === "edit") closeEdit(); };
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeEdit(); });
+
+// ---- AI cục bộ qua Ollama (ServBay) ----
+const DEF_URL = "http://localhost:11434", ERR_AI = "Không kết nối được AI. Hãy bật Ollama (ServBay), kiểm tra địa chỉ trong Cài đặt và cho phép origin của trang này (OLLAMA_ORIGINS).";
+const aiUrl = () => (st.get("aiurl", DEF_URL) || DEF_URL).replace(/\/+$/, "");
+const langName = () => lang === "en" ? "English" : "tiếng Việt";
+const dayPlus = n => new Date(Date.now() - new Date().getTimezoneOffset() * 6e4 + n * 864e5).toISOString().slice(0, 10);
+async function aiChat(content, json, system){
+  const model = st.get("aimodel", "");
+  if (!model) throw new Error(T("Chưa chọn model AI. Mở Cài đặt → Kiểm tra kết nối."));
+  let r;
+  try {
+    r = await fetch(aiUrl() + "/api/chat", { method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ model, stream:false, ...(json ? {format:"json"} : {}), messages:[{role:"system", content:system},{role:"user", content}] }) });
+  } catch { throw new Error(T(ERR_AI)); }
+  if (!r.ok) throw new Error("AI: HTTP " + r.status);
+  return (await r.json()).message.content;
+}
+$("#aiurl").value = aiUrl();
+const savedModel = st.get("aimodel", ""); if (savedModel) $("#aimodel").append(new Option(savedModel, savedModel, true, true));
+$("#aimodel").onchange = e => st.set("aimodel", e.target.value);
+$("#aitest").onclick = async () => {
+  const s = $("#aistat"); st.set("aiurl", $("#aiurl").value.trim() || DEF_URL); s.textContent = "...";
+  try {
+    const j = await (await fetch(aiUrl() + "/api/tags")).json(), names = (j.models || []).map(m => m.name);
+    if (!names.length) return s.textContent = T("Chưa có model nào. Hãy tải một model trong Ollama.");
+    const cur = st.get("aimodel", "");
+    $("#aimodel").replaceChildren(...names.map(n => new Option(n, n)));
+    $("#aimodel").value = names.includes(cur) ? cur : names[0]; st.set("aimodel", $("#aimodel").value);
+    s.textContent = "✓ " + names.length + " model";
+  } catch { s.textContent = T(ERR_AI); }
+};
+
+// ---- Lịch tháng ----
+const pad = n => String(n).padStart(2, "0");
+ui.cal = { y: new Date().getFullYear(), m: new Date().getMonth(), sel: today() };
+function renderCal(){
+  const { y, m, sel } = ui.cal, out = $("#out"), loc = lang === "en" ? "en-US" : "vi-VN";
+  const go = d => () => { const dt = new Date(y, m + d, 1); ui.cal.y = dt.getFullYear(); ui.cal.m = dt.getMonth(); renderCal(); };
+  out.replaceChildren(h("div", {class:"calhead"}, h("button", {onclick:go(-1), "aria-label":"‹"}, "‹"),
+    h("b", {}, new Date(y, m, 1).toLocaleDateString(loc, {month:"long", year:"numeric"})), h("button", {onclick:go(1), "aria-label":"›"}, "›"),
+    h("button", {onclick(){ const n = new Date(); ui.cal = { y:n.getFullYear(), m:n.getMonth(), sel:today() }; renderCal(); }}, T("Hôm nay"))));
+  const grid = h("div", {class:"calgrid"}, (lang === "en" ? ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"] : ["T2","T3","T4","T5","T6","T7","CN"]).map(n => h("div", {class:"dow"}, n)));
+  const by = {}; tasks.forEach(t => { if (t.due) (by[t.due] = by[t.due] || []).push(t); });
+  for (let i = 0; i < (new Date(y, m, 1).getDay() + 6) % 7; i++) grid.append(h("div", {class:"day blank"}));
+  for (let d = 1, n = new Date(y, m + 1, 0).getDate(); d <= n; d++){
+    const key = y + "-" + pad(m + 1) + "-" + pad(d), ls = by[key] || [];
+    grid.append(h("button", {class:"day" + (key === today() ? " today" : "") + (key === sel ? " sel" : ""), onclick(){ ui.cal.sel = key; renderCal(); }},
+      h("span", {class:"dn"}, d), ls.slice(0, 2).map(t => h("span", {class:"chip" + (t.done ? " done" : "")}, t.text)),
+      ls.length > 2 && h("span", {class:"more"}, "+" + (ls.length - 2)), ls.length > 0 && h("span", {class:"dot"}, "•".repeat(Math.min(ls.length, 3)))));
+  }
+  const dayTasks = by[sel] || [];
+  out.append(grid, h("div", {class:"meta", style:"margin-top:8px"}, T("Ô thêm tác vụ phía trên sẽ dùng ngày đang chọn làm hạn chót.")),
+    h("div", {class:"gt"}, new Date(sel + "T00:00").toLocaleDateString(loc, {weekday:"long", day:"numeric", month:"long"}) + " · " + dayTasks.length),
+    h("div", {class: ui.mode}, dayTasks.map(taskEl)), !dayTasks.length && h("div", {class:"empty"}, T("Chưa có tác vụ nào trong ngày này.")));
+}
+
+// ---- AI: lập kế hoạch tự động + chia nhỏ công việc ----
+let plan = [], aiMode = "plan", splitOf = "", splitDue = "";
+const okDate = s => (/^\d{4}-\d{2}-\d{2}$/.test(s || "") && !isNaN(new Date(s))) ? (s < today() ? today() : s) : "";
+function openAI(mode, text = "", parentDue = null){
+  aiMode = mode; splitOf = parentDue === null ? "" : text; splitDue = parentDue || "";
+  $("#mPlan").classList.toggle("on", mode === "plan"); $("#mSplit").classList.toggle("on", mode === "split");
+  $("#alabel").textContent = T(mode === "plan" ? "Bạn cần làm gì?" : "Công việc cần chia nhỏ");
+  $("#ag").placeholder = T(mode === "plan" ? "Ví dụ: Tuần này tôi cần ôn SQL, làm bài C++ và hoàn thành báo cáo." : "Ví dụ: Làm báo cáo cơ sở dữ liệu phân tán");
+  $("#agen").textContent = T(mode === "plan" ? "Tạo kế hoạch" : "Chia nhỏ việc");
+  $("#ag").value = text; $("#aout").replaceChildren(); $("#aadd").classList.add("hide"); $("#ai").classList.remove("hide"); $("#ag").focus();
+}
+function aiSys(){
+  const idx = (new Date().getDay() + 6) % 7, wd = new Date().toLocaleDateString("vi-VN", {weekday:"long"});
+  const when = "Hôm nay là " + wd + ", " + today() + ". Chủ nhật tuần này là " + dayPlus(6 - idx) + ". ";
+  const fmt = ' Chỉ trả về JSON hợp lệ dạng {"tasks":[{"title":"...","date":"YYYY-MM-DD","note":"..."}]}. title ngắn gọn, note là một câu gợi ý cách làm (có thể để rỗng), viết bằng ' + langName() + ".";
+  return aiMode === "plan"
+    ? 'Bạn là trợ lý lập kế hoạch. Tách yêu cầu của người dùng thành 6-12 công việc nhỏ, cụ thể, sắp xếp theo thứ tự thực hiện hợp lý. Gợi ý hạn chót "date" cho từng việc, nằm từ hôm nay đến cuối khoảng thời gian người dùng nêu (nếu nói "tuần này" thì đến Chủ nhật), phân bổ đều các ngày, tối đa 3 việc mỗi ngày. ' + when + fmt
+    : 'Bạn là trợ lý chia nhỏ công việc. Chia công việc của người dùng thành 4-6 bước nhỏ, cụ thể, theo thứ tự thực hiện (ví dụ: chuẩn bị dữ liệu, thực hiện, kiểm thử, hoàn thiện). ' + (splitDue ? "Hạn chót của công việc gốc là " + splitDue + ", mọi bước phải xong trước hoặc đúng ngày này. " : "Nếu không có hạn chót, hãy rải các bước trong 7 ngày tới. ") + when + fmt;
+}
+$("#aibtn").onclick = () => openAI("plan");
+$("#mPlan").onclick = () => openAI("plan", $("#ag").value);
+$("#mSplit").onclick = () => openAI("split", $("#ag").value);
+$("#aclose").onclick = () => $("#ai").classList.add("hide");
+$("#ai").onclick = e => { if (e.target.id === "ai") $("#ai").classList.add("hide"); };
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("#ai").classList.add("hide"); });
+$("#aform2").onsubmit = async e => {
+  e.preventDefault();
+  const text = $("#ag").value.trim(), out = $("#aout"), btn = $("#agen"); if (!text) return;
+  out.replaceChildren(h("div", {class:"meta"}, T("AI đang suy nghĩ..."))); $("#aadd").classList.add("hide"); btn.disabled = true;
+  try {
+    const data = JSON.parse(await aiChat((aiMode === "plan" ? "Yêu cầu: " : "Công việc: ") + text, true, aiSys()));
+    plan = (Array.isArray(data) ? data : data.tasks || []).filter(x => x && typeof x.title === "string" && x.title.trim()).slice(0, 14);
+    if (!plan.length) throw new SyntaxError("empty");
+    plan.sort((a, b) => (okDate(a.date) || "9").localeCompare(okDate(b.date) || "9"));
+    out.replaceChildren(...plan.map(x => h("label", {class:"aitem"}, h("input", {type:"checkbox", checked:true}),
+      h("span", {class:"at"}, x.title.trim().slice(0, 200)), h("input", {type:"date", class:"adate", value:okDate(x.date)}))));
+    $("#aadd").classList.remove("hide");
+  } catch (err) {
+    out.replaceChildren(h("div", {class:"late"}, err instanceof SyntaxError ? T("AI trả về dữ liệu không hợp lệ, hãy thử lại.") : err.message));
+  }
+  btn.disabled = false;
+};
+$("#aadd").onclick = () => {
+  let first = "";
+  [...$("#aout").querySelectorAll(".aitem")].forEach((r, i) => {
+    if (!r.querySelector("input").checked) return;
+    const due = r.querySelector(".adate").value, x = plan[i];
+    add(x.title.trim().slice(0, 200), due, ((x.note || "").trim() + (splitOf ? "\n↳ " + splitOf : "")).trim().slice(0, 500));
+    if (due && (!first || due < first)) first = due;
+  });
+  $("#ai").classList.add("hide");
+  if (first){ ui.view = "cal"; ui.cal = { y:+first.slice(0, 4), m:+first.slice(5, 7) - 1, sel:first }; ui.q = ""; render(); }
+};
+$("#asplit").onclick = () => { const title = $("#et").value.trim(); if (!title) return; const due = $("#ed").value; closeEdit(); openAI("split", title, due); };
+$("#ainote").onclick = async () => {
+  const title = $("#et").value.trim(), b = $("#ainote"), old = b.textContent; if (!title) return;
+  b.disabled = true; b.textContent = T("AI đang suy nghĩ...");
+  try {
+    const txt = await aiChat("Việc cần làm: " + title, false, "Viết ghi chú ngắn gồm 2-4 gạch đầu dòng các bước thực hiện việc sau, bằng " + langName() + ". Chỉ trả về nội dung ghi chú.");
+    $("#en").value = ($("#en").value ? $("#en").value + "\n" : "") + txt.trim();
+  } catch (err) { alert(err.message); }
+  b.disabled = false; b.textContent = old;
+};
 
 (async () => {
   if (recovery) authMode = "reset";
