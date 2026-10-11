@@ -478,10 +478,14 @@ async function aiChat(content, json, system){
   let r;
   try {
     r = await fetch(aiUrl() + "/api/chat", { method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ model, stream:false, ...(json ? {format:"json"} : {}), messages:[{role:"system", content:system},{role:"user", content}] }) });
+      body: JSON.stringify({ model, stream:false, keep_alive:"30m", options:{ temperature:0.3, num_predict: json ? 1200 : 350 }, ...(json ? {format:"json"} : {}), messages:[{role:"system", content:system},{role:"user", content}] }) });
   } catch { throw new Error(T(ERR_AI)); }
   if (!r.ok) throw new Error("AI: HTTP " + r.status);
   return (await r.json()).message.content;
+}
+function warmUp(){   // yêu cầu rỗng: chỉ để Ollama nạp model vào RAM trước khi người dùng bấm tạo
+  const model = st.get("aimodel", ""); if (!model) return;
+  fetch(aiUrl() + "/api/generate", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ model, keep_alive:"30m" }) }).catch(() => {});
 }
 $("#aiurl").value = aiUrl();
 const savedModel = st.get("aimodel", ""); if (savedModel) $("#aimodel").append(new Option(savedModel, savedModel, true, true));
@@ -494,7 +498,7 @@ $("#aitest").onclick = async () => {
     const cur = st.get("aimodel", "");
     $("#aimodel").replaceChildren(...names.map(n => new Option(n, n)));
     $("#aimodel").value = names.includes(cur) ? cur : names[0]; st.set("aimodel", $("#aimodel").value);
-    s.textContent = "✓ " + names.length + " model";
+    s.textContent = "✓ " + names.length + " model"; warmUp();
   } catch { s.textContent = T(ERR_AI); }
 };
 
@@ -531,7 +535,7 @@ function openAI(mode, text = "", parentDue = null){
   $("#alabel").textContent = T(mode === "plan" ? "Bạn cần làm gì?" : "Công việc cần chia nhỏ");
   $("#ag").placeholder = T(mode === "plan" ? "Ví dụ: Tuần này tôi cần ôn SQL, làm bài C++ và hoàn thành báo cáo." : "Ví dụ: Làm báo cáo cơ sở dữ liệu phân tán");
   $("#agen").textContent = T(mode === "plan" ? "Tạo kế hoạch" : "Chia nhỏ việc");
-  $("#ag").value = text; $("#aout").replaceChildren(); $("#aadd").classList.add("hide"); $("#ai").classList.remove("hide"); $("#ag").focus();
+  warmUp(); $("#ag").value = text; $("#aout").replaceChildren(); $("#aadd").classList.add("hide"); $("#ai").classList.remove("hide"); $("#ag").focus();
 }
 function aiSys(){
   const idx = (new Date().getDay() + 6) % 7, wd = new Date().toLocaleDateString("vi-VN", {weekday:"long"});
@@ -551,6 +555,7 @@ $("#aform2").onsubmit = async e => {
   e.preventDefault();
   const text = $("#ag").value.trim(), out = $("#aout"), btn = $("#agen"); if (!text) return;
   out.replaceChildren(h("div", {class:"meta"}, T("AI đang suy nghĩ..."))); $("#aadd").classList.add("hide"); btn.disabled = true;
+  const t0 = Date.now(), tick = setInterval(() => { const m = out.firstChild; if (m && m.classList && m.classList.contains("meta")) m.textContent = T("AI đang suy nghĩ...") + " " + Math.round((Date.now() - t0) / 1000) + "s"; }, 1000);
   try {
     const data = JSON.parse(await aiChat((aiMode === "plan" ? "Yêu cầu: " : "Công việc: ") + text, true, aiSys()));
     plan = (Array.isArray(data) ? data : data.tasks || []).filter(x => x && typeof x.title === "string" && x.title.trim()).slice(0, 14);
@@ -562,7 +567,7 @@ $("#aform2").onsubmit = async e => {
   } catch (err) {
     out.replaceChildren(h("div", {class:"late"}, err instanceof SyntaxError ? T("AI trả về dữ liệu không hợp lệ, hãy thử lại.") : err.message));
   }
-  btn.disabled = false;
+  clearInterval(tick); btn.disabled = false;
 };
 $("#aadd").onclick = () => {
   let first = "";
