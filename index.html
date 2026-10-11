@@ -472,16 +472,25 @@ const DEF_URL = "http://localhost:11434", ERR_AI = "Không kết nối được 
 const aiUrl = () => (st.get("aiurl", DEF_URL) || DEF_URL).replace(/\/+$/, "");
 const langName = () => lang === "en" ? "English" : "tiếng Việt";
 const dayPlus = n => new Date(Date.now() - new Date().getTimezoneOffset() * 6e4 + n * 864e5).toISOString().slice(0, 10);
-async function aiChat(content, json, system){
+async function aiChat(content, system, onText, max = 450){
   const model = st.get("aimodel", "");
   if (!model) throw new Error(T("Chưa chọn model AI. Mở Cài đặt → Kiểm tra kết nối."));
   let r;
   try {
     r = await fetch(aiUrl() + "/api/chat", { method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ model, stream:false, keep_alive:"30m", options:{ temperature:0.3, num_predict: json ? 1200 : 350 }, ...(json ? {format:"json"} : {}), messages:[{role:"system", content:system},{role:"user", content}] }) });
+      body: JSON.stringify({ model, stream:true, keep_alive:"30m", options:{ temperature:0.3, num_predict:max }, messages:[{role:"system", content:system},{role:"user", content}] }) });
   } catch { throw new Error(T(ERR_AI)); }
   if (!r.ok) throw new Error("AI: HTTP " + r.status);
-  return (await r.json()).message.content;
+  const rd = r.body.getReader(), dec = new TextDecoder(); let buf = "", full = "";
+  for (;;){
+    const { done, value } = await rd.read(); if (done) break;
+    buf += dec.decode(value, { stream:true });
+    let i; while ((i = buf.indexOf("\n")) >= 0){
+      const line = buf.slice(0, i).trim(); buf = buf.slice(i + 1); if (!line) continue;
+      try { const j = JSON.parse(line); if (j.message && j.message.content){ full += j.message.content; if (onText) onText(full); } } catch {}
+    }
+  }
+  return full;
 }
 function warmUp(){   // yêu cầu rỗng: chỉ để Ollama nạp model vào RAM trước khi người dùng bấm tạo
   const model = st.get("aimodel", ""); if (!model) return;
@@ -540,10 +549,16 @@ function openAI(mode, text = "", parentDue = null){
 function aiSys(){
   const idx = (new Date().getDay() + 6) % 7, wd = new Date().toLocaleDateString("vi-VN", {weekday:"long"});
   const when = "Hôm nay là " + wd + ", " + today() + ". Chủ nhật tuần này là " + dayPlus(6 - idx) + ". ";
-  const fmt = ' Chỉ trả về JSON hợp lệ dạng {"tasks":[{"title":"...","date":"YYYY-MM-DD","note":"..."}]}. title ngắn gọn, note là một câu gợi ý cách làm (có thể để rỗng), viết bằng ' + langName() + ".";
+  const fmt = " Mỗi việc ghi trên MỘT dòng đúng định dạng: YYYY-MM-DD | tiêu đề (tối đa 10 từ). Không viết gì khác ngoài các dòng đó. Viết tiêu đề bằng " + langName() + ".";
   return aiMode === "plan"
-    ? 'Bạn là trợ lý lập kế hoạch. Tách yêu cầu của người dùng thành 6-12 công việc nhỏ, cụ thể, sắp xếp theo thứ tự thực hiện hợp lý. Gợi ý hạn chót "date" cho từng việc, nằm từ hôm nay đến cuối khoảng thời gian người dùng nêu (nếu nói "tuần này" thì đến Chủ nhật), phân bổ đều các ngày, tối đa 3 việc mỗi ngày. ' + when + fmt
-    : 'Bạn là trợ lý chia nhỏ công việc. Chia công việc của người dùng thành 4-6 bước nhỏ, cụ thể, theo thứ tự thực hiện (ví dụ: chuẩn bị dữ liệu, thực hiện, kiểm thử, hoàn thiện). ' + (splitDue ? "Hạn chót của công việc gốc là " + splitDue + ", mọi bước phải xong trước hoặc đúng ngày này. " : "Nếu không có hạn chót, hãy rải các bước trong 7 ngày tới. ") + when + fmt;
+    ? 'Bạn là trợ lý lập kế hoạch. Tách yêu cầu của người dùng thành 5-8 việc nhỏ, cụ thể, theo thứ tự thực hiện hợp lý. Ngày nằm từ hôm nay đến cuối khoảng thời gian người dùng nêu (nếu nói "tuần này" thì đến Chủ nhật, nếu không nêu thì trong 7 ngày tới), phân bổ đều các ngày, tối đa 3 việc mỗi ngày. ' + when + fmt
+    : "Bạn là trợ lý chia nhỏ công việc. Chia công việc của người dùng thành 4-5 bước nhỏ, cụ thể, theo thứ tự thực hiện (ví dụ: chuẩn bị, thực hiện, kiểm thử, hoàn thiện). " + (splitDue ? "Hạn chót của công việc gốc là " + splitDue + ", mọi bước phải xong trước hoặc đúng ngày này. " : "Nếu không có hạn chót, hãy rải các bước trong 7 ngày tới. ") + when + fmt;
+}
+function parsePlan(text){
+  const lines = text.split("\n").map(l => l.replace(/[*_`#]/g, "").trim());
+  const strict = lines.map(l => { const m = l.match(/^(?:\d{1,2}[.)]\s*|[-•]\s*)?(\d{4}-\d{2}-\d{2})\s*[|:–—-]\s*(.+)$/); return m ? { date:m[1], title:m[2].trim() } : null; }).filter(Boolean);
+  if (strict.length) return strict.slice(0, 14);
+  return lines.map(l => { const m = l.match(/^(?:\d{1,2}[.)]\s*|[-•]\s*)?(.{3,})$/); return m ? { date:"", title:m[1].trim() } : null; }).filter(Boolean).slice(0, 14);
 }
 $("#aibtn").onclick = () => openAI("plan");
 $("#mPlan").onclick = () => openAI("plan", $("#ag").value);
@@ -554,16 +569,20 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") $("#ai").cla
 $("#aform2").onsubmit = async e => {
   e.preventDefault();
   const text = $("#ag").value.trim(), out = $("#aout"), btn = $("#agen"); if (!text) return;
-  out.replaceChildren(h("div", {class:"meta"}, T("AI đang suy nghĩ..."))); $("#aadd").classList.add("hide"); btn.disabled = true;
-  const t0 = Date.now(), tick = setInterval(() => { const m = out.firstChild; if (m && m.classList && m.classList.contains("meta")) m.textContent = T("AI đang suy nghĩ...") + " " + Math.round((Date.now() - t0) / 1000) + "s"; }, 1000);
+  plan = []; btn.disabled = true; $("#aadd").classList.add("hide");
+  const t0 = Date.now(), status = h("div", {class:"meta"}), say = () => { status.textContent = T("AI đang suy nghĩ...") + " " + Math.round((Date.now() - t0) / 1000) + "s"; };
+  const show = rows => out.replaceChildren(...rows.map(x => h("label", {class:"aitem"}, h("input", {type:"checkbox", checked:true}),
+    h("span", {class:"at"}, x.title.slice(0, 200)), h("input", {type:"date", class:"adate", value:okDate(x.date)}))), status);
+  say(); out.replaceChildren(status); const tick = setInterval(say, 1000);
   try {
-    const data = JSON.parse(await aiChat((aiMode === "plan" ? "Yêu cầu: " : "Công việc: ") + text, true, aiSys()));
-    plan = (Array.isArray(data) ? data : data.tasks || []).filter(x => x && typeof x.title === "string" && x.title.trim()).slice(0, 14);
+    const full = await aiChat((aiMode === "plan" ? "Yêu cầu: " : "Công việc: ") + text, aiSys(), t => {
+      const lines = t.split("\n"); lines.pop();                      // bỏ dòng đang viết dở
+      const rows = parsePlan(lines.join("\n")); if (rows.length !== plan.length){ plan = rows; show(rows); }
+    });
+    plan = parsePlan(full);
     if (!plan.length) throw new SyntaxError("empty");
     plan.sort((a, b) => (okDate(a.date) || "9").localeCompare(okDate(b.date) || "9"));
-    out.replaceChildren(...plan.map(x => h("label", {class:"aitem"}, h("input", {type:"checkbox", checked:true}),
-      h("span", {class:"at"}, x.title.trim().slice(0, 200)), h("input", {type:"date", class:"adate", value:okDate(x.date)}))));
-    $("#aadd").classList.remove("hide");
+    show(plan); status.remove(); $("#aadd").classList.remove("hide");
   } catch (err) {
     out.replaceChildren(h("div", {class:"late"}, err instanceof SyntaxError ? T("AI trả về dữ liệu không hợp lệ, hãy thử lại.") : err.message));
   }
@@ -584,9 +603,9 @@ $("#asplit").onclick = () => { const title = $("#et").value.trim(); if (!title) 
 $("#ainote").onclick = async () => {
   const title = $("#et").value.trim(), b = $("#ainote"), old = b.textContent; if (!title) return;
   b.disabled = true; b.textContent = T("AI đang suy nghĩ...");
+  const base = $("#en").value ? $("#en").value + "\n" : "";
   try {
-    const txt = await aiChat("Việc cần làm: " + title, false, "Viết ghi chú ngắn gồm 2-4 gạch đầu dòng các bước thực hiện việc sau, bằng " + langName() + ". Chỉ trả về nội dung ghi chú.");
-    $("#en").value = ($("#en").value ? $("#en").value + "\n" : "") + txt.trim();
+    await aiChat("Việc cần làm: " + title, "Viết ghi chú ngắn gồm 2-3 gạch đầu dòng các bước thực hiện việc sau, bằng " + langName() + ". Chỉ trả về nội dung ghi chú.", t => { $("#en").value = base + t.trim(); }, 250);
   } catch (err) { alert(err.message); }
   b.disabled = false; b.textContent = old;
 };
