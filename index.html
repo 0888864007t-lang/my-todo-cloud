@@ -53,13 +53,13 @@ form.add input:focus{outline:none}
 form.add input[type=date]{background:var(--bg);border:0;border-radius:8px;padding:6px}
 form.add .go{background:var(--accent);color:var(--on);font-weight:700;padding:7px 18px}
 .gt{color:var(--mute);font-weight:600;margin:16px 0 6px;font-size:.9rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
 .list{display:flex;flex-direction:column;gap:6px}
 .task{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:8px;padding:10px 12px;box-shadow:var(--shadow);border-left:4px solid var(--accent)}
 .task.done{opacity:.55;border-color:var(--line)}
 .task.done .tt{text-decoration:line-through}
 .tb{flex:1;min-width:0}
-.tt{overflow-wrap:anywhere;font-weight:600;cursor:text}
+.tt{overflow-wrap:break-word;font-weight:600;cursor:text}
 .meta{font-size:.78rem;color:var(--mute)}
 .late{color:var(--warn);font-weight:600}
 .task button{color:var(--mute);padding:3px 6px;font-size:1rem;line-height:1}
@@ -93,7 +93,7 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
 .acard textarea{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit;color:var(--ink);min-height:110px;resize:vertical}
 .row{display:flex;gap:8px}.row button{flex:1;padding:10px;border-radius:8px}
 .ghost{border:1px solid var(--line)}
-.note{font-size:.82rem;color:var(--mute);white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.note{font-size:.82rem;color:var(--mute);white-space:pre-wrap;overflow-wrap:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 #set{width:280px}
 .pop input,.pop select{width:100%;padding:8px;margin:4px 0;background:var(--bg);border:1px solid var(--line);border-radius:8px}
 #aout{display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow:auto}
@@ -117,12 +117,23 @@ input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:soli
 .more,.dot{font-size:.7rem;color:var(--mute)}.dot{display:none}
 @media (max-width:760px){.day{min-height:54px}.chip,.more{display:none}.dot{display:block}}
 .top{border-bottom:1px solid var(--line)}
-.task button,.opts>button,#sync,h1,.meta,.ico{filter:grayscale(1)}
+.task button,.opts>button,#sync,h1,.ico{filter:grayscale(1)}
 nav button.on .ico{filter:grayscale(1) brightness(2.2)}
 .top b{color:var(--accent)}
 .task{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px}
 form.add,.day{border-radius:12px}
 .chip{color:var(--accent);font-weight:500}
+.acts{display:flex;align-items:center;gap:2px;flex:none}
+.top b{white-space:nowrap}
+.opts{flex-wrap:wrap}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
+.pill{background:var(--sel);color:var(--accent);border-radius:99px;padding:0 10px;font-size:.76rem;font-weight:500;white-space:nowrap}
+.pill.late{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--warn)}
+.tt{line-height:1.45}
+.grid .task{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"chk body" "acts acts";grid-template-rows:1fr auto;gap:8px 12px;padding:14px 14px 8px}
+.grid .task>input[type=checkbox]{grid-area:chk;margin-top:2px}
+.grid .task>.tb{grid-area:body}
+.grid .task>.acts{grid-area:acts;justify-content:flex-end;border-top:1px solid var(--line);padding-top:6px}
 </style>
 </head>
 <body>
@@ -302,15 +313,16 @@ function add(text, due, note = ""){
 
 function taskEl(t){
   const late = !t.done && t.due && t.due < today();
-  const meta = h("div", {class:"meta"}, ui.view !== t.list && listName(t.list), t.myday === today() && ui.view !== "myday" && " · ☀️",
-    t.due && [" · ", h("span", {class: late ? "late" : ""}, "📅 " + t.due + (late ? " " + T("(quá hạn)") : ""))]);
+  const meta = h("div", {class:"meta"}, ui.view !== t.list && h("span", {class:"pill"}, listName(t.list)),
+    t.myday === today() && ui.view !== "myday" && h("span", {class:"pill"}, h("span", {class:"ico"}, "☀️")),
+    t.due && h("span", {class:"pill" + (late ? " late" : "")}, h("span", {class:"ico"}, "📅"), " " + new Date(t.due + "T00:00").toLocaleDateString(lang === "en" ? "en-US" : "vi-VN", {day:"2-digit", month:"2-digit", year:"numeric"}) + (late ? " · " + T("(quá hạn)") : "")));
   return h("div", {class: "task" + (t.done ? " done" : "")},
     h("input", {type:"checkbox", checked:t.done, onchange(e){ t.done = e.target.checked; save(); render(); }}),
     h("div", {class:"tb"}, h("div", {class:"tt", title:T("Nhấp đúp để sửa"), ondblclick(){ openEdit(t); }}, t.text), t.note && h("div", {class:"note"}, t.note), meta),
-    h("button", {title:T("Sửa"), onclick(){ openEdit(t); }}, "✏️"),
+    h("div", {class:"acts"}, h("button", {title:T("Sửa"), onclick(){ openEdit(t); }}, "✏️"),
     h("button", {class: t.myday === today() ? "on" : "", title:T("Thêm vào Ngày của tôi"), onclick(){ t.myday = t.myday === today() ? null : today(); save(); render(); }}, "☀️"),
     h("button", {class: "s " + (t.star ? "on" : ""), title:T("Quan trọng"), onclick(){ t.star = !t.star; save(); render(); }}, t.star ? "★" : "☆"),
-    h("button", {title:T("Xóa"), onclick(){ tasks = tasks.filter(x => x.id !== t.id); save(); render(); }}, "✕"));
+    h("button", {title:T("Xóa"), onclick(){ tasks = tasks.filter(x => x.id !== t.id); save(); render(); }}, "✕")));
 }
 
 function render(){
