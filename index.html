@@ -6,141 +6,160 @@
 <title>Việc cần làm</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
 <style>
-:root{--bg:#f5f7fc;--side:#ffffff;--card:#ffffff;--ink:#1c2538;--mute:#6b7691;--line:#e4e9f4;--top:#ffffff;--topink:#1c2538;--accent:#2f6be8;--on:#ffffff;--sel:#dbe6fd;--warn:#d93a4a;--shadow:0 1px 3px rgba(28,37,56,.07);
+:root{--bg:#faf9f8;--side:#ffffff;--card:#ffffff;--ink:#323130;--mute:#605e5c;--line:#e1dfdd;--top:#2564cf;--top2:#1b4fae;--topink:#ffffff;--accent:#2564cf;--on:#ffffff;--sel:#eff6fc;--hover:#f3f2f1;--warn:#a4262c;--shadow:0 1.6px 3.6px rgba(0,0,0,.13),0 .3px .9px rgba(0,0,0,.1);
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1424;--side:#131b2f;--card:#172039;--ink:#e8edf9;--mute:#94a1bf;--line:#26324f;--top:#131b2f;--topink:#e8edf9;--accent:#4f86f7;--on:#ffffff;--sel:#1f2e55;--warn:#f26d78;--shadow:none}}
-:root[data-theme="dark"]{--bg:#0e1424;--side:#131b2f;--card:#172039;--ink:#e8edf9;--mute:#94a1bf;--line:#26324f;--top:#131b2f;--topink:#e8edf9;--accent:#4f86f7;--on:#ffffff;--sel:#1f2e55;--warn:#f26d78;--shadow:none}
-html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1a19;--side:#252423;--card:#252423;--ink:#f3f2f1;--mute:#c8c6c4;--line:#3b3a39;--top:#1f3f87;--top2:#16316b;--accent:#5b9bff;--on:#0b1220;--sel:#2b3a55;--hover:#323130;--warn:#f1707b;--shadow:none}}
+:root[data-theme="dark"]{--bg:#1b1a19;--side:#252423;--card:#252423;--ink:#f3f2f1;--mute:#c8c6c4;--line:#3b3a39;--top:#1f3f87;--top2:#16316b;--accent:#5b9bff;--on:#0b1220;--sel:#2b3a55;--hover:#323130;--warn:#f1707b;--shadow:none}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
-body{margin:0;height:100%;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font-family:"Be Vietnam Pro","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;letter-spacing:0}
-button,input,select{font:inherit;color:inherit}
-button{cursor:pointer;background:none;border:0;border-radius:8px}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.top{background:var(--top);color:var(--topink);display:flex;align-items:center;gap:12px;padding:8px 14px;flex:none}
-.top b{font-size:1.05rem}
-.top button{color:var(--topink);padding:6px 10px}
-.top button:hover{background:var(--sel)}
-.top input{flex:0 1 460px;margin:0 auto;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:7px 12px;min-width:0;width:100%}
-.top .av{width:36px;height:36px;padding:0;margin:0 0 0 4px;border:0;border-radius:50%;background:var(--accent);color:var(--on);display:grid;place-items:center;line-height:1;font-size:.78rem;font-weight:600;letter-spacing:.02em;flex:none}
-.app{flex:1;display:flex;min-height:0;position:relative}
-nav{width:270px;background:var(--side);border-right:1px solid var(--line);padding:10px 8px;overflow:auto;flex:none}
-nav button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 12px;border-radius:8px}
-nav button:hover{background:var(--bg)}
-nav button.on{background:var(--accent);color:var(--on);font-weight:600}
-nav button.on .n{color:var(--on)}
-nav .n{margin-left:auto;color:var(--mute);font-size:.82rem}
-nav hr{border:0;border-top:1px solid var(--line);margin:10px 6px}
-nav .new{color:var(--accent)}
-main{flex:1;overflow:auto;padding:18px 24px 40px;min-width:0}
-.head{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
-h1,h2{font-weight:700;line-height:1.45}
-h1{margin:0;font-size:1.6rem}
-.sub{color:var(--mute);font-size:.88rem}
-.sp{flex:1}
-.tabs button{padding:6px 12px;color:var(--mute);border-bottom:3px solid transparent;border-radius:0}
-.tabs button.on{color:var(--ink);border-color:var(--accent);font-weight:600}
-.opts{display:flex;gap:6px;align-items:center;position:relative}
-.opts select,.opts>button{background:none;border:0;color:var(--mute);padding:6px 8px;border-radius:8px;cursor:pointer}
-.opts select:hover,.opts>button:hover{background:var(--card)}
-.pop{position:absolute;right:0;top:36px;z-index:5;width:300px;background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.18);padding:10px}
-.pop button{display:block;width:100%;text-align:left;padding:8px;border-radius:8px}
-.pop button:hover{background:var(--sel)}
-.tip{background:var(--accent);color:var(--on);border-radius:6px;padding:14px 16px;width:300px;margin:10px 0;box-shadow:var(--shadow)}
-.tip button{border:1px solid var(--on);padding:5px 18px;margin-top:10px;color:var(--on)}
-form.add{display:flex;gap:8px;background:var(--card);border-radius:8px;padding:8px 10px;margin:14px 0;box-shadow:var(--shadow);align-items:center}
-form.add input[type=text]{flex:1;border:0;background:none;padding:8px;min-width:0;font-size:1rem}
-form.add input:focus{outline:none}
-form.add input[type=date]{background:var(--bg);border:0;border-radius:8px;padding:6px}
-form.add .go{background:var(--accent);color:var(--on);font-weight:700;padding:7px 18px}
-.gt{color:var(--mute);font-weight:600;margin:16px 0 6px;font-size:.9rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
-.list{display:flex;flex-direction:column;gap:6px}
-.task{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:8px;padding:10px 12px;box-shadow:var(--shadow);border-left:4px solid var(--accent)}
-.task.done{opacity:.55;border-color:var(--line)}
-.task.done .tt{text-decoration:line-through}
-.tb{flex:1;min-width:0}
-.tt{overflow-wrap:break-word;font-weight:600;cursor:text}
-.meta{font-size:.78rem;color:var(--mute)}
-.late{color:var(--warn);font-weight:600}
-.task button{color:var(--mute);padding:3px 6px;font-size:1rem;line-height:1}
-.task button:hover{background:var(--bg)}
-.task .on{color:var(--accent)}
-.task .s.on{color:#f0a500}
-input[type=checkbox]{appearance:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--mute);flex:none;display:grid;place-items:center;cursor:pointer;background:none}
-input[type=checkbox]:checked{background:var(--accent);border-color:var(--accent)}
-input[type=checkbox]:checked::after{content:"";width:5px;height:10px;border:solid var(--on);border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
-.empty{color:var(--mute);text-align:center;padding:40px 12px;border:2px dashed var(--line);border-radius:12px;margin-top:10px}
-.burger{display:none}
-@media (max-width:760px){.burger{display:block}nav{position:absolute;inset:0 auto 0 0;z-index:6;transform:translateX(-100%);transition:transform .2s}nav.open{transform:none;box-shadow:0 0 30px rgba(0,0,0,.3)}main{padding:14px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
-.top{position:relative;z-index:7}
-#set{right:14px;top:56px;width:240px}
-#auth{display:none;position:fixed;inset:0;place-items:center;background:var(--bg);padding:16px;z-index:20}
-.out #auth{display:grid}
-.out .top,.out .app{display:none}
-.acard{width:min(380px,100%);background:var(--card);border-radius:16px;padding:24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
-.acard h2{margin:0;font-size:1.5rem}
-.acard label{display:flex;flex-direction:column;gap:4px;font-size:.88rem;color:var(--mute)}
-.acard input{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:1rem;color:var(--ink)}
-.acard .go{background:var(--accent);color:var(--on);font-weight:700;padding:10px}
-.acard .tabs{display:flex}.acard .tabs button{flex:1}
-#aerr{color:var(--warn);font-weight:600;min-height:1.2em;font-size:.88rem}
-.alang{position:absolute;right:16px;top:calc(16px + env(safe-area-inset-top,0px));color:var(--mute);padding:6px 10px}
+body{margin:0;height:100%;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font:14px/1.5 "Segoe UI","Be Vietnam Pro","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;border-radius:4px;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.ic{display:inline-flex;flex:none}
 .hide{display:none!important}
-.linkbtn{background:none;color:var(--accent);padding:2px 0;align-self:flex-start;font-size:.88rem}
-#aerr.ok{color:var(--accent)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:grid;place-items:center;z-index:30;padding:16px}
-.acard textarea{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit;color:var(--ink);min-height:110px;resize:vertical}
-.row{display:flex;gap:8px}.row button{flex:1;padding:10px;border-radius:8px}
-.ghost{border:1px solid var(--line)}
-.note{font-size:.82rem;color:var(--mute);white-space:pre-wrap;overflow-wrap:break-word;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-#set{width:280px}
-.pop input,.pop select{width:100%;padding:8px;margin:4px 0;background:var(--bg);border:1px solid var(--line);border-radius:8px}
-#aout{display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow:auto}
-.acard .aitem{flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-size:.95rem}
-.aitem input[type=checkbox]{padding:0;width:22px;height:22px;flex:none}
-.aitem .at{flex:1;min-width:0;overflow-wrap:anywhere}
-.aitem .adate{width:auto;padding:4px 6px;font-size:.8rem;flex:none}
-.acard.wide{width:min(560px,100%);max-height:92vh;overflow:auto}
+.sub{color:var(--mute);font-size:12px}
+.late{color:var(--warn);font-weight:600}
+.go{background:var(--accent);color:var(--on);font-weight:600;padding:7px 18px;border-radius:4px}
+.go:hover{filter:brightness(1.08)}
+.go:disabled{opacity:.6}
+.top{position:relative;z-index:7;flex:none;height:48px;background:var(--top);color:var(--topink);display:flex;align-items:center;gap:2px;padding-right:10px}
+.waffle{width:48px;height:48px;background:var(--top2);color:#fff;display:grid;place-items:center;border-radius:0;flex:none}
+.waffle:hover{filter:brightness(1.15)}
+.brand{font-size:18px;font-weight:600;margin:0 16px 0 10px;white-space:nowrap}
+.search{position:relative;flex:0 1 500px;margin:0 auto}
+.search input{width:100%;height:32px;border:0;border-radius:4px;background:#fff;color:#323130;padding:0 12px 0 38px}
+.search input::placeholder{color:#605e5c}
+.si{position:absolute;left:10px;top:7px;color:#2564cf;pointer-events:none}
+#sync{font-size:12px;opacity:.85;margin:0 8px;white-space:nowrap}
+.tbtn{width:40px;height:40px;display:grid;place-items:center;color:#fff;border-radius:4px}
+.tbtn:hover{background:rgba(255,255,255,.16)}
+.top .av{width:32px;height:32px;margin-left:6px;padding:0;border-radius:50%;background:#f4d8d8;color:#4a1c1c;font-size:12.5px;font-weight:600;display:grid;place-items:center;line-height:1;flex:none}
+.app{flex:1;display:flex;min-height:0;position:relative}
+nav{width:290px;flex:none;background:var(--side);border-right:1px solid var(--line);padding:6px 0;overflow:auto}
+nav .item{display:flex;align-items:center;gap:16px;width:100%;height:42px;padding:0 16px;border-radius:0;text-align:left;color:var(--ink)}
+nav .item:hover{background:var(--hover)}
+nav .item.on{background:var(--sel);font-weight:600;box-shadow:inset 3px 0 0 var(--accent)}
+nav .navburger{margin-bottom:6px}
+nav .lab{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+nav .n{color:var(--mute);font-size:12px;font-weight:400}
+nav hr{border:0;border-top:1px solid var(--line);margin:8px 16px}
+nav .new,nav .new .n{color:var(--accent)}
+nav .new .n{display:inline-flex}
+@media (min-width:761px){.collapsed nav{width:56px}.collapsed nav .lab,.collapsed nav .n{display:none}}
+main{flex:1;min-width:0;overflow:auto;padding:20px 28px 40px}
+.head{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.tcol{min-width:0}
+.trow{display:flex;align-items:center;gap:10px;color:var(--accent)}
+h1{margin:0;font-size:22px;font-weight:600;line-height:1.4;color:var(--accent)}
+h2{font-weight:600}
+.dots{width:32px;height:32px;display:grid;place-items:center;color:var(--mute)}
+.dots:hover{background:var(--hover)}
+.tabs button{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;color:var(--accent);border-bottom:2px solid transparent;border-radius:0}
+.tabs button:hover{background:var(--hover)}
+.tabs button.on{border-bottom-color:var(--accent);font-weight:600}
+.sp{flex:1}
+.opts{display:flex;align-items:center;gap:2px;position:relative;flex-wrap:wrap}
+.opts>button{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;color:var(--accent)}
+.opts>button:hover{background:var(--hover)}
+.chips{display:flex;justify-content:flex-end;align-items:center;gap:6px;margin:12px 0 6px;font-size:12px;font-weight:600;min-height:24px}
+.chip2{display:inline-flex;align-items:center;gap:4px}
+.chips .x{width:22px;height:22px;display:grid;place-items:center;color:var(--accent)}
+.pop{position:absolute;right:0;top:40px;z-index:8;min-width:220px;color:var(--ink);max-width:320px;background:var(--card);border-radius:4px;box-shadow:0 6.4px 14.4px rgba(0,0,0,.18),0 1.2px 3.6px rgba(0,0,0,.14);padding:6px 0}
+.pop button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:8px 14px;border-radius:0}
+.pop button:hover{background:var(--hover)}
+.pop .sub{padding:4px 14px}
+.pop .ck{width:16px;display:inline-flex}
+#set{right:12px;top:52px;width:290px;padding:12px}
+#set .sub{padding:4px 0}
+#set button{padding:8px 6px}
+.pop input,.pop select{padding:7px 8px;margin:4px 0;width:100%;background:var(--card);border:1px solid #8a8886;border-radius:4px;color:var(--ink)}
+.tip{background:var(--accent);color:var(--on);border-radius:4px;padding:14px 16px;width:300px;margin:8px 0;box-shadow:var(--shadow)}
+.tip button{border:1px solid var(--on);padding:4px 18px;margin-top:10px;color:var(--on)}
+form.add{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:4px;box-shadow:var(--shadow);padding:0 14px;min-height:52px;margin:8px 0 18px}
+form.add .pl{color:var(--accent)}
+form.add #text{flex:1;border:0;background:none;font-size:14px;padding:14px 0;min-width:0}
+form.add #text::placeholder{color:var(--accent)}
+form.add #text:focus{outline:none}
+.addr{display:none;align-items:center;gap:8px}
+form.add:focus-within .addr{display:flex}
+.addr input[type=date]{background:var(--hover);border:0;border-radius:4px;padding:5px 8px}
+.gt{font-weight:600;margin:18px 0 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px}
+.list{display:flex;flex-direction:column;gap:2px}
+.task{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:4px;box-shadow:var(--shadow);padding:10px 8px 10px 14px;min-height:52px}
+.task.done .tt{text-decoration:line-through;color:var(--mute)}
+.tb{flex:1;min-width:0}
+.tt{overflow-wrap:break-word;line-height:1.45}
+.note{font-size:12px;color:var(--mute);white-space:pre-wrap;overflow-wrap:break-word;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;font-size:12px;color:var(--mute)}
+.meta>*+*::before{content:"·";margin-right:6px}
+.meta .mi{display:inline-flex;align-items:center;gap:4px}
+.task .s,.acts button{width:30px;height:30px;display:grid;place-items:center;color:var(--mute)}
+.task .s:hover,.acts button:hover{background:var(--hover);color:var(--ink)}
+.task .s.on,.acts .on{color:var(--accent)}
+.acts{display:flex;align-items:center;gap:2px;opacity:0;transition:opacity .12s}
+.task:hover .acts,.task:focus-within .acts{opacity:1}
+@media (hover:none){.acts{opacity:1}}
+.list .task .acts{order:2}.list .task .s{order:3}
+.grid .task{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"chk body star" "acts acts acts";gap:2px 12px;align-items:start;padding:12px 8px 6px 14px}
+.grid .task>input{grid-area:chk;margin-top:2px}.grid .task>.tb{grid-area:body}.grid .task>.s{grid-area:star}.grid .task>.acts{grid-area:acts;justify-content:flex-end}
+input[type=checkbox]{appearance:none;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--ink);flex:none;display:grid;place-items:center;cursor:pointer;background:none;margin:0;opacity:.8}
+input[type=checkbox]:hover{border-color:var(--accent);opacity:1}
+input[type=checkbox]:checked{background:var(--accent);border-color:var(--accent);opacity:1}
+input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid var(--on);border-width:0 1.8px 1.8px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.empty{color:var(--mute);text-align:center;padding:48px 12px}
 .calhead{display:flex;align-items:center;gap:8px;margin:6px 0 10px}
-.calhead b{flex:1;text-transform:capitalize;font-size:1.05rem}
+.calhead b{flex:1;text-transform:capitalize;font-size:16px;font-weight:600}
 .calhead button{border:1px solid var(--line);background:var(--card);padding:4px 12px}
-.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
-.dow{text-align:center;color:var(--mute);font-size:.78rem;font-weight:600;padding:4px 0}
-.day{min-height:84px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:4px;text-align:left;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
+.dow{text-align:center;color:var(--mute);font-size:12px;font-weight:600;padding:4px 0}
+.day{min-height:84px;background:var(--card);border:1px solid var(--line);border-radius:2px;padding:4px;text-align:left;display:flex;flex-direction:column;gap:2px;overflow:hidden}
 .day.blank{background:none;border:0;cursor:default}
 .day.today .dn{background:var(--accent);color:var(--on);border-radius:99px;padding:0 7px}
 .day.sel{outline:2px solid var(--accent);outline-offset:-1px}
-.dn{font-size:.82rem;font-weight:600;align-self:flex-start}
-.chip{font-size:.7rem;background:var(--sel);border-radius:4px;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.dn{font-size:12px;font-weight:600;align-self:flex-start}
+.chip{font-size:11px;background:var(--sel);color:var(--accent);border-radius:2px;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .chip.done{text-decoration:line-through;color:var(--mute)}
-.more,.dot{font-size:.7rem;color:var(--mute)}.dot{display:none}
-@media (max-width:760px){.day{min-height:54px}.chip,.more{display:none}.dot{display:block}}
-.top{border-bottom:1px solid var(--line)}
-.task button,.opts>button,#sync,h1,.ico{filter:grayscale(1)}
-nav button.on .ico{filter:grayscale(1) brightness(2.2)}
-.top b{color:var(--accent)}
-.task{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px}
-form.add,.day{border-radius:12px}
-.chip{color:var(--accent);font-weight:500}
-.acts{display:flex;align-items:center;gap:2px;flex:none}
-.top b{white-space:nowrap}
-.opts{flex-wrap:wrap}
-.meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
-.pill{background:var(--sel);color:var(--accent);border-radius:99px;padding:0 10px;font-size:.76rem;font-weight:500;white-space:nowrap}
-.pill.late{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--warn)}
-.tt{line-height:1.45}
-.grid .task{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"chk body" "acts acts";grid-template-rows:1fr auto;gap:8px 12px;padding:14px 14px 8px}
-.grid .task>input[type=checkbox]{grid-area:chk;margin-top:2px}
-.grid .task>.tb{grid-area:body}
-.grid .task>.acts{grid-area:acts;justify-content:flex-end;border-top:1px solid var(--line);padding-top:6px}
+.more,.dot{font-size:11px;color:var(--mute)}.dot{display:none}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:grid;place-items:center;z-index:30;padding:16px}
+#auth{display:none;position:fixed;inset:0;place-items:center;background:var(--bg);padding:16px;z-index:20}
+.out #auth{display:grid}.out .top,.out .app{display:none}
+.acard{width:min(400px,100%);background:var(--card);border-radius:8px;padding:24px;box-shadow:0 12.8px 28.8px rgba(0,0,0,.22);display:flex;flex-direction:column;gap:12px}
+.acard.wide{width:min(560px,100%);max-height:92vh;overflow:auto}
+.acard h2{margin:0;font-size:20px}
+.acard label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--mute)}
+.acard input,.acard textarea{background:var(--card);border:1px solid #8a8886;border-radius:4px;padding:8px 10px;font-size:14px;color:var(--ink)}
+.acard textarea{min-height:100px;resize:vertical}
+.acard input:focus,.acard textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.acard .go{padding:9px}
+.acard .tabs{display:flex}.acard .tabs button{flex:1;justify-content:center}
+#aerr{color:var(--warn);font-weight:600;min-height:1.2em;font-size:13px}
+#aerr.ok{color:var(--accent)}
+.alang{position:absolute;right:16px;top:calc(16px + env(safe-area-inset-top,0px));color:var(--accent);padding:6px 10px}
+.linkbtn{color:var(--accent);padding:2px 0;align-self:flex-start;font-size:13px}
+.row{display:flex;gap:8px}.row button{flex:1;padding:9px;border-radius:4px}
+.ghost{border:1px solid #8a8886}
+#aout{display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow:auto}
+.acard .aitem{flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-size:14px}
+.aitem input[type=checkbox]{padding:0;width:20px;height:20px;flex:none}
+.aitem .at{flex:1;min-width:0;overflow-wrap:break-word}
+.aitem .adate{width:auto;padding:4px 6px;font-size:12px;flex:none}
+@media (max-width:760px){
+ nav{position:absolute;inset:0 auto 0 0;z-index:6;transform:translateX(-100%);width:280px;transition:transform .2s}
+ nav.open{transform:none;box-shadow:0 0 24px rgba(0,0,0,.3)}
+ nav .navburger{display:none}
+ main{padding:14px}.brand{display:none}.search{flex:1;margin:0 4px}#sync,#help{display:none}
+ .day{min-height:54px}.chip,.more{display:none}.dot{display:block}
+ .head{gap:8px}.chips{justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <div id="auth">
   <button class="alang" id="alang"></button>
   <form class="acard" id="aform">
-    <h2>Việc cần làm</h2>
     <p class="sub" id="asubtxt" style="margin:0">Dữ liệu được đồng bộ giữa các thiết bị của bạn.</p>
     <div class="tabs" id="tabs"><button type="button" id="tLogin">Đăng nhập</button><button type="button" id="tReg">Đăng ký</button></div>
     <label id="row0">Email<input id="au" type="email" autocomplete="email" required></label>
@@ -152,20 +171,22 @@ form.add,.day{border-radius:12px}
   </form>
 </div>
 <div class="top">
-  <button class="burger" id="burger" aria-label="Menu">☰</button>
-  <b>To do list</b>
-  <input id="q" type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm">
-  <span id="sync" title="Đồng bộ" style="cursor:default">☁️</span>
-  <button id="theme" aria-label="Giao diện sáng/tối">◐</button>
-  <button class="av" id="av" aria-label="Cài đặt" title="Cài đặt">TN</button>
+  <button class="waffle" id="burger" aria-label="Menu"><span data-i="waffle"></span></button>
+  <b class="brand">To do list</b>
+  <div class="search"><span class="si" data-i="search" data-s="18"></span><input id="q" type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm"></div>
+  <span id="sync" title="Đồng bộ"></span>
+  <button class="tbtn" id="theme" aria-label="Giao diện sáng/tối"><span data-i="theme"></span></button>
+  <button class="tbtn" id="gear" aria-label="Cài đặt" title="Cài đặt"><span data-i="gear"></span></button>
+  <button class="tbtn" id="help" aria-label="Trợ giúp" title="Trợ giúp"><span data-i="help"></span></button>
+  <button class="av" id="av" aria-label="Tài khoản" title="Tài khoản">TN</button>
   <div class="pop" id="set" hidden>
-    <div class="sub">Tài khoản</div><div id="who" style="font-weight:600;padding:2px 8px 8px"></div>
+    <div class="sub">Tài khoản</div><div id="who" style="font-weight:600;padding-bottom:6px"></div>
     <label class="sub" for="lang">Ngôn ngữ</label>
-    <select id="lang" style="width:100%;padding:8px;margin:4px 0 8px;background:var(--bg);border:1px solid var(--line);border-radius:8px"><option value="vi">Tiếng Việt</option><option value="en">English</option></select>
-    <div class="sub" style="margin-top:6px">AI (Ollama / ServBay)</div>
+    <select id="lang"><option value="vi">Tiếng Việt</option><option value="en">English</option></select>
+    <div class="sub" style="margin-top:6px">Trợ lý (Ollama)</div>
     <input id="aiurl" placeholder="http://localhost:11434" aria-label="Ollama URL">
     <select id="aimodel" aria-label="Model"></select>
-    <button id="aitest">Kiểm tra kết nối</button><div class="meta" id="aistat" style="padding:0 8px 6px"></div>
+    <button id="aitest">Kiểm tra kết nối</button><div class="meta" id="aistat" style="padding:0 0 6px"></div>
     <button id="logout">Đăng xuất</button>
   </div>
 </div>
@@ -173,25 +194,23 @@ form.add,.day{border-radius:12px}
   <nav id="nav"></nav>
   <main>
     <div class="head">
-      <div><h1 id="title"></h1><div class="sub" id="sub"></div></div>
-      <div class="tabs"><button id="mGrid">Lưới</button><button id="mList">Danh sách</button></div>
+      <div class="tcol"><div class="trow"><span id="ticon"></span><h1 id="title"></h1><button class="dots hide" id="more" aria-label="Xóa danh sách" title="Xóa danh sách"><span data-i="dots"></span></button></div><div class="sub" id="sub"></div></div>
+      <div class="tabs"><button id="mGrid"><span data-i="grid" data-s="18"></span>Lưới</button><button id="mList"><span data-i="listv" data-s="18"></span>Danh sách</button></div>
       <div class="sp"></div>
       <div class="opts">
-        <select id="sort" aria-label="Sắp xếp">
-          <option value="created">Sắp xếp: Ngày tạo</option><option value="az">Sắp xếp: A → Z</option>
-          <option value="due">Sắp xếp: Hạn chót</option><option value="star">Sắp xếp: Quan trọng</option></select>
-        <select id="group" aria-label="Nhóm">
-          <option value="none">Nhóm: Không</option><option value="list">Nhóm: Danh sách</option><option value="due">Nhóm: Hạn chót</option></select>
-        <button id="aibtn">✨ AI</button>
-        <button id="sug">💡 Gợi ý</button>
+        <button id="sortb"><span data-i="sort" data-s="18"></span>Sắp xếp</button>
+        <button id="groupb"><span data-i="group" data-s="18"></span>Nhóm</button>
+        <button id="aibtn"><span data-i="chat" data-s="18"></span>Trợ lý</button>
+        <button id="sug"><span data-i="bulb" data-s="18"></span>Gợi ý</button>
         <div class="pop" id="pop" hidden></div>
       </div>
     </div>
+    <div class="chips" id="chips"></div>
     <div class="tip" id="tip" hidden>Thêm tác vụ mới hoặc chọn từ Gợi ý để lên kế hoạch cho ngày của bạn.<br><button id="tipOk">Tiếp theo</button></div>
     <form class="add" id="form">
+      <span class="pl" data-i="plus"></span>
       <input type="text" id="text" placeholder="Thêm một tác vụ" autocomplete="off" aria-label="Thêm một tác vụ">
-      <input type="date" id="due" aria-label="Hạn chót">
-      <button class="go">Thêm</button>
+      <div class="addr"><input type="date" id="due" aria-label="Hạn chót"><button class="go">Thêm</button></div>
     </form>
     <div id="out"></div>
   </main>
@@ -201,14 +220,14 @@ form.add,.day{border-radius:12px}
     <h2>Sửa tác vụ</h2>
     <label>Tiêu đề<input id="et" required maxlength="200" autocomplete="off"></label>
     <label>Ghi chú<textarea id="en" placeholder="Thêm ghi chú..."></textarea></label>
-    <button type="button" class="linkbtn" id="ainote">✨ Gợi ý ghi chú bằng AI</button><button type="button" class="linkbtn" id="asplit">✂ Chia nhỏ việc này bằng AI</button>
+    <button type="button" class="linkbtn" id="ainote">Gợi ý ghi chú</button><button type="button" class="linkbtn" id="asplit">Chia nhỏ việc này</button>
     <label>Hạn chót<input id="ed" type="date"></label>
     <div class="row"><button type="button" class="ghost" id="ecancel">Hủy</button><button class="go">Lưu thay đổi</button></div>
   </form>
 </div>
 <div class="modal hide" id="ai">
   <form class="acard wide" id="aform2">
-    <h2>✨ AI</h2>
+    <h2>Trợ lý lập kế hoạch</h2>
     <div class="tabs"><button type="button" id="mPlan" class="on">Lập kế hoạch</button><button type="button" id="mSplit">Chia nhỏ việc</button></div>
     <label><span id="alabel">Bạn cần làm gì?</span><textarea id="ag"></textarea></label>
     <div id="aout"></div>
@@ -239,7 +258,10 @@ const EN = {"Việc cần làm":"To-do","Tìm kiếm":"Search","Giao diện sán
 "Tên đăng nhập tối thiểu 3 ký tự.":"Username must be at least 3 characters.","Mật khẩu tối thiểu 6 ký tự.":"Password must be at least 6 characters.",
 "Mật khẩu nhập lại không khớp.":"Passwords do not match.","Tên đăng nhập đã tồn tại.":"That username is already taken.","Sai tên đăng nhập hoặc mật khẩu.":"Wrong username or password.",
 "Trình duyệt này không hỗ trợ đăng nhập an toàn. Hãy mở bằng localhost hoặc https.":"This browser can't do secure login. Open the app via localhost or https.",
-"Công việc":"Tasks","Đồng bộ":"Sync","Lịch":"Calendar","Lập kế hoạch":"Plan","Chia nhỏ việc":"Split a task","Bạn cần làm gì?":"What do you need to do?","Công việc cần chia nhỏ":"Task to split",
+"Công việc":"Tasks","Đồng bộ":"Sync","Trợ lý":"Assistant","Trợ lý (Ollama)":"Assistant (Ollama)","Trợ lý lập kế hoạch":"Planner","Gợi ý ghi chú":"Suggest a note","Chia nhỏ việc này":"Split this task","Đang tạo...":"Working...",
+"Đã lưu":"Saved","Đang lưu...":"Saving...","Lỗi đồng bộ":"Sync error","Trợ giúp":"Help","Sắp xếp":"Sort","Nhóm":"Group","Danh sách mới":"New list","Không nhóm":"No grouping","Theo danh sách":"By list","Theo hạn chót":"By due date",
+"Ngày tạo":"Date created","A đến Z":"A to Z","Sắp xếp theo ngày tạo":"Sorted by creation date","Sắp xếp theo A đến Z":"Sorted A to Z","Sắp xếp theo hạn chót":"Sorted by due date","Sắp xếp theo quan trọng":"Sorted by importance",
+"Nhóm theo danh sách":"Grouped by list","Nhóm theo hạn chót":"Grouped by due date","Bỏ sắp xếp":"Clear sort","Bỏ nhóm":"Clear grouping","Lịch":"Calendar","Lập kế hoạch":"Plan","Chia nhỏ việc":"Split a task","Bạn cần làm gì?":"What do you need to do?","Công việc cần chia nhỏ":"Task to split",
 "Thêm vào lịch":"Add to calendar","✂ Chia nhỏ việc này bằng AI":"✂ Split this task with AI","Chưa có tác vụ nào trong ngày này.":"No tasks on this day.",
 "Ví dụ: Tuần này tôi cần ôn SQL, làm bài C++ và hoàn thành báo cáo.":"Example: This week I need to review SQL, finish my C++ assignment and complete the report.",
 "Ví dụ: Làm báo cáo cơ sở dữ liệu phân tán":"Example: Write the distributed database report",
@@ -262,7 +284,7 @@ const T = s => lang === "en" ? (EN[s] ?? s) : s;
 let user = null, tasks = [], lists = [], remote = new Map(), pending = false, ch = null;
 const rowT = t => ({ id:t.id, text:t.text, note:t.note || "", done:t.done, star:t.star, myday:t.myday || null, due:t.due || null, list:t.list, created:t.created });
 const snap = () => new Map([...tasks.map(t => ["t:" + t.id, JSON.stringify(rowT(t))]), ...lists.map(l => ["l:" + l.id, JSON.stringify({id:l.id, name:l.name})])]);
-const setSync = s => { $("#sync").textContent = s; };
+const setSync = s => { $("#sync").textContent = T({"☁️":"Đã lưu","⏳":"Đang lưu...","⚠️":"Lỗi đồng bộ"}[s]); };
 async function load(){   // tải toàn bộ dữ liệu của tài khoản từ Supabase
   const [a, b] = await Promise.all([sb.from("tasks").select("*"), sb.from("lists").select("id,name")]);
   if (a.error || b.error){ console.error(a.error || b.error); return setSync("⚠️"); }
@@ -288,8 +310,12 @@ function listen(){       // nhận thay đổi từ thiết bị khác theo th�
   ch = sb.channel("sync").on("postgres_changes", {event:"*", schema:"public", table:"tasks"}, refresh)
          .on("postgres_changes", {event:"*", schema:"public", table:"lists"}, refresh).subscribe();
 }
+// ---- Biểu tượng SVG nét mảnh (tự vẽ, kế thừa màu chữ) ----
+const ICONS = {"sun": "<circle cx=\"10\" cy=\"10\" r=\"3.2\"/><path d=\"M10 2.5v1.8M10 15.7v1.8M2.5 10h1.8M15.7 10h1.8M4.7 4.7L6 6M14 14l1.3 1.3M15.3 4.7L14 6M6 14l-1.3 1.3\"/>", "star": "<path d=\"M10 2.6l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.9l5-.7z\"/>", "starf": "<path d=\"M10 2.6l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.9l5-.7z\" fill=\"currentColor\"/>", "plan": "<rect x=\"3\" y=\"4\" width=\"14\" height=\"13\" rx=\"2\"/><path d=\"M3 8h14\"/><g fill=\"currentColor\" stroke=\"none\"><circle cx=\"7\" cy=\"11\" r=\".9\"/><circle cx=\"10\" cy=\"11\" r=\".9\"/><circle cx=\"13\" cy=\"11\" r=\".9\"/><circle cx=\"7\" cy=\"14\" r=\".9\"/><circle cx=\"10\" cy=\"14\" r=\".9\"/></g>", "cal": "<rect x=\"3\" y=\"4.5\" width=\"14\" height=\"12.5\" rx=\"2\"/><path d=\"M3 8.5h14M6.5 2.5v3M13.5 2.5v3M7 12h2M11 12h2\"/>", "home": "<path d=\"M3.5 9.2L10 3.5l6.5 5.7V16a.5.5 0 0 1-.5.5H12v-4.2H8v4.2H4a.5.5 0 0 1-.5-.5z\"/>", "list": "<path d=\"M4 5.5h12M4 10h12M4 14.5h8\"/>", "listv": "<path d=\"M3 5h14M3 10h14M3 15h9\"/>", "grid": "<g fill=\"currentColor\" stroke=\"none\"><rect x=\"3\" y=\"3\" width=\"6\" height=\"6\" rx=\"1.2\"/><rect x=\"11\" y=\"3\" width=\"6\" height=\"6\" rx=\"1.2\"/><rect x=\"3\" y=\"11\" width=\"6\" height=\"6\" rx=\"1.2\"/><rect x=\"11\" y=\"11\" width=\"6\" height=\"6\" rx=\"1.2\"/></g>", "plus": "<path d=\"M10 4v12M4 10h12\"/>", "newlist": "<path d=\"M4 3.5h8.5a1 1 0 0 1 1 1V8M4 3.5a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h5M6 7h5M6 10h3M14.5 11v6M11.5 14h6\"/>", "search": "<circle cx=\"12\" cy=\"8\" r=\"4.5\"/><path d=\"M8.8 11.2L3.5 16.5\"/>", "gear": "<path d=\"M16.08 8.77 L18.23 8.92 L18.23 11.08 L16.08 11.23 L15.17 13.43 L16.58 15.06 L15.06 16.58 L13.43 15.17 L11.23 16.08 L11.08 18.23 L8.92 18.23 L8.77 16.08 L6.57 15.17 L4.94 16.58 L3.42 15.06 L4.83 13.43 L3.92 11.23 L1.77 11.08 L1.77 8.92 L3.92 8.77 L4.83 6.57 L3.42 4.94 L4.94 3.42 L6.57 4.83 L8.77 3.92 L8.92 1.77 L11.08 1.77 L11.23 3.92 L13.43 4.83 L15.06 3.42 L16.58 4.94 L15.17 6.57Z\"/><circle cx=\"10\" cy=\"10\" r=\"2.6\"/>", "help": "<circle cx=\"10\" cy=\"10\" r=\"7.5\"/><path d=\"M7.9 8c0-1.2.9-2 2.2-2s2.1.8 2.1 1.9c0 1.6-2.2 1.7-2.2 3.3M10 14.2v.1\"/>", "waffle": "<g fill=\"currentColor\" stroke=\"none\"><circle cx=\"4.5\" cy=\"4.5\" r=\"1.3\"/><circle cx=\"10\" cy=\"4.5\" r=\"1.3\"/><circle cx=\"15.5\" cy=\"4.5\" r=\"1.3\"/><circle cx=\"4.5\" cy=\"10\" r=\"1.3\"/><circle cx=\"10\" cy=\"10\" r=\"1.3\"/><circle cx=\"15.5\" cy=\"10\" r=\"1.3\"/><circle cx=\"4.5\" cy=\"15.5\" r=\"1.3\"/><circle cx=\"10\" cy=\"15.5\" r=\"1.3\"/><circle cx=\"15.5\" cy=\"15.5\" r=\"1.3\"/></g>", "theme": "<circle cx=\"10\" cy=\"10\" r=\"6.5\"/><path d=\"M10 3.5a6.5 6.5 0 0 0 0 13z\" fill=\"currentColor\"/>", "burger": "<path d=\"M3 5.5h14M3 10h14M3 14.5h14\"/>", "sort": "<path d=\"M6 16V4M3.5 6.5L6 4l2.5 2.5M14 4v12M11.5 13.5L14 16l2.5-2.5\"/>", "group": "<rect x=\"3\" y=\"3.5\" width=\"14\" height=\"5\" rx=\"1.2\"/><rect x=\"3\" y=\"11.5\" width=\"14\" height=\"5\" rx=\"1.2\"/>", "chev": "<path d=\"M5 8l5 5 5-5\"/>", "close": "<path d=\"M5 5l10 10M15 5L5 15\"/>", "check": "<path d=\"M4.5 10.5l3.5 3.5 7.5-8\"/>", "pencil": "<path d=\"M3.5 16.5l.8-3.7L13.3 3.8a1.6 1.6 0 0 1 2.3 0l.6.6a1.6 1.6 0 0 1 0 2.3L7.2 15.7z\"/><path d=\"M12 5.2l2.8 2.8\"/>", "trash": "<path d=\"M4.5 6h11M8 6V4h4v2M6 6l.7 10h6.6L14 6M8.5 9v4M11.5 9v4\"/>", "bulb": "<path d=\"M10 2.8a5 5 0 0 0-2.8 9.1c.5.4.8 1 .8 1.6v.5h4v-.5c0-.6.3-1.2.8-1.6A5 5 0 0 0 10 2.8zM8.3 16.5h3.4\"/>", "chat": "<path d=\"M4 4.5h12a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H9l-3.5 3v-3H4a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1z\"/>", "dots": "<g fill=\"currentColor\" stroke=\"none\"><circle cx=\"4.5\" cy=\"10\" r=\"1.3\"/><circle cx=\"10\" cy=\"10\" r=\"1.3\"/><circle cx=\"15.5\" cy=\"10\" r=\"1.3\"/></g>"};
+const icon = (n, s = 20) => { const e = document.createElement("span"); e.className = "ic"; e.innerHTML = '<svg viewBox="0 0 20 20" width="' + s + '" height="' + s + '" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[n] + "</svg>"; return e; };
+const hydrate = () => document.querySelectorAll("[data-i]").forEach(e => e.replaceChildren(icon(e.dataset.i, +e.dataset.s || 20)));
 const ui = { view: "myday", mode: st.get("mode", "grid"), sort: "created", group: "none", q: "" };
-const SYS = [["myday","☀️","Ngày của tôi"],["star","⭐","Quan trọng"],["plan","📅","Đã lên kế hoạch"],["cal","📆","Lịch"],["tasks","🏠","Công việc"]]; // sửa mục bên trái tại đây
+const SYS = [["myday","sun","Ngày của tôi"],["star","star","Quan trọng"],["plan","plan","Đã lên kế hoạch"],["cal","cal","Lịch"],["tasks","home","Công việc"]]; // sửa mục bên trái tại đây
 const today = () => new Date(Date.now() - new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const save = () => { pending = true; clearTimeout(save.t); save.t = setTimeout(push, 300); };
 const listName = id => id === "tasks" ? T("Công việc") : (lists.find(l => l.id === id) || {name:"?"}).name;
@@ -313,33 +339,52 @@ function add(text, due, note = ""){
 
 function taskEl(t){
   const late = !t.done && t.due && t.due < today();
-  const meta = h("div", {class:"meta"}, ui.view !== t.list && h("span", {class:"pill"}, listName(t.list)),
-    t.myday === today() && ui.view !== "myday" && h("span", {class:"pill"}, h("span", {class:"ico"}, "☀️")),
-    t.due && h("span", {class:"pill" + (late ? " late" : "")}, h("span", {class:"ico"}, "📅"), " " + new Date(t.due + "T00:00").toLocaleDateString(lang === "en" ? "en-US" : "vi-VN", {day:"2-digit", month:"2-digit", year:"numeric"}) + (late ? " · " + T("(quá hạn)") : "")));
+  const parts = [];
+  if (ui.view !== t.list) parts.push(h("span", {}, listName(t.list)));
+  if (t.myday === today() && ui.view !== "myday") parts.push(h("span", {class:"mi"}, icon("sun", 13), T("Ngày của tôi")));
+  if (t.due) parts.push(h("span", {class:"mi" + (late ? " late" : "")}, icon("plan", 13), new Date(t.due + "T00:00").toLocaleDateString(lang === "en" ? "en-US" : "vi-VN", {day:"2-digit", month:"2-digit", year:"numeric"}) + (late ? " · " + T("(quá hạn)") : "")));
+  const star = h("button", {class:"s" + (t.star ? " on" : ""), title:T("Quan trọng"), onclick(){ t.star = !t.star; save(); render(); }}, icon(t.star ? "starf" : "star", 18));
+  const acts = h("div", {class:"acts"},
+    h("button", {title:T("Sửa"), onclick(){ openEdit(t); }}, icon("pencil", 16)),
+    h("button", {class: t.myday === today() ? "on" : "", title:T("Thêm vào Ngày của tôi"), onclick(){ t.myday = t.myday === today() ? null : today(); save(); render(); }}, icon("sun", 16)),
+    h("button", {title:T("Xóa"), onclick(){ tasks = tasks.filter(x => x.id !== t.id); save(); render(); }}, icon("trash", 16)));
   return h("div", {class: "task" + (t.done ? " done" : "")},
     h("input", {type:"checkbox", checked:t.done, onchange(e){ t.done = e.target.checked; save(); render(); }}),
-    h("div", {class:"tb"}, h("div", {class:"tt", title:T("Nhấp đúp để sửa"), ondblclick(){ openEdit(t); }}, t.text), t.note && h("div", {class:"note"}, t.note), meta),
-    h("div", {class:"acts"}, h("button", {title:T("Sửa"), onclick(){ openEdit(t); }}, "✏️"),
-    h("button", {class: t.myday === today() ? "on" : "", title:T("Thêm vào Ngày của tôi"), onclick(){ t.myday = t.myday === today() ? null : today(); save(); render(); }}, "☀️"),
-    h("button", {class: "s " + (t.star ? "on" : ""), title:T("Quan trọng"), onclick(){ t.star = !t.star; save(); render(); }}, t.star ? "★" : "☆"),
-    h("button", {title:T("Xóa"), onclick(){ tasks = tasks.filter(x => x.id !== t.id); save(); render(); }}, "✕")));
+    h("div", {class:"tb"}, h("div", {class:"tt", title:T("Nhấp đúp để sửa"), ondblclick(){ openEdit(t); }}, t.text), t.note && h("div", {class:"note"}, t.note), parts.length ? h("div", {class:"meta"}, parts) : null),
+    star, acts);
+}
+
+function toggleNav(){
+  if (matchMedia("(max-width:760px)").matches) $("#nav").classList.toggle("open");
+  else { document.body.classList.toggle("collapsed"); st.set("collapsed", document.body.classList.contains("collapsed")); }
 }
 
 function render(){
   // Thanh bên
   const nav = $("#nav"); nav.replaceChildren();
-  const item = (id, ic, name) => h("button", {class: ui.view === id ? "on" : "", onclick(){ ui.view = id; nav.classList.remove("open"); render(); }}, h("span", {class:"ico"}, ic), name, h("span", {class:"n"}, count(id) || ""));
+  nav.append(h("button", {class:"item navburger", "aria-label":"Menu", onclick:toggleNav}, icon("burger")));
+  const item = (id, ic, name) => h("button", {class:"item" + (ui.view === id ? " on" : ""), onclick(){ ui.view = id; nav.classList.remove("open"); render(); }}, icon(ic), h("span", {class:"lab"}, name), h("span", {class:"n"}, count(id) || ""));
   SYS.forEach(s => nav.append(item(s[0], s[1], T(s[2]))));
   nav.append(h("hr"));
-  lists.forEach(l => nav.append(item(l.id, "☰", l.name)));
-  nav.append(h("button", {class:"new", onclick(){ const n = prompt(T("Tên danh sách mới")); if (n && n.trim()){ const l = {id: crypto.randomUUID(), name: n.trim()}; lists.push(l); ui.view = l.id; save(); render(); } }}, T("＋ Danh sách mới")));
+  lists.forEach(l => nav.append(item(l.id, "list", l.name)));
+  nav.append(h("button", {class:"item new", onclick(){ const n = prompt(T("Tên danh sách mới")); if (n && n.trim()){ const l = {id: crypto.randomUUID(), name: n.trim()}; lists.push(l); ui.view = l.id; save(); render(); } }}, icon("plus"), h("span", {class:"lab"}, T("Danh sách mới")), h("span", {class:"n"}, icon("newlist"))));
 
   // Tiêu đề
   const sys = SYS.find(s => s[0] === ui.view);
-  $("#title").textContent = sys ? sys[1] + " " + T(sys[2]) : "☰ " + listName(ui.view);
-  if (!sys) $("#title").append(" ", h("button", {title:T("Xóa danh sách"), onclick(){ if (confirm(T("Xóa danh sách này và các tác vụ trong đó?"))){ tasks = tasks.filter(t => t.list !== ui.view); lists = lists.filter(l => l.id !== ui.view); ui.view = "myday"; save(); render(); } }}, "🗑"));
+  $("#ticon").replaceChildren(icon(sys ? sys[1] : "list", 26));
+  $("#title").textContent = sys ? T(sys[2]) : listName(ui.view);
+  $("#more").classList.toggle("hide", !!sys);
   $("#sub").textContent = ui.view === "myday" ? new Date().toLocaleDateString(lang === "en" ? "en-US" : "vi-VN", {weekday:"long", day:"numeric", month:"long"}) : count(ui.view) + T(" tác vụ đang làm");
   $("#mGrid").className = ui.mode === "grid" ? "on" : ""; $("#mList").className = ui.mode === "list" ? "on" : "";
+
+  // Dòng hiển thị kiểu sắp xếp / nhóm hiện tại
+  const chips = $("#chips"); chips.replaceChildren();
+  if (ui.view !== "cal"){
+    const SN = {created:"ngày tạo", az:"A đến Z", due:"hạn chót", star:"quan trọng"}, GN = {list:"danh sách", due:"hạn chót"};
+    chips.append(h("span", {class:"chip2"}, icon("chev", 14), T("Sắp xếp theo " + SN[ui.sort])));
+    if (ui.sort !== "created") chips.append(h("button", {class:"x", title:T("Bỏ sắp xếp"), onclick(){ ui.sort = "created"; render(); }}, icon("close", 14)));
+    if (ui.group !== "none") chips.append(h("span", {class:"chip2"}, icon("chev", 14), T("Nhóm theo " + GN[ui.group])), h("button", {class:"x", title:T("Bỏ nhóm"), onclick(){ ui.group = "none"; render(); }}, icon("close", 14)));
+  }
 
   if (ui.view === "cal") return renderCal();
   // Danh sách tác vụ
@@ -357,11 +402,18 @@ function render(){
 // ---- Sự kiện ----
 $("#form").onsubmit = e => { e.preventDefault(); add($("#text").value, $("#due").value); $("#text").value = ""; $("#due").value = ""; $("#text").focus(); };
 $("#q").oninput = e => { ui.q = e.target.value; render(); };
-$("#sort").onchange = e => { ui.sort = e.target.value; render(); };
-$("#group").onchange = e => { ui.group = e.target.value; render(); };
+function menu(items, cur, pick){
+  const pop = $("#pop");
+  pop.replaceChildren(...items.map(([k, lab]) => h("button", {onclick(){ pop.hidden = true; pick(k); }}, h("span", {class:"ck"}, k === cur ? icon("check", 16) : null), lab)));
+  pop.hidden = false;
+}
+$("#sortb").onclick = () => menu([["created","Ngày tạo"],["az","A đến Z"],["due","Hạn chót"],["star","Quan trọng"]].map(([k, l]) => [k, T(l)]), ui.sort, k => { ui.sort = k; render(); });
+$("#groupb").onclick = () => menu([["none","Không nhóm"],["list","Theo danh sách"],["due","Theo hạn chót"]].map(([k, l]) => [k, T(l)]), ui.group, k => { ui.group = k; render(); });
+$("#more").onclick = () => { if (confirm(T("Xóa danh sách này và các tác vụ trong đó?"))){ tasks = tasks.filter(t => t.list !== ui.view); lists = lists.filter(l => l.id !== ui.view); ui.view = "myday"; save(); render(); } };
+$("#help").onclick = () => { $("#tip").hidden = !$("#tip").hidden; };
 $("#mGrid").onclick = () => { ui.mode = "grid"; st.set("mode", "grid"); render(); };
 $("#mList").onclick = () => { ui.mode = "list"; st.set("mode", "list"); render(); };
-$("#burger").onclick = () => $("#nav").classList.toggle("open");
+$("#burger").onclick = toggleNav;
 $("#sug").onclick = () => {
   const pop = $("#pop"); if (!pop.hidden){ pop.hidden = true; return; }
   const s = tasks.filter(t => !t.done && t.myday !== today() && (t.star || (t.due && t.due < today())));
@@ -375,7 +427,10 @@ $("#theme").onclick = () => {
   r.dataset.theme = dark ? "light" : "dark"; st.set("theme", r.dataset.theme);
 };
 const th = st.get("theme", null); if (th) document.documentElement.dataset.theme = th;
-if (!st.get("tip", false)){ $("#tip").hidden = false; $("#tipOk").onclick = () => { $("#tip").hidden = true; st.set("tip", true); }; }
+$("#tipOk").onclick = () => { $("#tip").hidden = true; st.set("tip", true); };
+if (!st.get("tip", false)) $("#tip").hidden = false;
+if (st.get("collapsed", false)) document.body.classList.add("collapsed");
+hydrate();
 // ---- Áp dụng ngôn ngữ cho phần HTML tĩnh ----
 const orig = new WeakMap();
 function applyStatic(){
@@ -458,12 +513,13 @@ $("#aform").onsubmit = async e => {
   user = data.session.user.email; gate();
 };
 $("#av").onclick = () => { $("#set").hidden = !$("#set").hidden; };
+$("#gear").onclick = $("#av").onclick;
 $("#logout").onclick = async () => { await sb.auth.signOut(); user = null; if (ch){ sb.removeChannel(ch); ch = null; } $("#set").hidden = true; gate(); };
 $("#lang").onchange = e => setLang(e.target.value);
 $("#alang").onclick = () => setLang(lang === "vi" ? "en" : "vi");
 document.addEventListener("click", e => {
-  if (!e.target.closest("#set,#av")) $("#set").hidden = true;
-  if (!e.target.closest("#pop,#sug")) $("#pop").hidden = true;
+  if (!e.target.closest("#set,#av,#gear")) $("#set").hidden = true;
+  if (!e.target.closest("#pop,#sug,#sortb,#groupb")) $("#pop").hidden = true;
 });
 // ---- Sửa tác vụ: tiêu đề, ghi chú, hạn chót ----
 let editId = null;
@@ -582,7 +638,7 @@ $("#aform2").onsubmit = async e => {
   e.preventDefault();
   const text = $("#ag").value.trim(), out = $("#aout"), btn = $("#agen"); if (!text) return;
   plan = []; btn.disabled = true; $("#aadd").classList.add("hide");
-  const t0 = Date.now(), status = h("div", {class:"meta"}), say = () => { status.textContent = T("AI đang suy nghĩ...") + " " + Math.round((Date.now() - t0) / 1000) + "s"; };
+  const t0 = Date.now(), status = h("div", {class:"meta"}), say = () => { status.textContent = T("Đang tạo...") + " " + Math.round((Date.now() - t0) / 1000) + "s"; };
   const show = rows => out.replaceChildren(...rows.map(x => h("label", {class:"aitem"}, h("input", {type:"checkbox", checked:true}),
     h("span", {class:"at"}, x.title.slice(0, 200)), h("input", {type:"date", class:"adate", value:okDate(x.date)}))), status);
   say(); out.replaceChildren(status); const tick = setInterval(say, 1000);
@@ -614,7 +670,7 @@ $("#aadd").onclick = () => {
 $("#asplit").onclick = () => { const title = $("#et").value.trim(); if (!title) return; const due = $("#ed").value; closeEdit(); openAI("split", title, due); };
 $("#ainote").onclick = async () => {
   const title = $("#et").value.trim(), b = $("#ainote"), old = b.textContent; if (!title) return;
-  b.disabled = true; b.textContent = T("AI đang suy nghĩ...");
+  b.disabled = true; b.textContent = T("Đang tạo...");
   const base = $("#en").value ? $("#en").value + "\n" : "";
   try {
     await aiChat("Việc cần làm: " + title, "Viết ghi chú ngắn gồm 2-3 gạch đầu dòng các bước thực hiện việc sau, bằng " + langName() + ". Chỉ trả về nội dung ghi chú.", t => { $("#en").value = base + t.trim(); }, 250);
