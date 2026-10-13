@@ -34,7 +34,7 @@ button{cursor:pointer;background:none;border:0;border-radius:4px;padding:0}
 #sync{font-size:12px;opacity:.85;margin:0 8px;white-space:nowrap}
 .tbtn{width:40px;height:40px;display:grid;place-items:center;color:#fff;border-radius:4px}
 .tbtn:hover{background:rgba(255,255,255,.16)}
-.top .av{width:32px;height:32px;margin-left:6px;padding:0;border-radius:50%;background:#f4d8d8;color:#4a1c1c;font-size:12.5px;font-weight:600;display:grid;place-items:center;line-height:1;flex:none}
+.top .av{width:32px;height:32px;margin-left:6px;padding:0;border-radius:50%;background:#ffffff;color:#1b4fae;font-size:12.5px;font-weight:600;display:grid;place-items:center;line-height:1;flex:none}
 .app{flex:1;display:flex;min-height:0;position:relative}
 nav{width:290px;flex:none;background:var(--side);border-right:1px solid var(--line);padding:6px 0;overflow:auto}
 nav .item{display:flex;align-items:center;gap:16px;width:100%;height:42px;padding:0 16px;border-radius:0;text-align:left;color:var(--ink)}
@@ -144,7 +144,8 @@ input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid
 #aout{display:flex;flex-direction:column;gap:6px;max-height:40vh;overflow:auto}
 .acard .aitem{flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-size:14px}
 .aitem input[type=checkbox]{padding:0;width:20px;height:20px;flex:none}
-.aitem .at{flex:1;min-width:0;overflow-wrap:break-word}
+.acard .aitem input.at{flex:1;min-width:0;border:0;border-bottom:1px solid transparent;border-radius:0;padding:4px 2px;background:none}
+.acard .aitem input.at:hover,.acard .aitem input.at:focus{border-bottom-color:var(--accent);box-shadow:none}
 .aitem .adate{width:auto;padding:4px 6px;font-size:12px;flex:none}
 @media (max-width:760px){
  nav{position:absolute;inset:0 auto 0 0;z-index:6;transform:translateX(-100%);width:280px;transition:transform .2s}
@@ -642,6 +643,7 @@ function parseWhen(text){
   const s = norm(text), days = new Set(), now = new Date(), y = now.getFullYear(), t0 = new Date(today() + "T00:00");
   [[/\bthu\s*(?:2|hai)\b/, 1], [/\bthu\s*(?:3|ba)\b/, 2], [/\bthu\s*(?:4|tu)\b/, 3], [/\bthu\s*(?:5|nam)\b(?!\s*nay)/, 4], [/\bthu\s*(?:6|sau)\b/, 5], [/\bthu\s*(?:7|bay)\b/, 6], [/\bchu nhat\b/, 0],
    [/\bmonday\b/, 1], [/\btuesday\b/, 2], [/\bwednesday\b/, 3], [/\bthursday\b/, 4], [/\bfriday\b/, 5], [/\bsaturday\b/, 6], [/\bsunday\b/, 0]].forEach(([re, d]) => { if (re.test(s)) days.add(d); });
+  if (/\b(?:moi|hang) ngay\b/.test(s)) [0, 1, 2, 3, 4, 5, 6].forEach(d => days.add(d));
   let end = null, m;
   if ((m = s.match(/(?:het|den(?: het)?|trong)\s*thang\s*(\d{1,2})/)) && +m[1] >= 1 && +m[1] <= 12){ const yy = +m[1] - 1 < now.getMonth() ? y + 1 : y; end = new Date(yy, +m[1], 0); }
   else if ((m = s.match(/(?:den|truoc|het)\s*(?:ngay\s*)?(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/))){ let yy = m[3] ? (+m[3] < 100 ? 2000 + +m[3] : +m[3]) : y; end = new Date(yy, +m[2] - 1, +m[1]); if (!m[3] && end < t0) end = new Date(yy + 1, +m[2] - 1, +m[1]); }
@@ -658,6 +660,24 @@ function parseWhen(text){
 }
 function parseTitles(text){
   return text.split("\n").map(l => l.replace(/[*_`#]/g, "").replace(/^\s*(?:\d{1,2}[.)]\s*|[-•]\s*)/, "").replace(/^\d{4}-\d{2}-\d{2}\s*[|:–—-]\s*/, "").trim()).filter(l => l.length >= 3);
+}
+function subjectOf(text){   // chỉ lấy tên môn/việc theo đúng yêu cầu, bỏ phần nói về lịch
+  let s = " " + text.normalize("NFC").trim().replace(/\s+/g, " ") + " ", n = norm(s);
+  const cut = re => { for (let m; (m = re.exec(n)); ){ s = s.slice(0, m.index) + " " + s.slice(m.index + m[0].length); n = norm(s); } };
+  cut(/(?:vao\s+)?(?:moi|hang|mooi)\s+(?:thu\s*(?:2|3|4|5|6|7|hai|ba|tu|nam|sau|bay)|chu nhat|ngay|tuan|thang)/);
+  cut(/\b(?:vao\s+)?(?:thu\s*(?:2|3|4|5|6|7|hai|ba|tu|sau|bay)|thu\s*nam(?!\s*nay)|chu nhat)\b/);
+  cut(/\b(?:den(?: het)?|trong|het)\s*thang\s*\d{1,2}(?:\s*nam\s*nay)?/);
+  cut(/\b(?:den|truoc|het)\s*(?:ngay\s*)?\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?/);
+  cut(/\b(?:den\s+)?het nam(?: nay)?\b|\btrong\s*\d{1,2}\s*(?:tuan|ngay)\b|\b(?:trong\s+)?(?:tuan|thang) nay\b|\bnam nay\b/);
+  cut(/\b(?:tao|lap|xep|len)\s+(?:lich|ke hoach)\b|\b(?:lich|ke hoach)\b/);
+  cut(/\b(?:tren|o)\s+(?:truong|lop)\b|\b(?:hay|giup toi|giup minh|cho toi|toi muon|toi can|minh muon)\b/);
+  s = s.replace(/[,.;:]+/g, " ").replace(/\s+/g, " ").trim(); n = norm(s);
+  const mon = n.match(/(?:^|\s)mon\s+/);
+  if (mon) s = s.slice(mon.index + mon[0].length);
+  else s = s.replace(/^(?:học|hoc)\s+/i, "");
+  s = s.replace(/(?:^|\s)(?:và|với|đến|trong|vào|trước)$/i, "").trim();
+  s = s || text.trim();
+  return s.charAt(0).toUpperCase() + s.slice(1);
 }
 function spreadIfFlat(rows, endIso){   // nếu mô hình trả toàn cùng một ngày thì rải đều tới hạn cuối
   if (rows.length < 2 || new Set(rows.map(r => okDate(r.date))).size > 1) return rows;
@@ -676,17 +696,20 @@ $("#aform2").onsubmit = async e => {
   const note = sched ? h("div", {class:"meta"}, T("Đã xếp lịch theo yêu cầu:") + " " + sched.map(d => d.slice(8) + "/" + d.slice(5, 7)).join(", ")) : null;
   const fromText = t => sched ? parseTitles(t).slice(0, sched.length).map((x, i) => ({ title:x, date:sched[i] })) : parsePlan(t);
   const show = rows => out.replaceChildren(...(note ? [note] : []), ...rows.map(x => h("label", {class:"aitem"}, h("input", {type:"checkbox", checked:true}),
-    h("span", {class:"at"}, x.title.slice(0, 200)), h("input", {type:"date", class:"adate", value:okDate(x.date)}))), status);
+    h("input", {type:"text", class:"at", value:x.title.slice(0, 200), "aria-label":"Tên việc"}), h("input", {type:"date", class:"adate", value:okDate(x.date)}))), status);
   say(); out.replaceChildren(status); const tick = setInterval(say, 1000);
   try {
     const endIso = (when && when.end) || (aiMode === "split" && splitDue) || null;
-    const full = await aiChat((aiMode === "plan" ? "Yêu cầu: " : "Công việc: ") + text, sched ? schedSys(sched.length) : aiSys(endIso), t => {
-      const lines = t.split("\n"); lines.pop();                      // bỏ dòng đang viết dở
-      const rows = fromText(lines.join("\n")); if (rows.length !== plan.length){ plan = rows; show(rows); }
-    }, sched ? 350 : 450);
-    plan = fromText(full);
-    if (!plan.length) throw new SyntaxError("empty");
-    if (!sched) plan = spreadIfFlat(plan, endIso);
+    if (sched){ const name = subjectOf(text); plan = sched.map(d => ({ title:name, date:d })); }   // có lịch: chỉ ghi tên môn, không cần AI
+    else {
+      const full = await aiChat((aiMode === "plan" ? "Yêu cầu: " : "Công việc: ") + text, aiSys(endIso), t => {
+        const lines = t.split("\n"); lines.pop();                      // bỏ dòng đang viết dở
+        const rows = parsePlan(lines.join("\n")); if (rows.length !== plan.length){ plan = rows; show(rows); }
+      }, 450);
+      plan = parsePlan(full);
+      if (!plan.length) throw new SyntaxError("empty");
+      plan = spreadIfFlat(plan, endIso);
+    }
     plan.sort((a, b) => (okDate(a.date) || "9").localeCompare(okDate(b.date) || "9"));
     show(plan); status.remove(); $("#aadd").classList.remove("hide");
   } catch (err) {
@@ -699,7 +722,7 @@ $("#aadd").onclick = () => {
   [...$("#aout").querySelectorAll(".aitem")].forEach((r, i) => {
     if (!r.querySelector("input").checked) return;
     const due = r.querySelector(".adate").value, x = plan[i];
-    add(x.title.trim().slice(0, 200), due, ((x.note || "").trim() + (splitOf ? "\n↳ " + splitOf : "")).trim().slice(0, 500));
+    add((r.querySelector(".at").value.trim() || x.title).slice(0, 200), due, ((x.note || "").trim() + (splitOf ? "\n↳ " + splitOf : "")).trim().slice(0, 500));
     if (due && (!first || due < first)) first = due;
   });
   $("#ai").classList.add("hide");
