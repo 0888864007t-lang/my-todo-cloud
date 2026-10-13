@@ -230,7 +230,6 @@ input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid
 <div class="modal hide" id="ai">
   <form class="acard wide" id="aform2">
     <h2>Trợ lý lập kế hoạch</h2>
-    <div class="tabs"><button type="button" id="mPlan" class="on">Lập kế hoạch</button><button type="button" id="mSplit">Chia nhỏ việc</button></div>
     <label><span id="alabel">Bạn cần làm gì?</span><textarea id="ag"></textarea></label>
     <div id="aout"></div>
     <div class="row"><button type="button" class="ghost" id="aclose">Đóng</button><button class="go" id="agen">Tạo kế hoạch</button></div>
@@ -610,10 +609,6 @@ let plan = [], aiMode = "plan", splitOf = "", splitDue = "";
 const okDate = s => (/^\d{4}-\d{2}-\d{2}$/.test(s || "") && !isNaN(new Date(s))) ? (s < today() ? today() : s) : "";
 function openAI(mode, text = "", parentDue = null){
   aiMode = mode; splitOf = parentDue === null ? "" : text; splitDue = parentDue || "";
-  $("#mPlan").classList.toggle("on", mode === "plan"); $("#mSplit").classList.toggle("on", mode === "split");
-  $("#alabel").textContent = T(mode === "plan" ? "Bạn cần làm gì?" : "Công việc cần chia nhỏ");
-  $("#ag").placeholder = T(mode === "plan" ? "Ví dụ: Tuần này tôi cần ôn SQL, làm bài C++ và hoàn thành báo cáo." : "Ví dụ: Làm báo cáo cơ sở dữ liệu phân tán");
-  $("#agen").textContent = T(mode === "plan" ? "Tạo kế hoạch" : "Chia nhỏ việc");
   warmUp(); $("#ag").value = text; $("#aout").replaceChildren(); $("#aadd").classList.add("hide"); $("#ai").classList.remove("hide"); $("#ag").focus();
 }
 function aiSys(endIso){
@@ -631,8 +626,6 @@ function parsePlan(text){
   return lines.map(l => { const m = l.match(/^(?:\d{1,2}[.)]\s*|[-•]\s*)?(.{3,})$/); return m ? { date:"", title:m[1].trim() } : null; }).filter(Boolean).slice(0, 14);
 }
 $("#aibtn").onclick = () => openAI("plan");
-$("#mPlan").onclick = () => openAI("plan", $("#ag").value);
-$("#mSplit").onclick = () => openAI("split", $("#ag").value);
 $("#aclose").onclick = () => $("#ai").classList.add("hide");
 $("#ai").onclick = e => { if (e.target.id === "ai") $("#ai").classList.add("hide"); };
 document.addEventListener("keydown", e => { if (e.key === "Escape") $("#ai").classList.add("hide"); });
