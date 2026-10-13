@@ -259,7 +259,7 @@ const EN = {"Việc cần làm":"To-do","Tìm kiếm":"Search","Giao diện sán
 "Tên đăng nhập tối thiểu 3 ký tự.":"Username must be at least 3 characters.","Mật khẩu tối thiểu 6 ký tự.":"Password must be at least 6 characters.",
 "Mật khẩu nhập lại không khớp.":"Passwords do not match.","Tên đăng nhập đã tồn tại.":"That username is already taken.","Sai tên đăng nhập hoặc mật khẩu.":"Wrong username or password.",
 "Trình duyệt này không hỗ trợ đăng nhập an toàn. Hãy mở bằng localhost hoặc https.":"This browser can't do secure login. Open the app via localhost or https.",
-"Công việc":"Tasks","Đồng bộ":"Sync","Đã xếp lịch theo yêu cầu:":"Scheduled as you asked:","Trợ lý":"Assistant","Trợ lý (Ollama)":"Assistant (Ollama)","Trợ lý lập kế hoạch":"Planner","Gợi ý ghi chú":"Suggest a note","Chia nhỏ việc này":"Split this task","Đang tạo...":"Working...",
+"Công việc":"Tasks","Đồng bộ":"Sync","ngày":"days","Đã xếp lịch theo yêu cầu:":"Scheduled as you asked:","Trợ lý":"Assistant","Trợ lý (Ollama)":"Assistant (Ollama)","Trợ lý lập kế hoạch":"Planner","Gợi ý ghi chú":"Suggest a note","Chia nhỏ việc này":"Split this task","Đang tạo...":"Working...",
 "Đã lưu":"Saved","Đang lưu...":"Saving...","Lỗi đồng bộ":"Sync error","Trợ giúp":"Help","Sắp xếp":"Sort","Nhóm":"Group","Danh sách mới":"New list","Không nhóm":"No grouping","Theo danh sách":"By list","Theo hạn chót":"By due date",
 "Ngày tạo":"Date created","A đến Z":"A to Z","Sắp xếp theo ngày tạo":"Sorted by creation date","Sắp xếp theo A đến Z":"Sorted A to Z","Sắp xếp theo hạn chót":"Sorted by due date","Sắp xếp theo quan trọng":"Sorted by importance",
 "Nhóm theo danh sách":"Grouped by list","Nhóm theo hạn chót":"Grouped by due date","Bỏ sắp xếp":"Clear sort","Bỏ nhóm":"Clear grouping","Lịch":"Calendar","Lập kế hoạch":"Plan","Chia nhỏ việc":"Split a task","Bạn cần làm gì?":"What do you need to do?","Công việc cần chia nhỏ":"Task to split",
@@ -606,7 +606,7 @@ function renderCal(){
 
 // ---- AI: lập kế hoạch tự động + chia nhỏ công việc ----
 let plan = [], aiMode = "plan", splitOf = "", splitDue = "";
-const okDate = s => (/^\d{4}-\d{2}-\d{2}$/.test(s || "") && !isNaN(new Date(s))) ? (s < today() ? today() : s) : "";
+const okDate = (s, past) => (/^\d{4}-\d{2}-\d{2}$/.test(s || "") && !isNaN(new Date(s))) ? (past || s >= today() ? s : today()) : "";
 function openAI(mode, text = "", parentDue = null){
   aiMode = mode; splitOf = parentDue === null ? "" : text; splitDue = parentDue || "";
   warmUp(); $("#ag").value = text; $("#aout").replaceChildren(); $("#aadd").classList.add("hide"); $("#ai").classList.remove("hide"); $("#ag").focus();
@@ -620,7 +620,7 @@ function aiSys(endIso){
     : "Bạn là trợ lý chia nhỏ công việc. Chia công việc của người dùng thành 4-5 bước nhỏ, cụ thể, theo thứ tự thực hiện (ví dụ: chuẩn bị, thực hiện, kiểm thử, hoàn thiện). " + (splitDue ? "Hạn chót của công việc gốc là " + splitDue + ", mọi bước phải xong trước hoặc đúng ngày này. " : "Nếu không có hạn chót, hãy rải các bước trong 7 ngày tới. ") + when + fmt;
 }
 function parsePlan(text){
-  const lines = text.split("\n").map(l => l.replace(/[*_`#]/g, "").trim());
+  const lines = text.split("\n").map(l => l.replace(/[*_`#]/g, "").trim().replace(/^((?:\d{1,2}[.)]\s*|[-•]\s*)?)(\d{1,2})[\/.](\d{1,2})[\/.](\d{4})/, (m, pre, d, mo, yy) => pre + yy + "-" + mo.padStart(2, "0") + "-" + d.padStart(2, "0")));
   const strict = lines.map(l => { const m = l.match(/^(?:\d{1,2}[.)]\s*|[-•]\s*)?(\d{4}-\d{2}-\d{2})\s*[|:–—-]\s*(.+)$/); return m ? { date:m[1], title:m[2].trim() } : null; }).filter(Boolean);
   if (strict.length) return strict.slice(0, 14);
   return lines.map(l => { const m = l.match(/^(?:\d{1,2}[.)]\s*|[-•]\s*)?(.{3,})$/); return m ? { date:"", title:m[1].trim() } : null; }).filter(Boolean).slice(0, 14);
@@ -637,8 +637,15 @@ function parseWhen(text){
   [[/\bthu\s*(?:2|hai)\b/, 1], [/\bthu\s*(?:3|ba)\b/, 2], [/\bthu\s*(?:4|tu)\b/, 3], [/\bthu\s*(?:5|nam)\b(?!\s*nay)/, 4], [/\bthu\s*(?:6|sau)\b/, 5], [/\bthu\s*(?:7|bay)\b/, 6], [/\bchu nhat\b/, 0],
    [/\bmonday\b/, 1], [/\btuesday\b/, 2], [/\bwednesday\b/, 3], [/\bthursday\b/, 4], [/\bfriday\b/, 5], [/\bsaturday\b/, 6], [/\bsunday\b/, 0]].forEach(([re, d]) => { if (re.test(s)) days.add(d); });
   if (/\b(?:moi|hang) ngay\b/.test(s)) [0, 1, 2, 3, 4, 5, 6].forEach(d => days.add(d));
-  let end = null, m;
-  if ((m = s.match(/(?:het|den(?: het)?|trong)\s*thang\s*(\d{1,2})/)) && +m[1] >= 1 && +m[1] <= 12){ const yy = +m[1] - 1 < now.getMonth() ? y + 1 : y; end = new Date(yy, +m[1], 0); }
+  let end = null, m, start = t0;
+  const D2 = "(\\d{1,2})[\\/\\-.](\\d{1,2})(?:[\\/\\-.](\\d{2,4}))?", rm = s.match(new RegExp(D2 + "\\s*(?:->|=>|>|-|–|—|den|toi)\\s*(?:ngay\\s*)?" + D2));
+  const mk = (d, mo, yy) => new Date(yy ? (+yy < 100 ? 2000 + +yy : +yy) : y, +mo - 1, +d);
+  if (rm && +rm[2] <= 12 && +rm[5] <= 12 && (/\btu\s*(?:ngay\s*)?\d/.test(s) || (rm[3] && rm[6]))){
+    start = mk(rm[1], rm[2], rm[3]); end = mk(rm[4], rm[5], rm[6]);
+    if (end < start && !rm[6]) end = mk(rm[4], rm[5], y + 1);
+    if (!days.size) [0, 1, 2, 3, 4, 5, 6].forEach(d => days.add(d));
+  }
+  else if ((m = s.match(/(?:het|den(?: het)?|trong)\s*thang\s*(\d{1,2})/)) && +m[1] >= 1 && +m[1] <= 12){ const yy = +m[1] - 1 < now.getMonth() ? y + 1 : y; end = new Date(yy, +m[1], 0); }
   else if ((m = s.match(/(?:den|truoc|het)\s*(?:ngay\s*)?(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/))){ let yy = m[3] ? (+m[3] < 100 ? 2000 + +m[3] : +m[3]) : y; end = new Date(yy, +m[2] - 1, +m[1]); if (!m[3] && end < t0) end = new Date(yy + 1, +m[2] - 1, +m[1]); }
   else if (/het nam/.test(s)) end = new Date(y, 11, 31);
   else if ((m = s.match(/trong\s*(\d{1,2})\s*tuan/))) end = new Date(t0.getTime() + +m[1] * 7 * 864e5);
@@ -648,7 +655,7 @@ function parseWhen(text){
   if (!days.size && !end) return null;
   if (days.size && !end) end = new Date(t0.getTime() + 28 * 864e5);
   const dates = [];
-  if (days.size) for (let d = new Date(t0); d <= end && dates.length < 12; d = new Date(d.getTime() + 864e5)) if (days.has(d.getDay())) dates.push(isoOf(d));
+  if (days.size) for (let d = new Date(start); d <= end && dates.length < 62; d = new Date(d.getTime() + 864e5)) if (days.has(d.getDay())) dates.push(isoOf(d));
   return { dates, end: isoOf(end) };
 }
 function parseTitles(text){
@@ -658,6 +665,7 @@ function subjectOf(text){   // chỉ lấy tên môn/việc theo đúng yêu c�
   let s = " " + text.normalize("NFC").trim().replace(/\s+/g, " ") + " ", n = norm(s);
   const cut = re => { for (let m; (m = re.exec(n)); ){ s = s.slice(0, m.index) + " " + s.slice(m.index + m[0].length); n = norm(s); } };
   cut(/(?:vao\s+)?(?:moi|hang|mooi)\s+(?:thu\s*(?:2|3|4|5|6|7|hai|ba|tu|nam|sau|bay)|chu nhat|ngay|tuan|thang)/);
+  cut(/(?:\btu\s*)?(?:ngay\s*)?\d{1,2}[\/\-.]\d{1,2}(?:[\/\-.]\d{2,4})?\s*(?:->|=>|>|-|–|—|den|toi)\s*(?:ngay\s*)?\d{1,2}[\/\-.]\d{1,2}(?:[\/\-.]\d{2,4})?/);
   cut(/\b(?:vao\s+)?(?:thu\s*(?:2|3|4|5|6|7|hai|ba|tu|sau|bay)|thu\s*nam(?!\s*nay)|chu nhat)\b/);
   cut(/\b(?:den(?: het)?|trong|het)\s*thang\s*\d{1,2}(?:\s*nam\s*nay)?/);
   cut(/\b(?:den|truoc|het)\s*(?:ngay\s*)?\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?/);
@@ -686,10 +694,10 @@ $("#aform2").onsubmit = async e => {
   plan = []; btn.disabled = true; $("#aadd").classList.add("hide");
   const when = parseWhen(text), sched = when && when.dates.length ? when.dates : null;
   const t0 = Date.now(), status = h("div", {class:"meta"}), say = () => { status.textContent = T("Đang tạo...") + " " + Math.round((Date.now() - t0) / 1000) + "s"; };
-  const note = sched ? h("div", {class:"meta"}, T("Đã xếp lịch theo yêu cầu:") + " " + sched.map(d => d.slice(8) + "/" + d.slice(5, 7)).join(", ")) : null;
+  const dm = d => d.slice(8) + "/" + d.slice(5, 7), note = sched ? h("div", {class:"meta"}, T("Đã xếp lịch theo yêu cầu:") + " " + (sched.length > 6 ? sched.length + " " + T("ngày") + ", " + dm(sched[0]) + " → " + dm(sched[sched.length - 1]) : sched.map(dm).join(", "))) : null;
   const fromText = t => sched ? parseTitles(t).slice(0, sched.length).map((x, i) => ({ title:x, date:sched[i] })) : parsePlan(t);
   const show = rows => out.replaceChildren(...(note ? [note] : []), ...rows.map(x => h("label", {class:"aitem"}, h("input", {type:"checkbox", checked:true}),
-    h("input", {type:"text", class:"at", value:x.title.slice(0, 200), "aria-label":"Tên việc"}), h("input", {type:"date", class:"adate", value:okDate(x.date)}))), status);
+    h("input", {type:"text", class:"at", value:x.title.slice(0, 200), "aria-label":"Tên việc"}), h("input", {type:"date", class:"adate", value:okDate(x.date, !!sched)}))), status);
   say(); out.replaceChildren(status); const tick = setInterval(say, 1000);
   try {
     const endIso = (when && when.end) || (aiMode === "split" && splitDue) || null;
@@ -711,13 +719,14 @@ $("#aform2").onsubmit = async e => {
   clearInterval(tick); btn.disabled = false;
 };
 $("#aadd").onclick = () => {
-  let first = "";
+  let first = ""; const dues = [];
   [...$("#aout").querySelectorAll(".aitem")].forEach((r, i) => {
     if (!r.querySelector("input").checked) return;
     const due = r.querySelector(".adate").value, x = plan[i];
     add((r.querySelector(".at").value.trim() || x.title).slice(0, 200), due, ((x.note || "").trim() + (splitOf ? "\n↳ " + splitOf : "")).trim().slice(0, 500));
-    if (due && (!first || due < first)) first = due;
+    if (due) dues.push(due);
   });
+  first = dues.filter(d => d >= today()).sort()[0] || dues.sort()[0] || "";
   $("#ai").classList.add("hide");
   if (first){ ui.view = "cal"; ui.cal = { y:+first.slice(0, 4), m:+first.slice(5, 7) - 1, sel:first }; ui.q = ""; render(); }
 };
