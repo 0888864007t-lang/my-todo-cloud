@@ -3,7 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Việc cần làm</title>
+<title>To-do list</title>
+<meta name="description" content="Ứng dụng quản lý việc cần làm: danh sách, xem theo lịch, trợ lý AI lập kế hoạch và đồng bộ giữa các thiết bị.">
+<meta name="theme-color" content="#2564cf">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="To-do list">
+<meta property="og:description" content="Quản lý việc hằng ngày, xem theo lịch và lập kế hoạch cùng trợ lý AI.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232564cf'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap">
 <style>
 :root{--bg:#faf9f8;--side:#ffffff;--card:#ffffff;--ink:#323130;--mute:#605e5c;--line:#e1dfdd;--top:#2564cf;--top2:#1b4fae;--topink:#ffffff;--accent:#2564cf;--on:#ffffff;--sel:#eff6fc;--hover:#f3f2f1;--warn:#a4262c;--shadow:0 1.6px 3.6px rgba(0,0,0,.13),0 .3px .9px rgba(0,0,0,.1);
@@ -151,22 +160,31 @@ input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid
  nav{position:absolute;inset:0 auto 0 0;z-index:6;transform:translateX(-100%);width:280px;transition:transform .2s}
  nav.open{transform:none;box-shadow:0 0 24px rgba(0,0,0,.3)}
  nav .navburger{display:none}
- main{padding:14px}.brand{display:none}.search{flex:1;margin:0 4px}#sync,#help{display:none}
+ main{padding:14px}.brand{display:none}.search{flex:1;margin:0 4px}#sync,#help{display:none}#sync.err{display:inline}
  .day{min-height:54px}.chip,.more{display:none}.dot{display:block}
  .head{gap:8px}.chips{justify-content:flex-start}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+#sync.err{opacity:1;font-weight:600;text-decoration:underline;cursor:pointer}
+#set summary{cursor:pointer;padding:6px 0;color:var(--mute);font-size:12px}
+#set details[open] summary{margin-bottom:4px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:14px;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:4px;box-shadow:0 6.4px 14.4px rgba(0,0,0,.25);max-width:calc(100% - 32px)}
+#toast[hidden]{display:none}
+#toast button{color:var(--bg);text-decoration:underline;font-weight:600;padding:2px 4px}
 </style>
 </head>
 <body>
 <div id="auth">
   <button class="alang" id="alang"></button>
   <form class="acard" id="aform">
+    <h2 id="atitle">Việc cần làm</h2>
+    <p id="atag" style="margin:0">Quản lý việc hằng ngày, xem theo lịch và lập kế hoạch cùng trợ lý AI.</p>
     <p class="sub" id="asubtxt" style="margin:0">Dữ liệu được đồng bộ giữa các thiết bị của bạn.</p>
     <div class="tabs" id="tabs"><button type="button" id="tLogin">Đăng nhập</button><button type="button" id="tReg">Đăng ký</button></div>
     <label id="row0">Email<input id="au" type="email" autocomplete="email" required></label>
     <label id="row1">Mật khẩu<input id="ap" type="password" autocomplete="current-password" required></label>
     <label id="row2" class="hide">Nhập lại mật khẩu<input id="ap2" type="password" autocomplete="new-password"></label>
+    <button type="button" class="linkbtn" id="showpw">Hiện mật khẩu</button>
     <button type="button" class="linkbtn" id="forgot">Quên mật khẩu?</button><button type="button" class="linkbtn hide" id="back">← Quay lại đăng nhập</button>
     <div id="aerr" role="alert"></div>
     <button class="go" id="asub"></button>
@@ -174,26 +192,29 @@ input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid
 </div>
 <div class="top">
   <button class="waffle" id="burger" aria-label="Menu"><span data-i="waffle"></span></button>
-  <b class="brand">To do list</b>
+  <b class="brand">Việc cần làm</b>
   <div class="search"><span class="si" data-i="search" data-s="18"></span><input id="q" type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm"></div>
-  <span id="sync" title="Đồng bộ"></span>
+  <span id="sync" title="Đồng bộ" role="status" aria-live="polite"></span>
   <button class="tbtn" id="theme" aria-label="Giao diện sáng/tối"><span data-i="theme"></span></button>
   <button class="tbtn" id="gear" aria-label="Cài đặt" title="Cài đặt"><span data-i="gear"></span></button>
   <button class="tbtn" id="help" aria-label="Trợ giúp" title="Trợ giúp"><span data-i="help"></span></button>
-  <button class="av" id="av" aria-label="Tài khoản" title="Tài khoản">TN</button>
+  <button class="av" id="av" aria-label="Tài khoản" title="Tài khoản"></button>
   <div class="pop" id="set" hidden>
     <div class="sub">Tài khoản</div><div id="who" style="font-weight:600;padding-bottom:6px"></div>
     <label class="sub" for="lang">Ngôn ngữ</label>
     <select id="lang"><option value="vi">Tiếng Việt</option><option value="en">English</option></select>
-    <div class="sub" style="margin-top:6px">Trợ lý (Ollama)</div>
-    <input id="aiurl" placeholder="http://localhost:11434" aria-label="Ollama URL">
-    <select id="aimodel" aria-label="Model"></select>
-    <button id="aitest">Kiểm tra kết nối</button><div class="meta" id="aistat" style="padding:0 0 6px"></div>
+    <details id="aiset"><summary>Trợ lý AI (tùy chọn)</summary>
+      <div class="sub">Chạy bằng Ollama trên máy của bạn nên chỉ dùng được trên thiết bị đã cài Ollama. Nội dung chỉ gửi tới địa chỉ bên dưới.</div>
+      <input id="aiurl" placeholder="http://localhost:11434" aria-label="Ollama URL">
+      <select id="aimodel" aria-label="Model"></select>
+      <button id="aitest">Kiểm tra kết nối</button><div class="meta" id="aistat" style="padding:0 0 6px"></div>
+    </details>
+    <button id="export">Xuất dữ liệu (JSON)</button>
     <button id="logout">Đăng xuất</button>
   </div>
 </div>
 <div class="app">
-  <nav id="nav"></nav>
+  <nav id="nav" aria-label="Điều hướng"></nav>
   <main>
     <div class="head">
       <div class="tcol"><div class="trow"><span id="ticon"></span><h1 id="title"></h1><button class="dots hide" id="more" aria-label="Xóa danh sách" title="Xóa danh sách"><span data-i="dots"></span></button></div><div class="sub" id="sub"></div></div>
@@ -202,8 +223,8 @@ input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid
       <div class="opts">
         <button id="sortb"><span data-i="sort" data-s="18"></span>Sắp xếp</button>
         <button id="groupb"><span data-i="group" data-s="18"></span>Nhóm</button>
-        <button id="aibtn"><span data-i="chat" data-s="18"></span>Trợ lý</button>
-        <button id="sug"><span data-i="bulb" data-s="18"></span>Gợi ý</button>
+        <button id="aibtn"><span data-i="chat" data-s="18"></span>Trợ lý AI</button>
+        <button id="sug" title="Gợi ý cho Ngày của tôi"><span data-i="bulb" data-s="18"></span>Gợi ý</button>
         <div class="pop" id="pop" hidden></div>
       </div>
     </div>
@@ -211,15 +232,15 @@ input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid
     <div class="tip" id="tip" hidden>Thêm tác vụ mới hoặc chọn từ Gợi ý để lên kế hoạch cho ngày của bạn.<br><button id="tipOk">Tiếp theo</button></div>
     <form class="add" id="form">
       <span class="pl" data-i="plus"></span>
-      <input type="text" id="text" placeholder="Thêm một tác vụ" autocomplete="off" aria-label="Thêm một tác vụ">
+      <input type="text" id="text" maxlength="200" placeholder="Thêm một tác vụ" autocomplete="off" aria-label="Thêm một tác vụ">
       <div class="addr"><input type="date" id="due" aria-label="Hạn chót"><button class="go">Thêm</button></div>
     </form>
     <div id="out"></div>
   </main>
 </div>
 <div class="modal hide" id="edit">
-  <form class="acard" id="eform">
-    <h2>Sửa tác vụ</h2>
+  <form class="acard" id="eform" role="dialog" aria-modal="true" aria-labelledby="etitle">
+    <h2 id="etitle">Sửa tác vụ</h2>
     <label>Tiêu đề<input id="et" required maxlength="200" autocomplete="off"></label>
     <label>Ghi chú<textarea id="en" placeholder="Thêm ghi chú..."></textarea></label>
     <button type="button" class="linkbtn" id="ainote">Gợi ý ghi chú</button><button type="button" class="linkbtn" id="asplit">Chia nhỏ việc này</button>
@@ -228,14 +249,16 @@ input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid
   </form>
 </div>
 <div class="modal hide" id="ai">
-  <form class="acard wide" id="aform2">
-    <h2>Trợ lý lập kế hoạch</h2>
+  <form class="acard wide" id="aform2" role="dialog" aria-modal="true" aria-labelledby="aititle">
+    <h2 id="aititle">Trợ lý lập kế hoạch</h2>
+    <div class="meta" id="ahint">Trợ lý AI chưa kết nối. Bạn vẫn tạo được lịch lặp lại, ví dụ “ôn SQL mỗi thứ 2 đến hết tháng 10”. Để dùng AI, mở Cài đặt → Trợ lý AI.</div>
     <label><span id="alabel">Bạn cần làm gì?</span><textarea id="ag"></textarea></label>
     <div id="aout"></div>
     <div class="row"><button type="button" class="ghost" id="aclose">Đóng</button><button class="go" id="agen">Tạo kế hoạch</button></div>
     <button type="button" class="go hide" id="aadd">Thêm vào lịch</button>
   </form>
 </div>
+<div id="toast" role="status" aria-live="polite" hidden></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ===== ĐIỀN 2 GIÁ TRỊ NÀY (Supabase → Project Settings → API) =====
@@ -256,7 +279,7 @@ const EN = {"Việc cần làm":"To-do","Tìm kiếm":"Search","Giao diện sán
 "Thêm một tác vụ":"Add a task","Hạn chót":"Due date","Thêm":"Add","Tài khoản":"Account","Ngôn ngữ":"Language","Đăng xuất":"Log out",
 "Đăng nhập":"Log in","Đăng ký":"Sign up","Tạo tài khoản":"Create account","Tên đăng nhập":"Username","Mật khẩu":"Password","Nhập lại mật khẩu":"Confirm password",
 "Dữ liệu được đồng bộ giữa các thiết bị của bạn.":"Your data syncs across your devices.",
-"Tên đăng nhập tối thiểu 3 ký tự.":"Username must be at least 3 characters.","Mật khẩu tối thiểu 6 ký tự.":"Password must be at least 6 characters.",
+"Tên đăng nhập tối thiểu 3 ký tự.":"Username must be at least 3 characters.","Mật khẩu tối thiểu 8 ký tự.":"Password must be at least 8 characters.",
 "Mật khẩu nhập lại không khớp.":"Passwords do not match.","Tên đăng nhập đã tồn tại.":"That username is already taken.","Sai tên đăng nhập hoặc mật khẩu.":"Wrong username or password.",
 "Trình duyệt này không hỗ trợ đăng nhập an toàn. Hãy mở bằng localhost hoặc https.":"This browser can't do secure login. Open the app via localhost or https.",
 "Công việc":"Tasks","Đồng bộ":"Sync","ngày":"days","Đã xếp lịch theo yêu cầu:":"Scheduled as you asked:","Trợ lý":"Assistant","Trợ lý (Ollama)":"Assistant (Ollama)","Trợ lý lập kế hoạch":"Planner","Gợi ý ghi chú":"Suggest a note","Chia nhỏ việc này":"Split this task","Đang tạo...":"Working...",
@@ -280,12 +303,25 @@ const EN = {"Việc cần làm":"To-do","Tìm kiếm":"Search","Giao diện sán
 " tác vụ đang làm":" tasks open","Không tìm thấy tác vụ nào.":"No tasks found.","Chưa có tác vụ nào. Hãy thêm tác vụ đầu tiên ở ô phía trên.":"No tasks yet. Add your first task above.",
 "Đã hoàn thành (":"Completed (","Gợi ý cho Ngày của tôi":"Suggestions for My Day","Chưa có gợi ý. Tác vụ quan trọng hoặc quá hạn sẽ xuất hiện ở đây.":"No suggestions yet. Important or overdue tasks will appear here."};
 const T = s => lang === "en" ? (EN[s] ?? s) : s;
+Object.assign(EN, {
+"Quản lý việc hằng ngày, xem theo lịch và lập kế hoạch cùng trợ lý AI.":"Manage daily tasks, see them on a calendar and plan with an AI assistant.",
+"Hiện mật khẩu":"Show password","Ẩn mật khẩu":"Hide password","Xuất dữ liệu (JSON)":"Export data (JSON)","Trợ lý AI":"AI assistant",
+"Trợ lý AI (tùy chọn)":"AI assistant (optional)","Điều hướng":"Navigation","tác vụ":"tasks",
+"Chạy bằng Ollama trên máy của bạn nên chỉ dùng được trên thiết bị đã cài Ollama. Nội dung chỉ gửi tới địa chỉ bên dưới.":"Runs on Ollama on your own machine, so it only works on a device with Ollama installed. Content is only sent to the address below.",
+"Trợ lý AI chưa kết nối. Bạn vẫn tạo được lịch lặp lại, ví dụ “ôn SQL mỗi thứ 2 đến hết tháng 10”. Để dùng AI, mở Cài đặt → Trợ lý AI.":"The AI assistant isn't connected. You can still create recurring schedules, e.g. “review SQL every Monday until end of October”. To use AI, open Settings → AI assistant.",
+"Đã xóa tác vụ.":"Task deleted.","Hoàn tác":"Undo","Bấm để thử lại":"Click to retry",
+"Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại.":"Can't reach the server. Check your connection and try again."});
 
 // ---- Dữ liệu ----
 let user = null, tasks = [], lists = [], remote = new Map(), pending = false, ch = null;
 const rowT = t => ({ id:t.id, text:t.text, note:t.note || "", done:t.done, star:t.star, myday:t.myday || null, due:t.due || null, list:t.list, created:t.created });
 const snap = () => new Map([...tasks.map(t => ["t:" + t.id, JSON.stringify(rowT(t))]), ...lists.map(l => ["l:" + l.id, JSON.stringify({id:l.id, name:l.name})])]);
-const setSync = s => { $("#sync").textContent = T({"☁️":"Đã lưu","⏳":"Đang lưu...","⚠️":"Lỗi đồng bộ"}[s]); };
+let syncErr = false;
+const setSync = s => {
+  const el = $("#sync"); syncErr = s === "⚠️"; el.classList.toggle("err", syncErr);
+  el.title = T(syncErr ? "Bấm để thử lại" : "Đồng bộ");
+  el.textContent = T({"☁️":"Đã lưu","⏳":"Đang lưu...","⚠️":"Lỗi đồng bộ"}[s]) + (syncErr ? " ↻" : "");
+};
 async function load(){   // tải toàn bộ dữ liệu của tài khoản từ Supabase
   const [a, b] = await Promise.all([sb.from("tasks").select("*"), sb.from("lists").select("id,name")]);
   if (a.error || b.error){ console.error(a.error || b.error); return setSync("⚠️"); }
@@ -302,7 +338,7 @@ async function push(){   // chỉ gửi những dòng đã thay đổi hoặc b�
     for (const tb of ["lists","tasks"]) if (up[tb].length){ const { error } = await sb.from(tb).upsert(up[tb]); if (error) throw error; }
     for (const tb of ["tasks","lists"]) if (del[tb].length){ const { error } = await sb.from(tb).delete().in("id", del[tb]); if (error) throw error; }
     remote = cur; setSync("☁️");
-  } catch (e){ console.error(e); setSync("⚠️"); }
+  } catch (e){ console.error(e); setSync("⚠️"); clearTimeout(push.r); push.r = setTimeout(() => { if (user && syncErr) push(); }, 15000); }   // tự thử lại sau 15 giây
   pending = false;
 }
 function listen(){       // nhận thay đổi từ thiết bị khác theo thời gian thực
@@ -338,19 +374,30 @@ function add(text, due, note = ""){
   save(); render();
 }
 
+let toastT;
+function toast(msg, label, fn){
+  const el = $("#toast");
+  el.replaceChildren(h("span", {}, msg), label ? h("button", {onclick(){ clearTimeout(toastT); el.hidden = true; fn(); }}, label) : null);
+  el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { el.hidden = true; }, 6000);
+}
+function removeTask(t){
+  if (!tasks.some(x => x.id === t.id)) return;
+  tasks = tasks.filter(x => x.id !== t.id); save(); render();
+  toast(T("Đã xóa tác vụ."), T("Hoàn tác"), () => { tasks.push(t); save(); render(); });
+}
 function taskEl(t){
   const late = !t.done && t.due && t.due < today();
   const parts = [];
   if (ui.view !== t.list) parts.push(h("span", {}, listName(t.list)));
   if (t.myday === today() && ui.view !== "myday") parts.push(h("span", {class:"mi"}, icon("sun", 13), T("Ngày của tôi")));
   if (t.due) parts.push(h("span", {class:"mi" + (late ? " late" : "")}, icon("plan", 13), new Date(t.due + "T00:00").toLocaleDateString(lang === "en" ? "en-US" : "vi-VN", {day:"2-digit", month:"2-digit", year:"numeric"}) + (late ? " · " + T("(quá hạn)") : "")));
-  const star = h("button", {class:"s" + (t.star ? " on" : ""), title:T("Quan trọng"), onclick(){ t.star = !t.star; save(); render(); }}, icon(t.star ? "starf" : "star", 18));
+  const star = h("button", {class:"s" + (t.star ? " on" : ""), title:T("Quan trọng"), "aria-label":T("Quan trọng"), "aria-pressed":String(!!t.star), onclick(){ t.star = !t.star; save(); render(); }}, icon(t.star ? "starf" : "star", 18));
   const acts = h("div", {class:"acts"},
-    h("button", {title:T("Sửa"), onclick(){ openEdit(t); }}, icon("pencil", 16)),
-    h("button", {class: t.myday === today() ? "on" : "", title:T("Thêm vào Ngày của tôi"), onclick(){ t.myday = t.myday === today() ? null : today(); save(); render(); }}, icon("sun", 16)),
-    h("button", {title:T("Xóa"), onclick(){ tasks = tasks.filter(x => x.id !== t.id); save(); render(); }}, icon("trash", 16)));
+    h("button", {title:T("Sửa"), "aria-label":T("Sửa"), onclick(){ openEdit(t); }}, icon("pencil", 16)),
+    h("button", {class: t.myday === today() ? "on" : "", title:T("Thêm vào Ngày của tôi"), "aria-label":T("Thêm vào Ngày của tôi"), onclick(){ t.myday = t.myday === today() ? null : today(); save(); render(); }}, icon("sun", 16)),
+    h("button", {title:T("Xóa"), "aria-label":T("Xóa"), onclick(){ removeTask(t); }}, icon("trash", 16)));
   return h("div", {class: "task" + (t.done ? " done" : "")},
-    h("input", {type:"checkbox", checked:t.done, onchange(e){ t.done = e.target.checked; save(); render(); }}),
+    h("input", {type:"checkbox", checked:t.done, "aria-label":t.text, onchange(e){ t.done = e.target.checked; save(); render(); }}),
     h("div", {class:"tb"}, h("div", {class:"tt", title:T("Nhấp đúp để sửa"), ondblclick(){ openEdit(t); }}, t.text), t.note && h("div", {class:"note"}, t.note), parts.length ? h("div", {class:"meta"}, parts) : null),
     star, acts);
 }
@@ -375,8 +422,11 @@ function render(){
   $("#ticon").replaceChildren(icon(sys ? sys[1] : "list", 26));
   $("#title").textContent = sys ? T(sys[2]) : listName(ui.view);
   $("#more").classList.toggle("hide", !!sys);
+  $("#sug").classList.toggle("hide", ui.view !== "myday");   // gợi ý chỉ dùng cho Ngày của tôi
+  ["#sortb", "#groupb"].forEach(x => $(x).classList.toggle("hide", ui.view === "cal"));
   $("#sub").textContent = ui.view === "myday" ? new Date().toLocaleDateString(lang === "en" ? "en-US" : "vi-VN", {weekday:"long", day:"numeric", month:"long"}) : count(ui.view) + T(" tác vụ đang làm");
   $("#mGrid").className = ui.mode === "grid" ? "on" : ""; $("#mList").className = ui.mode === "list" ? "on" : "";
+  $("#mGrid").setAttribute("aria-pressed", ui.mode === "grid"); $("#mList").setAttribute("aria-pressed", ui.mode === "list");
 
   // Dòng hiển thị kiểu sắp xếp / nhóm hiện tại
   const chips = $("#chips"); chips.replaceChildren();
@@ -415,6 +465,15 @@ $("#help").onclick = () => { $("#tip").hidden = !$("#tip").hidden; };
 $("#mGrid").onclick = () => { ui.mode = "grid"; st.set("mode", "grid"); render(); };
 $("#mList").onclick = () => { ui.mode = "list"; st.set("mode", "list"); render(); };
 $("#burger").onclick = toggleNav;
+$("main").addEventListener("click", () => $("#nav").classList.remove("open"));   // điện thoại: chạm vào nội dung để đóng menu
+$("#sync").onclick = () => { if (syncErr) push(); };
+addEventListener("online", () => { if (user && syncErr) push(); });
+addEventListener("beforeunload", e => { if (user && (pending || syncErr)){ e.preventDefault(); e.returnValue = ""; } });   // tránh mất thay đổi chưa đồng bộ
+$("#export").onclick = () => {
+  const blob = new Blob([JSON.stringify({ exported:new Date().toISOString(), lists, tasks }, null, 2)], { type:"application/json" });
+  const a = h("a", { href:URL.createObjectURL(blob), download:"viec-can-lam-" + today() + ".json" });
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+};
 $("#sug").onclick = () => {
   const pop = $("#pop"); if (!pop.hidden){ pop.hidden = true; return; }
   const s = tasks.filter(t => !t.done && t.myday !== today() && (t.star || (t.due && t.due < today())));
@@ -454,7 +513,7 @@ function setLang(l){
   applyStatic(); renderAuth(); if (user) render();
 }
 
-// ---- Đăng nhập (tài khoản lưu cục bộ trên trình duyệt, mật khẩu băm PBKDF2) ----
+// ---- Đăng nhập bằng Supabase Auth (email + mật khẩu) ----
 let authMode = "login";
 function renderAuth(){
   const m = authMode, reg = m === "register", pick = m === "forgot" || m === "reset";
@@ -463,6 +522,7 @@ function renderAuth(){
   $("#row1").classList.toggle("hide", m === "forgot");
   $("#row2").classList.toggle("hide", !(reg || m === "reset"));
   $("#forgot").classList.toggle("hide", m !== "login");
+  $("#atag").classList.toggle("hide", pick); $("#showpw").classList.toggle("hide", m === "forgot");
   $("#back").classList.toggle("hide", !pick);
   $("#tLogin").classList.toggle("on", m === "login"); $("#tReg").classList.toggle("on", reg);
   $("#asub").textContent = T({login:"Đăng nhập", register:"Tạo tài khoản", forgot:"Gửi liên kết đặt lại", reset:"Đổi mật khẩu"}[m]);
@@ -475,15 +535,23 @@ async function gate(){
   if (user){
     $("#av").textContent = user.slice(0,2).toUpperCase(); $("#who").textContent = user;
     ui.view = "myday"; ui.q = ""; $("#q").value = "";
-    tasks = []; lists = []; render(); await load(); render(); listen();
+    tasks = []; lists = []; remote = new Map(); render(); await load(); render(); listen();
   } else { $("#au").value = $("#ap").value = $("#ap2").value = ""; $("#aerr").textContent = ""; renderAuth(); }
 }
 $("#tLogin").onclick = () => { authMode = "login"; $("#aerr").textContent = ""; renderAuth(); };
 $("#forgot").onclick = () => { authMode = "forgot"; $("#aerr").textContent = ""; renderAuth(); };
 $("#back").onclick = () => { authMode = "login"; $("#aerr").textContent = ""; renderAuth(); };
 $("#tReg").onclick = () => { authMode = "register"; $("#aerr").textContent = ""; renderAuth(); };
+$("#showpw").onclick = () => {
+  const show = $("#ap").type === "password";
+  $("#ap").type = $("#ap2").type = show ? "text" : "password"; $("#showpw").textContent = T(show ? "Ẩn mật khẩu" : "Hiện mật khẩu");
+};
 $("#aform").onsubmit = async e => {
   e.preventDefault();
+  try { await submitAuth(); }
+  catch (err){ console.error(err); $("#asub").disabled = false; $("#aerr").className = ""; $("#aerr").textContent = T("Không kết nối được máy chủ. Kiểm tra mạng rồi thử lại."); }
+};
+async function submitAuth(){
   const email = $("#au").value.trim(), password = $("#ap").value, reg = authMode === "register", out = $("#aerr");
   out.className = "";
   if (authMode === "forgot"){      // gửi email đặt lại mật khẩu
@@ -494,7 +562,7 @@ $("#aform").onsubmit = async e => {
     out.className = "ok"; return out.textContent = T("Nếu email tồn tại, liên kết đặt lại mật khẩu đã được gửi. Hãy kiểm tra hộp thư (cả mục Spam).");
   }
   if (authMode === "reset"){       // đặt mật khẩu mới sau khi bấm liên kết trong email
-    if (password.length < 6) return out.textContent = T("Mật khẩu tối thiểu 6 ký tự.");
+    if (password.length < 8) return out.textContent = T("Mật khẩu tối thiểu 8 ký tự.");
     if (password !== $("#ap2").value) return out.textContent = T("Mật khẩu nhập lại không khớp.");
     $("#asub").disabled = true;
     const { error } = await sb.auth.updateUser({ password });
@@ -504,7 +572,7 @@ $("#aform").onsubmit = async e => {
     const { data } = await sb.auth.getSession();
     user = data.session ? data.session.user.email : null; authMode = "login"; gate(); return;
   }
-  if (reg && password.length < 6) return out.textContent = T("Mật khẩu tối thiểu 6 ký tự.");
+  if (reg && password.length < 8) return out.textContent = T("Mật khẩu tối thiểu 8 ký tự.");
   if (reg && password !== $("#ap2").value) return out.textContent = T("Mật khẩu nhập lại không khớp.");
   $("#asub").disabled = true;
   const { data, error } = await (reg ? sb.auth.signUp({ email, password, options: { emailRedirectTo: location.origin + location.pathname } }) : sb.auth.signInWithPassword({ email, password }));
@@ -523,9 +591,9 @@ document.addEventListener("click", e => {
   if (!e.target.closest("#pop,#sug,#sortb,#groupb")) $("#pop").hidden = true;
 });
 // ---- Sửa tác vụ: tiêu đề, ghi chú, hạn chót ----
-let editId = null;
-function openEdit(t){ editId = t.id; $("#et").value = t.text; $("#en").value = t.note || ""; $("#ed").value = t.due || ""; $("#edit").classList.remove("hide"); $("#et").focus(); }
-const closeEdit = () => { editId = null; $("#edit").classList.add("hide"); };
+let editId = null, lastFocus = null;
+function openEdit(t){ lastFocus = document.activeElement; editId = t.id; $("#et").value = t.text; $("#en").value = t.note || ""; $("#ed").value = t.due || ""; $("#edit").classList.remove("hide"); $("#et").focus(); }
+const closeEdit = () => { editId = null; $("#edit").classList.add("hide"); if (lastFocus && lastFocus.isConnected) lastFocus.focus(); };
 $("#eform").onsubmit = e => {
   e.preventDefault();
   const t = tasks.find(x => x.id === editId), text = $("#et").value.trim();
@@ -565,9 +633,14 @@ function warmUp(){   // yêu cầu rỗng: chỉ để Ollama nạp model vào R
   const model = st.get("aimodel", ""); if (!model) return;
   fetch(aiUrl() + "/api/generate", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ model, keep_alive:"30m" }) }).catch(() => {});
 }
+const hasAI = () => !!st.get("aimodel", "");
+function syncAIUi(){   // chưa có model thì ẩn các nút cần AI và hiện gợi ý cách bật
+  $("#ainote").classList.toggle("hide", !hasAI()); $("#asplit").classList.toggle("hide", !hasAI()); $("#ahint").classList.toggle("hide", hasAI());
+}
 $("#aiurl").value = aiUrl();
 const savedModel = st.get("aimodel", ""); if (savedModel) $("#aimodel").append(new Option(savedModel, savedModel, true, true));
-$("#aimodel").onchange = e => st.set("aimodel", e.target.value);
+syncAIUi();
+$("#aimodel").onchange = e => { st.set("aimodel", e.target.value); syncAIUi(); };
 $("#aitest").onclick = async () => {
   const s = $("#aistat"); st.set("aiurl", $("#aiurl").value.trim() || DEF_URL); s.textContent = "...";
   try {
@@ -576,7 +649,7 @@ $("#aitest").onclick = async () => {
     const cur = st.get("aimodel", "");
     $("#aimodel").replaceChildren(...names.map(n => new Option(n, n)));
     $("#aimodel").value = names.includes(cur) ? cur : names[0]; st.set("aimodel", $("#aimodel").value);
-    s.textContent = "✓ " + names.length + " model"; warmUp();
+    s.textContent = "✓ " + names.length + " model"; syncAIUi(); warmUp();
   } catch { s.textContent = T(ERR_AI); }
 };
 
@@ -594,7 +667,7 @@ function renderCal(){
   for (let i = 0; i < (new Date(y, m, 1).getDay() + 6) % 7; i++) grid.append(h("div", {class:"day blank"}));
   for (let d = 1, n = new Date(y, m + 1, 0).getDate(); d <= n; d++){
     const key = y + "-" + pad(m + 1) + "-" + pad(d), ls = by[key] || [];
-    grid.append(h("button", {class:"day" + (key === today() ? " today" : "") + (key === sel ? " sel" : ""), onclick(){ ui.cal.sel = key; renderCal(); }},
+    grid.append(h("button", {class:"day" + (key === today() ? " today" : "") + (key === sel ? " sel" : ""), "aria-pressed":String(key === sel), "aria-label":new Date(key + "T00:00").toLocaleDateString(loc, {weekday:"long", day:"numeric", month:"long"}) + (ls.length ? ", " + ls.length + " " + T("tác vụ") : ""), onclick(){ ui.cal.sel = key; renderCal(); }},
       h("span", {class:"dn"}, d), ls.slice(0, 2).map(t => h("span", {class:"chip" + (t.done ? " done" : "")}, t.text)),
       ls.length > 2 && h("span", {class:"more"}, "+" + (ls.length - 2)), ls.length > 0 && h("span", {class:"dot"}, "•".repeat(Math.min(ls.length, 3)))));
   }
@@ -609,7 +682,7 @@ let plan = [], aiMode = "plan", splitOf = "", splitDue = "";
 const okDate = (s, past) => (/^\d{4}-\d{2}-\d{2}$/.test(s || "") && !isNaN(new Date(s))) ? (past || s >= today() ? s : today()) : "";
 function openAI(mode, text = "", parentDue = null){
   aiMode = mode; splitOf = parentDue === null ? "" : text; splitDue = parentDue || "";
-  warmUp(); $("#ag").value = text; $("#aout").replaceChildren(); $("#aadd").classList.add("hide"); $("#ai").classList.remove("hide"); $("#ag").focus();
+  syncAIUi(); warmUp(); $("#ag").value = text; $("#aout").replaceChildren(); $("#aadd").classList.add("hide"); $("#ai").classList.remove("hide"); $("#ag").focus();
 }
 function aiSys(endIso){
   const idx = (new Date().getDay() + 6) % 7, wd = new Date().toLocaleDateString("vi-VN", {weekday:"long"});
