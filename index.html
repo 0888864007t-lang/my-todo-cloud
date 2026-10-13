@@ -48,19 +48,20 @@ nav .new,nav .new .n{color:var(--accent)}
 nav .new .n{display:inline-flex}
 @media (min-width:761px){.collapsed nav{width:56px}.collapsed nav .lab,.collapsed nav .n{display:none}}
 main{flex:1;min-width:0;overflow:auto;padding:20px 28px 40px}
-.head{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.head{display:flex;align-items:flex-start;gap:8px 24px;flex-wrap:wrap}
 .tcol{min-width:0}
-.trow{display:flex;align-items:center;gap:10px;color:var(--accent)}
-h1{margin:0;font-size:22px;font-weight:600;line-height:1.4;color:var(--accent)}
+.trow{display:flex;align-items:center;gap:10px;height:36px;color:var(--accent)}
+#sub{font-size:13px;margin-top:2px}
+h1{margin:0;font-size:21px;font-weight:600;line-height:1.2;color:var(--accent)}
 h2{font-weight:600}
 .dots{width:32px;height:32px;display:grid;place-items:center;color:var(--mute)}
 .dots:hover{background:var(--hover)}
-.tabs button{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;color:var(--accent);border-bottom:2px solid transparent;border-radius:0}
+.tabs button{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;color:var(--accent);border-bottom:2px solid transparent;border-radius:0}
 .tabs button:hover{background:var(--hover)}
 .tabs button.on{border-bottom-color:var(--accent);font-weight:600}
 .sp{flex:1}
-.opts{display:flex;align-items:center;gap:2px;position:relative;flex-wrap:wrap}
-.opts>button{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;color:var(--accent)}
+.opts{display:flex;align-items:center;gap:2px;position:relative;flex-wrap:wrap;margin-left:auto}
+.opts>button{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 10px;color:var(--accent)}
 .opts>button:hover{background:var(--hover)}
 .chips{display:flex;justify-content:flex-end;align-items:center;gap:6px;margin:12px 0 6px;font-size:12px;font-weight:600;min-height:24px}
 .chip2{display:inline-flex;align-items:center;gap:4px}
@@ -258,7 +259,7 @@ const EN = {"Việc cần làm":"To-do","Tìm kiếm":"Search","Giao diện sán
 "Tên đăng nhập tối thiểu 3 ký tự.":"Username must be at least 3 characters.","Mật khẩu tối thiểu 6 ký tự.":"Password must be at least 6 characters.",
 "Mật khẩu nhập lại không khớp.":"Passwords do not match.","Tên đăng nhập đã tồn tại.":"That username is already taken.","Sai tên đăng nhập hoặc mật khẩu.":"Wrong username or password.",
 "Trình duyệt này không hỗ trợ đăng nhập an toàn. Hãy mở bằng localhost hoặc https.":"This browser can't do secure login. Open the app via localhost or https.",
-"Công việc":"Tasks","Đồng bộ":"Sync","Trợ lý":"Assistant","Trợ lý (Ollama)":"Assistant (Ollama)","Trợ lý lập kế hoạch":"Planner","Gợi ý ghi chú":"Suggest a note","Chia nhỏ việc này":"Split this task","Đang tạo...":"Working...",
+"Công việc":"Tasks","Đồng bộ":"Sync","Đã xếp lịch theo yêu cầu:":"Scheduled as you asked:","Trợ lý":"Assistant","Trợ lý (Ollama)":"Assistant (Ollama)","Trợ lý lập kế hoạch":"Planner","Gợi ý ghi chú":"Suggest a note","Chia nhỏ việc này":"Split this task","Đang tạo...":"Working...",
 "Đã lưu":"Saved","Đang lưu...":"Saving...","Lỗi đồng bộ":"Sync error","Trợ giúp":"Help","Sắp xếp":"Sort","Nhóm":"Group","Danh sách mới":"New list","Không nhóm":"No grouping","Theo danh sách":"By list","Theo hạn chót":"By due date",
 "Ngày tạo":"Date created","A đến Z":"A to Z","Sắp xếp theo ngày tạo":"Sorted by creation date","Sắp xếp theo A đến Z":"Sorted A to Z","Sắp xếp theo hạn chót":"Sorted by due date","Sắp xếp theo quan trọng":"Sorted by importance",
 "Nhóm theo danh sách":"Grouped by list","Nhóm theo hạn chót":"Grouped by due date","Bỏ sắp xếp":"Clear sort","Bỏ nhóm":"Clear grouping","Lịch":"Calendar","Lập kế hoạch":"Plan","Chia nhỏ việc":"Split a task","Bạn cần làm gì?":"What do you need to do?","Công việc cần chia nhỏ":"Task to split",
@@ -614,9 +615,9 @@ function openAI(mode, text = "", parentDue = null){
   $("#agen").textContent = T(mode === "plan" ? "Tạo kế hoạch" : "Chia nhỏ việc");
   warmUp(); $("#ag").value = text; $("#aout").replaceChildren(); $("#aadd").classList.add("hide"); $("#ai").classList.remove("hide"); $("#ag").focus();
 }
-function aiSys(){
+function aiSys(endIso){
   const idx = (new Date().getDay() + 6) % 7, wd = new Date().toLocaleDateString("vi-VN", {weekday:"long"});
-  const when = "Hôm nay là " + wd + ", " + today() + ". Chủ nhật tuần này là " + dayPlus(6 - idx) + ". ";
+  const when = "Hôm nay là " + wd + ", " + today() + ". Chủ nhật tuần này là " + dayPlus(6 - idx) + ". " + (endIso ? "Kế hoạch phải xong trước hoặc đúng ngày " + endIso + ". " : "");
   const fmt = " Mỗi việc ghi trên MỘT dòng đúng định dạng: YYYY-MM-DD | tiêu đề (tối đa 10 từ). Không viết gì khác ngoài các dòng đó. Viết tiêu đề bằng " + langName() + ".";
   return aiMode === "plan"
     ? 'Bạn là trợ lý lập kế hoạch. Tách yêu cầu của người dùng thành 5-8 việc nhỏ, cụ thể, theo thứ tự thực hiện hợp lý. Ngày nằm từ hôm nay đến cuối khoảng thời gian người dùng nêu (nếu nói "tuần này" thì đến Chủ nhật, nếu không nêu thì trong 7 ngày tới), phân bổ đều các ngày, tối đa 3 việc mỗi ngày. ' + when + fmt
@@ -634,21 +635,58 @@ $("#mSplit").onclick = () => openAI("split", $("#ag").value);
 $("#aclose").onclick = () => $("#ai").classList.add("hide");
 $("#ai").onclick = e => { if (e.target.id === "ai") $("#ai").classList.add("hide"); };
 document.addEventListener("keydown", e => { if (e.key === "Escape") $("#ai").classList.add("hide"); });
+// ---- Hiểu yêu cầu về lịch ("mỗi thứ 2", "hết tháng 10", "trong 3 tuần"...): app tự tính ngày ----
+const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").toLowerCase();
+const isoOf = d => new Date(d.getTime() - d.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+function parseWhen(text){
+  const s = norm(text), days = new Set(), now = new Date(), y = now.getFullYear(), t0 = new Date(today() + "T00:00");
+  [[/\bthu\s*(?:2|hai)\b/, 1], [/\bthu\s*(?:3|ba)\b/, 2], [/\bthu\s*(?:4|tu)\b/, 3], [/\bthu\s*(?:5|nam)\b(?!\s*nay)/, 4], [/\bthu\s*(?:6|sau)\b/, 5], [/\bthu\s*(?:7|bay)\b/, 6], [/\bchu nhat\b/, 0],
+   [/\bmonday\b/, 1], [/\btuesday\b/, 2], [/\bwednesday\b/, 3], [/\bthursday\b/, 4], [/\bfriday\b/, 5], [/\bsaturday\b/, 6], [/\bsunday\b/, 0]].forEach(([re, d]) => { if (re.test(s)) days.add(d); });
+  let end = null, m;
+  if ((m = s.match(/(?:het|den(?: het)?|trong)\s*thang\s*(\d{1,2})/)) && +m[1] >= 1 && +m[1] <= 12){ const yy = +m[1] - 1 < now.getMonth() ? y + 1 : y; end = new Date(yy, +m[1], 0); }
+  else if ((m = s.match(/(?:den|truoc|het)\s*(?:ngay\s*)?(\d{1,2})[\/\-](\d{1,2})(?:[\/\-](\d{2,4}))?/))){ let yy = m[3] ? (+m[3] < 100 ? 2000 + +m[3] : +m[3]) : y; end = new Date(yy, +m[2] - 1, +m[1]); if (!m[3] && end < t0) end = new Date(yy + 1, +m[2] - 1, +m[1]); }
+  else if (/het nam/.test(s)) end = new Date(y, 11, 31);
+  else if ((m = s.match(/trong\s*(\d{1,2})\s*tuan/))) end = new Date(t0.getTime() + +m[1] * 7 * 864e5);
+  else if ((m = s.match(/trong\s*(\d{1,2})\s*ngay/))) end = new Date(t0.getTime() + +m[1] * 864e5);
+  else if (/tuan nay/.test(s)) end = new Date(t0.getTime() + (6 - (t0.getDay() + 6) % 7) * 864e5);
+  else if (/thang nay/.test(s)) end = new Date(y, now.getMonth() + 1, 0);
+  if (!days.size && !end) return null;
+  if (days.size && !end) end = new Date(t0.getTime() + 28 * 864e5);
+  const dates = [];
+  if (days.size) for (let d = new Date(t0); d <= end && dates.length < 12; d = new Date(d.getTime() + 864e5)) if (days.has(d.getDay())) dates.push(isoOf(d));
+  return { dates, end: isoOf(end) };
+}
+function parseTitles(text){
+  return text.split("\n").map(l => l.replace(/[*_`#]/g, "").replace(/^\s*(?:\d{1,2}[.)]\s*|[-•]\s*)/, "").replace(/^\d{4}-\d{2}-\d{2}\s*[|:–—-]\s*/, "").trim()).filter(l => l.length >= 3);
+}
+function spreadIfFlat(rows, endIso){   // nếu mô hình trả toàn cùng một ngày thì rải đều tới hạn cuối
+  if (rows.length < 2 || new Set(rows.map(r => okDate(r.date))).size > 1) return rows;
+  const span = Math.max(1, Math.round((new Date((endIso || dayPlus(6)) + "T00:00") - new Date(today() + "T00:00")) / 864e5));
+  return rows.map((r, i) => ({ ...r, date: dayPlus(Math.round(i * span / (rows.length - 1))) }));
+}
+function schedSys(n){
+  return "Bạn là trợ lý lập kế hoạch. Người dùng cần một kế hoạch gồm ĐÚNG " + n + " buổi hoặc việc, sắp xếp từ cơ bản đến nâng cao, nội dung mỗi buổi cụ thể và khác nhau, nêu rõ chủ đề người dùng đã nói. Mỗi buổi ghi trên MỘT dòng, chỉ gồm tiêu đề ngắn (tối đa 10 từ), không ghi ngày, không đánh số, không viết gì khác. Viết bằng " + langName() + ".";
+}
 $("#aform2").onsubmit = async e => {
   e.preventDefault();
   const text = $("#ag").value.trim(), out = $("#aout"), btn = $("#agen"); if (!text) return;
   plan = []; btn.disabled = true; $("#aadd").classList.add("hide");
+  const when = parseWhen(text), sched = when && when.dates.length ? when.dates : null;
   const t0 = Date.now(), status = h("div", {class:"meta"}), say = () => { status.textContent = T("Đang tạo...") + " " + Math.round((Date.now() - t0) / 1000) + "s"; };
-  const show = rows => out.replaceChildren(...rows.map(x => h("label", {class:"aitem"}, h("input", {type:"checkbox", checked:true}),
+  const note = sched ? h("div", {class:"meta"}, T("Đã xếp lịch theo yêu cầu:") + " " + sched.map(d => d.slice(8) + "/" + d.slice(5, 7)).join(", ")) : null;
+  const fromText = t => sched ? parseTitles(t).slice(0, sched.length).map((x, i) => ({ title:x, date:sched[i] })) : parsePlan(t);
+  const show = rows => out.replaceChildren(...(note ? [note] : []), ...rows.map(x => h("label", {class:"aitem"}, h("input", {type:"checkbox", checked:true}),
     h("span", {class:"at"}, x.title.slice(0, 200)), h("input", {type:"date", class:"adate", value:okDate(x.date)}))), status);
   say(); out.replaceChildren(status); const tick = setInterval(say, 1000);
   try {
-    const full = await aiChat((aiMode === "plan" ? "Yêu cầu: " : "Công việc: ") + text, aiSys(), t => {
+    const endIso = (when && when.end) || (aiMode === "split" && splitDue) || null;
+    const full = await aiChat((aiMode === "plan" ? "Yêu cầu: " : "Công việc: ") + text, sched ? schedSys(sched.length) : aiSys(endIso), t => {
       const lines = t.split("\n"); lines.pop();                      // bỏ dòng đang viết dở
-      const rows = parsePlan(lines.join("\n")); if (rows.length !== plan.length){ plan = rows; show(rows); }
-    });
-    plan = parsePlan(full);
+      const rows = fromText(lines.join("\n")); if (rows.length !== plan.length){ plan = rows; show(rows); }
+    }, sched ? 350 : 450);
+    plan = fromText(full);
     if (!plan.length) throw new SyntaxError("empty");
+    if (!sched) plan = spreadIfFlat(plan, endIso);
     plan.sort((a, b) => (okDate(a.date) || "9").localeCompare(okDate(b.date) || "9"));
     show(plan); status.remove(); $("#aadd").classList.remove("hide");
   } catch (err) {
