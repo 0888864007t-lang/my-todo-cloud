@@ -26,7 +26,7 @@ button{cursor:pointer;background:none;border:0;border-radius:4px;padding:0}
 .top{position:relative;z-index:7;flex:none;height:48px;background:var(--top);color:var(--topink);display:flex;align-items:center;gap:2px;padding-right:10px}
 .waffle{width:48px;height:48px;background:var(--top2);color:#fff;display:grid;place-items:center;border-radius:0;flex:none}
 .waffle:hover{filter:brightness(1.15)}
-.brand{font-size:18px;font-weight:600;margin:0 16px 0 10px;white-space:nowrap}
+.brand{font-size:17px;font-weight:700;letter-spacing:.6px;margin:0 16px 0 10px;white-space:nowrap}
 .search{position:relative;flex:0 1 500px;margin:0 auto}
 .search input{width:100%;height:32px;border:0;border-radius:4px;background:#fff;color:#323130;padding:0 12px 0 38px}
 .search input::placeholder{color:#605e5c}
@@ -34,7 +34,9 @@ button{cursor:pointer;background:none;border:0;border-radius:4px;padding:0}
 #sync{font-size:12px;opacity:.85;margin:0 8px;white-space:nowrap}
 .tbtn{width:40px;height:40px;display:grid;place-items:center;color:#fff;border-radius:4px}
 .tbtn:hover{background:rgba(255,255,255,.16)}
-.top .av{width:32px;height:32px;margin-left:6px;padding:0;border-radius:50%;background:#ffffff;color:#1b4fae;font-size:12.5px;font-weight:600;display:grid;place-items:center;line-height:1;flex:none}
+.top .av{width:34px;height:34px;margin-left:6px;padding:0;border-radius:50%;background:#fff;overflow:hidden;display:block;line-height:0;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.85)}
+.top .av svg{width:100%;height:100%;display:block}
+.top .av:hover{box-shadow:0 0 0 2px #fff,0 0 0 4px rgba(255,255,255,.35)}
 .app{flex:1;display:flex;min-height:0;position:relative}
 nav{width:290px;flex:none;background:var(--side);border-right:1px solid var(--line);padding:6px 0;overflow:auto}
 nav .item{display:flex;align-items:center;gap:16px;width:100%;height:42px;padding:0 16px;border-radius:0;text-align:left;color:var(--ink)}
@@ -111,24 +113,31 @@ input[type=checkbox]:checked{background:var(--accent);border-color:var(--accent)
 input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid var(--on);border-width:0 1.8px 1.8px 0;transform:rotate(45deg) translate(-1px,-1px)}
 .empty{color:var(--mute);text-align:center;padding:48px 12px}
 .calhead{display:flex;align-items:center;gap:8px;margin:6px 0 10px}
-.calhead b{flex:1;text-transform:capitalize;font-size:16px;font-weight:600}
-.calhead button{border:1px solid var(--line);background:var(--card);padding:4px 12px}
-.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px}
-.dow{text-align:center;color:var(--mute);font-size:12px;font-weight:600;padding:4px 0}
-.day{min-height:84px;background:var(--card);border:1px solid var(--line);border-radius:2px;padding:4px;text-align:left;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.calhead b{flex:1;text-transform:capitalize;font-size:24px;font-weight:700}
+.calhead button{border:1px solid var(--line);background:var(--card);padding:8px 18px;font-size:16px}
+.calgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.dow{text-align:center;color:var(--mute);font-size:15px;font-weight:700;padding:8px 0}
+.day{min-height:clamp(110px,16vh,170px);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;transition:box-shadow .15s,transform .15s;text-align:left;display:flex;flex-direction:column;gap:2px;overflow:hidden}
 .day.blank{background:none;border:0;cursor:default}
-.day.today .dn{background:var(--accent);color:var(--on);border-radius:99px;padding:0 7px}
+.day:not(.blank):hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+.day.today .dn{background:var(--accent);color:var(--on);border-radius:99px;padding:2px 10px}
 .day.sel{outline:2px solid var(--accent);outline-offset:-1px}
-.dn{font-size:12px;font-weight:600;align-self:flex-start}
-.chip{font-size:11px;background:var(--sel);color:var(--accent);border-radius:2px;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.dn{font-size:16px;font-weight:700;align-self:flex-start;margin-bottom:2px}
+.chip{font-size:13px;background:var(--sel);color:var(--accent);border-radius:4px;padding:2px 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .chip.done{text-decoration:line-through;color:var(--mute)}
-.more,.dot{font-size:11px;color:var(--mute)}.dot{display:none}
+.more,.dot{font-size:13px;color:var(--mute)}.dot{display:none}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:grid;place-items:center;z-index:30;padding:16px}
 #auth{display:none;position:fixed;inset:0;place-items:center;background:var(--bg);padding:16px;z-index:20}
 .out #auth{display:grid}.out .top,.out .app{display:none}
 .acard{width:min(400px,100%);background:var(--card);border-radius:8px;padding:24px;box-shadow:0 12.8px 28.8px rgba(0,0,0,.22);display:flex;flex-direction:column;gap:12px}
 .acard.wide{width:min(560px,100%);max-height:92vh;overflow:auto}
 .acard h2{margin:0;font-size:20px}
+.acard{padding:32px 28px 28px;gap:14px}
+.abrand{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:4px;text-align:center}
+.alogo{width:52px;height:52px;border-radius:14px;background:var(--accent);color:var(--on);display:grid;place-items:center}
+.abrand h1{margin:0;font-size:22px;font-weight:700;letter-spacing:.8px;color:var(--ink);line-height:1.2}
+#asubtxt{text-align:center}
+.acard .linkbtn{align-self:center}
 .acard label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--mute)}
 .acard input,.acard textarea{background:var(--card);border:1px solid #8a8886;border-radius:4px;padding:8px 10px;font-size:14px;color:var(--ink)}
 .acard textarea{min-height:100px;resize:vertical}
@@ -152,7 +161,7 @@ input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid
  nav.open{transform:none;box-shadow:0 0 24px rgba(0,0,0,.3)}
  nav .navburger{display:none}
  main{padding:14px}.brand{display:none}.search{flex:1;margin:0 4px}#sync,#help{display:none}
- .day{min-height:54px}.chip,.more{display:none}.dot{display:block}
+ .day{min-height:54px;padding:4px}.dn{font-size:13px}.calgrid{gap:2px}.calhead b{font-size:18px}.dow{font-size:12px}.chip,.more{display:none}.dot{display:block}
  .head{gap:8px}.chips{justify-content:flex-start}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -176,6 +185,7 @@ input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid
 <div id="auth">
   <button class="alang" id="alang"></button>
   <form class="acard" id="aform">
+    <div class="abrand"><span class="alogo" data-i="check" data-s="26"></span><h1 id="abrand">QUẢN LÝ CÔNG VIỆC</h1></div>
     <p class="sub" id="asubtxt" style="margin:0">Dữ liệu được đồng bộ giữa các thiết bị của bạn.</p>
     <div class="tabs" id="tabs"><button type="button" id="tLogin">Đăng nhập</button><button type="button" id="tReg">Đăng ký</button></div>
     <label id="row0">Email<input id="au" type="email" autocomplete="email" required></label>
@@ -188,7 +198,7 @@ input[type=checkbox]:checked::after{content:"";width:4px;height:8px;border:solid
 </div>
 <div class="top">
   <button class="waffle" id="burger" aria-label="Menu"><span data-i="waffle"></span></button>
-  <b class="brand">To do list</b>
+  <b class="brand" id="brand">QUẢN LÝ CÔNG VIỆC</b>
   <div class="search"><span class="si" data-i="search" data-s="18"></span><input id="q" type="search" placeholder="Tìm kiếm" aria-label="Tìm kiếm"></div>
   <span id="sync" title="Đồng bộ"></span>
   <button class="tbtn" id="theme" aria-label="Giao diện sáng/tối"><span data-i="theme"></span></button>
@@ -503,7 +513,7 @@ function applyStatic(){
 }
 function setLang(l){
   lang = l; st.set("lang", l);
-  document.documentElement.lang = l; document.title = T("Việc cần làm");
+  document.documentElement.lang = l; document.title = T("Việc cần làm"); $("#brand").textContent = $("#abrand").textContent = lang === "en" ? "TASK MANAGER" : "QUẢN LÝ CÔNG VIỆC";
   $("#lang").value = l; $("#alang").textContent = l === "vi" ? "English" : "Tiếng Việt";
   applyStatic(); renderAuth(); if (user) render();
 }
@@ -524,10 +534,27 @@ function renderAuth(){
   $("#ap").autocomplete = m === "login" ? "current-password" : "new-password";
   $("#au").required = m !== "reset"; $("#ap").required = m !== "forgot"; $("#ap2").required = reg || m === "reset";
 }
+// Avatar hiện đại, ngẫu nhiên nhưng cố định cho mỗi tài khoản (tạo từ email)
+function avatarSvg(seed){
+  let x = 2166136261; for (const c of seed) x = Math.imul(x ^ c.charCodeAt(0), 16777619) >>> 0;
+  const rnd = () => (x = (Math.imul(x, 1664525) + 1013904223) >>> 0) / 4294967296;
+  const hue = rnd() * 360, hsl = (h, l, s = 82) => "hsl(" + Math.round(h % 360) + "," + s + "%," + l + "%)";
+  const id = "g" + (x % 1e6), shape = Math.floor(rnd() * 4);
+  const c1 = hsl(hue, 58), c2 = hsl(hue + 40 + rnd() * 80, 52), c3 = hsl(hue + 160 + rnd() * 80, 68);
+  let o = '<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs><linearGradient id="' + id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient></defs><rect width="40" height="40" fill="url(#' + id + ')"/>';
+  for (let i = 0; i < 3; i++){
+    const cx = (rnd() * 40).toFixed(1), cy = (rnd() * 40).toFixed(1), r = (8 + rnd() * 12).toFixed(1), op = (.35 + rnd() * .4).toFixed(2), f = i % 2 ? c3 : "#fff";
+    if (shape === 0) o += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + f + '" opacity="' + op + '"/>';
+    else if (shape === 1) o += '<rect x="' + (cx - r / 2) + '" y="' + (cy - r / 2) + '" width="' + r + '" height="' + r + '" rx="' + (r / 3).toFixed(1) + '" transform="rotate(' + Math.round(rnd() * 90) + ' ' + cx + ' ' + cy + ')" fill="' + f + '" opacity="' + op + '"/>';
+    else if (shape === 2) o += '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + r + '" ry="' + (r / 2).toFixed(1) + '" transform="rotate(' + Math.round(rnd() * 180) + ' ' + cx + ' ' + cy + ')" fill="' + f + '" opacity="' + op + '"/>';
+    else o += '<path d="M' + cx + ' ' + (cy - r) + ' L' + (+cx + r) + ' ' + (+cy + r / 2) + ' L' + (cx - r) + ' ' + (+cy + r / 2) + 'Z" fill="' + f + '" opacity="' + op + '"/>';
+  }
+  return o + '</svg>';
+}
 async function gate(){
   document.body.classList.toggle("out", !user);
   if (user){
-    $("#av").textContent = user.slice(0,2).toUpperCase(); $("#who").textContent = user;
+    $("#av").innerHTML = avatarSvg(user); $("#who").textContent = user;
     ui.view = "myday"; ui.q = ""; $("#q").value = "";
     tasks = []; lists = []; render(); await load(); render(); listen();
   } else { $("#au").value = $("#ap").value = $("#ap2").value = ""; $("#aerr").textContent = ""; renderAuth(); }
@@ -649,8 +676,8 @@ function renderCal(){
   for (let d = 1, n = new Date(y, m + 1, 0).getDate(); d <= n; d++){
     const key = y + "-" + pad(m + 1) + "-" + pad(d), ls = by[key] || [];
     grid.append(h("button", {class:"day" + (key === today() ? " today" : "") + (key === sel ? " sel" : ""), onclick(){ ui.cal.sel = key; renderCal(); }},
-      h("span", {class:"dn"}, d), ls.slice(0, 2).map(t => h("span", {class:"chip" + (t.done ? " done" : "")}, t.text)),
-      ls.length > 2 && h("span", {class:"more"}, "+" + (ls.length - 2)), ls.length > 0 && h("span", {class:"dot"}, "•".repeat(Math.min(ls.length, 3)))));
+      h("span", {class:"dn"}, d), ls.slice(0, 3).map(t => h("span", {class:"chip" + (t.done ? " done" : "")}, t.text)),
+      ls.length > 3 && h("span", {class:"more"}, "+" + (ls.length - 3)), ls.length > 0 && h("span", {class:"dot"}, "•".repeat(Math.min(ls.length, 3)))));
   }
   const dayTasks = by[sel] || [];
   out.append(grid, h("div", {class:"meta", style:"margin-top:8px"}, T("Ô thêm tác vụ phía trên sẽ dùng ngày đang chọn làm hạn chót.")),
